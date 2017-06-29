@@ -8,6 +8,12 @@
 
 #include "PolyNode.hpp"
 
+void PolyNode::disconnectAll(void)
+{
+    descs.clear();
+    _anc = NULL;
+}
+
 void PolyNode::addDescendant(Node &desc)
 {
     descs.push_back(desc);

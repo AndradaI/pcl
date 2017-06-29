@@ -17,9 +17,17 @@ class PolyNode : public Node {
     
     std::list<Node*> descs;
     
+    friend class BinNode;
+    
 public:
     
-    void addDescendant(Node& desc);
+    ~PolyNode( ) { }
+    
+    void    disconnectAll   (void);
+    void    addDescendant   (Node& desc);
+    
+protected:
+    void traverse(std::vector<int> inorder);
 };
 
 #endif /* PolyNode_hpp */

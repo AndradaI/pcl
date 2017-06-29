@@ -9,23 +9,33 @@
 #ifndef BinNode_hpp
 #define BinNode_hpp
 
+#include <vector>
+
 
 class BinNode : public Node {
     
     Node* _left;
     Node* _right;
     
+    friend class PolyNode;
+    
 public:
     
     BinNode(int index, int tip) : Node(index, tip) { }
     
+    ~BinNode() { }
+    
     Node*   left            (void);
     Node*   right           (void);
+    
+    void    disconnectAll   (void);
     void    addDescendant   (Node& desc);
     
     
 protected:
+    
     void rotate(void);
+    void traverse(std::vector<int> inorder);
     
 };
 

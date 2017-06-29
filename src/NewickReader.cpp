@@ -73,17 +73,60 @@ bool NewickReader::checkValid(std::string Newick)
     return ret;
 }
 
-std::string::iterator
-NewickReader::travNewick
-(std::string::iterator n, std::vector<int> &edges)
+
+Node* NewickReader::traverseNewick(std::string Newick, int *index)
 {
+    Node* n = _tree.newVertex();
+    
+    assert(n != NULL);
+    
+    Node* p = NULL;
+    
+    std::cout << Newick[*index];
+    
+    ++(*index);
     do {
-        ++n;
         
-        if (*n == '(') {
-            n = travNewick(n, edges);
+        if (Newick[*index] == '(') {
+            p = traverseNewick(Newick, index);
+            assert(p != NULL);
+            n->addDescendant(*p);
+            p = NULL;
         }
-    } while (*n != ')');
+        
+        if (isalnum(Newick.at(*index))) {
+            std::string label;
+            do {
+                std::cout << Newick[*index];
+                label.push_back(Newick[*index]);
+                ++(*index);
+            } while (Newick[*index] != ',' && Newick[*index] != ')');
+            
+            int tipindex = 0;
+            
+            if(std::all_of(label.begin(), label.end(), ::isdigit)) {
+                tipindex = std::stoi(label);
+            }
+            else {
+                // TODO: lookup the label's index
+            }
+            
+            p = _tree.newTip(tipindex);
+            assert(p != NULL);
+            n->addDescendant(*p);
+            p = NULL;
+        }
+        
+        if (Newick[*index] == ',') {
+            std::cout << Newick[*index];
+            ++(*index);
+        }
+        
+    } while (Newick[*index] != ')');
+    
+    std::cout << Newick[*index];
+    ++(*index);
+    //std::cout << Newick[*index];
     
     return n;
 }
@@ -94,12 +137,18 @@ void NewickReader::read(std::string Newick, bool wnames, bool rooted)
         return;
     }
     
-    std::vector<int> edges(_numtaxa);
+    _tree.reset();
     
-    std::cout << edges.size() << "\n";
+    int index = 0;
+    Node* s = traverseNewick(Newick, &index);
     
-    travNewick(Newick.begin(), edges);
-    std::cout << edges.size() << "\n";
+    std::cout << std::endl;
+    _tree.setStart(*s);
+    _tree.traverse();
+    
+    std::cout << std::endl;
+    
+    return;
 }
 
 void NewickReader::read(char *Newick, bool wnames, bool rooted)

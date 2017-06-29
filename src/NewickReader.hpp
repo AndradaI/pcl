@@ -11,18 +11,21 @@
 
 #include <string>
 #include <vector>
+#include <assert.h>
 
+#include "Tree.hpp"
 #include "Topology.hpp"
 
 class NewickReader {
     
     int         _numtaxa;
     std::string _Newick;
-    
+    Tree        _tree;
 public:
     
     NewickReader(int numtaxa)
-    : _numtaxa(numtaxa)
+    :   _numtaxa(numtaxa),
+        _tree(numtaxa)
     {
         
     }
@@ -33,8 +36,8 @@ public:
     
 private:
     
-    std::string::iterator travNewick(std::string::iterator n, std::vector<int> &edges);
-    bool checkValid(std::string Newick);
+    Node*   traverseNewick(std::string Newick, int *index);
+    bool    checkValid(std::string Newick);
     
 };
 

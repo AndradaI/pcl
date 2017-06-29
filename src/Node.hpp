@@ -27,13 +27,14 @@ class Node {
     
     friend class BinNode;
     friend class PolyNode;
+    friend class Tree;
     
 public:
     
     Node(int index, int tip)
     {
-        _index  = index;
-        _tip    = tip;
+        _mem_index  = index;
+        _tip        = tip;
     }
     
     Node(int index, int tip, std::string label) :
@@ -42,17 +43,23 @@ public:
         _label = label;
     }
     
+    virtual ~Node ( )
+    {
+        
+    }
+    
     Node*   parent(void);
     void    parent(Node& newparent);
     bool    isInPath(void);
     
+    virtual void disconnectAll(void) = 0;
     virtual void addDescendant(Node& desc) = 0;
     
 protected:
     
     void    clip(void);
     void    restore(void);
-    void    traverse(void);
+    virtual void    traverse(std::vector<int> inorder) = 0;
     
 };
 

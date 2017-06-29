@@ -9,6 +9,8 @@
 #include "Node.hpp"
 #include "BinNode.hpp"
 
+#include <iostream>
+
 Node* BinNode::left(void)
 {
     if (_left != NULL) {
@@ -25,6 +27,13 @@ Node* BinNode::right(void)
     }
     
     return NULL;
+}
+
+void BinNode::disconnectAll(void)
+{
+    _left   = NULL;
+    _right  = NULL;
+    _anc    = NULL;
 }
 
 void BinNode::addDescendant(Node& desc)
@@ -47,6 +56,8 @@ void BinNode::addDescendant(Node& desc)
     if (p == NULL) {
         // Convert to polynode
     }
+    
+    *p = &desc;
     
     desc.parent(*this);
     
@@ -73,4 +84,25 @@ void BinNode::rotate(void)
     
     _anc = p;
     
+}
+
+void BinNode::traverse(std::vector<int> inorder)
+{
+    
+    if (_tip != 0) {
+        std::cout << _tip;
+        inorder.push_back(_index);
+        return;
+    }
+    
+    std::cout << '(';
+    
+    _left->traverse(inorder);
+    std::cout << ',';
+    _right->traverse(inorder);
+    
+    inorder.push_back(_index);
+    
+    std::cout << ')';
+    return;
 }
