@@ -10,6 +10,7 @@
 #define PCL_H
 
 #include "Tree.hpp"
+#include "Subtree.hpp"
 #include "NewickReader.hpp"
 #include "Node.hpp"
 #include "BinNode.hpp"

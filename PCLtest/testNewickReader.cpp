@@ -15,7 +15,7 @@ int test_newick_reader_basic(void)
     int err     = 0;
     int failn   = 0;
     
-    std::string testnwk = "((1,3),(2,(4,(5,6))));";
+    std::string testnwk = "((2,((5,6),4)),(1,3));";
     int numtaxa = 6;
     
     NewickReader nwkreader(numtaxa);

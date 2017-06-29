@@ -16,15 +16,13 @@ class Tree;
 
 class Topology
 {
-    int                 _num_tips;
-    int                 _num_nodes;
     bool                _is_rooted;
     std::string         _as_Newick;
     std::vector<int>    _node_order;
     std::vector<int>    _anc_edges;
     std::vector<double> _branch_lengths;
-    unsigned long       _pars_score;
-    double              _like_score;
+    unsigned long       _natural_score;
+    double              _real_score;
     
     
 public:
@@ -32,7 +30,6 @@ public:
     
     Topology(int num_taxa, bool isrooted)
     {
-        _num_tips = num_taxa;
         _is_rooted = isrooted;
         
         int numnodes = 2 * num_taxa - 1;

@@ -19,25 +19,36 @@ class Topology;
 
 class Tree {
     
+protected:
     int                             _num_taxa;
-    std::vector<Node*>              _nodes;
     std::vector<Node*>              _postorder;
+    Node*                           _start;
+    unsigned long                   _natural_score;
+    double                          _real_score;
+    bool                            _isrooted;
+    
+private:
+    std::vector<Node*>              _nodes;
     std::vector<Node*>              _tips;
     std::vector<Node*>              _internals;
     std::vector<Node*>              _outgroup;
     std::vector<Node*>::iterator    _nextFreeTip;
     std::vector<Node*>::iterator    _nextFreeInternal;
     std::vector<Node*>::iterator    _nextFreeOutgroup;
-    Node*                           _start;
-    unsigned long                   _natural_score;
-    double                          _real_score;
     
 public:
     
+    friend class Topology;
+    
+    Tree ()
+    {
+        
+    }
+    
     Tree(int numtaxa)
-    : _start(NULL),
-    _natural_score(0),
-    _real_score(0.0)
+    :   _start(NULL),
+        _natural_score(0),
+        _real_score(0.0)
     {
         int num_nodes = 2 * numtaxa;
         _num_taxa = numtaxa;
@@ -59,9 +70,6 @@ public:
             _nodes.push_back(newnode);
         }
         
-        //_nextFreeTip        = _tips.begin();
-        //_nextFreeInternal   = _internals.begin();
-        
         reset();
     }
     
@@ -75,6 +83,8 @@ public:
         }
     }
     
+    bool            isrooted    (void);
+    unsigned int    size        (void);
     void            restore     (Topology& topol);
     void            reset       (void);
     void            incrScore   (unsigned long s);
@@ -93,6 +103,9 @@ public:
     void            unroot      (void);
     void            traverse    (void);
     std::string     writeNewick (void);
+    
+private:
+    
 };
 
 #endif /* Tree_hpp */

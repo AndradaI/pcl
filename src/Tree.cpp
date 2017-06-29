@@ -9,6 +9,16 @@
 #include "Tree.hpp"
 #include "Topology.hpp"
 
+bool Tree::isrooted(void)
+{
+    return _isrooted;
+}
+
+unsigned int Tree::size(void)
+{
+    return _tips.size() + _internals.size();
+}
+
 void Tree::restore(Topology &topol)
 {
     std::cout << "Not implemented\n";
@@ -72,7 +82,8 @@ double Tree::realScore(void)
 
 Node* Tree::newTip(int id_number)
 {
-    if (_nextFreeTip != _nodes.begin() + _num_taxa) {
+    if (_nextFreeTip != _nodes.begin() + _num_taxa)
+    {
         Node *ret = *_nextFreeTip;
         ret->_tip = id_number;
         ++_nextFreeTip;
@@ -84,7 +95,8 @@ Node* Tree::newTip(int id_number)
 
 Node* Tree::newVertex(void)
 {
-    if (_nextFreeInternal != _nodes.end()) {
+    if (_nextFreeInternal != _nodes.end()-1)
+    {
         Node *ret = *_nextFreeInternal;
         ++_nextFreeInternal;
         return ret;
@@ -100,8 +112,9 @@ void Tree::setStart(Node &n)
 
 void Tree::traverse(void)
 {
-    std::vector<int> temp;
-    _start->traverse(temp);
-    
+    _nodes.clear();
+    _tips.clear();
+    _internals.clear();
+    _start->traverse(_nodes, _tips, _internals);
 }
 

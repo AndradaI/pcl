@@ -27,7 +27,9 @@ public:
     void    addDescendant   (Node& desc);
     
 protected:
-    void traverse(std::vector<int> inorder);
+    void traverse(std::vector<Node*> inorder,
+                  std::vector<Node*> tips,
+                  std::vector<Node*> internals);
 };
 
 #endif /* PolyNode_hpp */

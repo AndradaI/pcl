@@ -86,22 +86,25 @@ void BinNode::rotate(void)
     
 }
 
-void BinNode::traverse(std::vector<int> inorder)
+void BinNode::traverse
+(std::vector<Node*> inorder, std::vector<Node*> tips, std::vector<Node*> internals)
 {
     
     if (_tip != 0) {
         std::cout << _tip;
-        inorder.push_back(_index);
+        inorder.push_back(this);
+        tips.push_back(this);
         return;
     }
     
     std::cout << '(';
     
-    _left->traverse(inorder);
+    _left->traverse(inorder, tips, internals);
     std::cout << ',';
-    _right->traverse(inorder);
+    _right->traverse(inorder, tips, internals);
     
-    inorder.push_back(_index);
+    inorder.push_back(this);
+    internals.push_back(this);
     
     std::cout << ')';
     return;

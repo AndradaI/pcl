@@ -51,15 +51,18 @@ public:
     Node*   parent(void);
     void    parent(Node& newparent);
     bool    isInPath(void);
+    int     memIndex(void);
     
     virtual void disconnectAll(void) = 0;
     virtual void addDescendant(Node& desc) = 0;
     
 protected:
     
-    void    clip(void);
-    void    restore(void);
-    virtual void    traverse(std::vector<int> inorder) = 0;
+    void            clip(void);
+    void            restore(void);
+    virtual void    traverse(std::vector<Node*> inorder,
+                             std::vector<Node*> tips,
+                             std::vector<Node*> internals) = 0;
     
 };
 

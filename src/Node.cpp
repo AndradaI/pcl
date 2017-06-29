@@ -17,6 +17,11 @@ Node* Node::parent(void)
     return NULL;
 }
 
+int Node::memIndex(void)
+{
+    return _mem_index;
+}
+
 void Node::parent(Node& newparent)
 {
     _anc = &newparent;
