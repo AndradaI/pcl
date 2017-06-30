@@ -74,9 +74,16 @@ bool NewickReader::checkValid(std::string Newick)
 }
 
 
-Node* NewickReader::traverseNewick(std::string Newick, int *index)
+Node* NewickReader::traverseNewick(std::string &Newick, int *index)
 {
-    Node* n = _tree.newVertex();
+    Node* n = NULL;
+    if (*index == 0)
+    {
+        n = _tree.rootNode();
+    }
+    else {
+        n = _tree.newVertex();
+    }
     
     assert(n != NULL);
     
@@ -109,6 +116,8 @@ Node* NewickReader::traverseNewick(std::string Newick, int *index)
             }
             else {
                 // TODO: lookup the label's index
+                // Get that index
+                // Copy label into node
             }
             
             p = _tree.newTip(tipindex);
@@ -154,4 +163,13 @@ void NewickReader::read(std::string Newick, bool wnames, bool rooted)
 void NewickReader::read(char *Newick, bool wnames, bool rooted)
 {
     read(std::string(Newick), wnames, rooted);
+}
+
+Topology& NewickReader::getTopol(void)
+{
+    Topology* topol = new Topology(_numtaxa, _tree.isrooted());
+    
+    topol->store(_tree);
+    
+    return *topol;
 }

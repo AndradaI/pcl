@@ -29,6 +29,11 @@ Node* BinNode::right(void)
     return NULL;
 }
 
+void BinNode::makeBinary(void)
+{
+    return;
+}
+
 void BinNode::disconnectAll(void)
 {
     _left   = NULL;
@@ -87,7 +92,7 @@ void BinNode::rotate(void)
 }
 
 void BinNode::traverse
-(std::vector<Node*> inorder, std::vector<Node*> tips, std::vector<Node*> internals)
+(std::vector<Node*> &inorder, std::vector<Node*> &tips, std::vector<Node*> &internals)
 {
     
     if (_tip != 0) {

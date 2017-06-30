@@ -7,18 +7,24 @@
 //
 
 #include "NewickReader.hpp"
-#include "testNewickReader.hpp"
 
 int test_newick_reader_basic(void)
 {
     //theader("Basic test of Newick reader");
-    int err     = 0;
+    //int err     = 0;
     int failn   = 0;
     
     std::string testnwk = "((2,((5,6),4)),(1,3));";
     int numtaxa = 6;
     
     NewickReader nwkreader(numtaxa);
+    
+    nwkreader.read(testnwk, false, false);
+    
+    testnwk ="((3,((5,6),4)),(1,2));";
+    nwkreader.read(testnwk, false, false);
+    
+    testnwk = "(1,2,3,4,5,6);";
     nwkreader.read(testnwk, false, false);
     
     

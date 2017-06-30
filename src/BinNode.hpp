@@ -27,7 +27,7 @@ public:
     
     Node*   left            (void);
     Node*   right           (void);
-    
+    void    makeBinary      (void);
     void    disconnectAll   (void);
     void    addDescendant   (Node& desc);
     
@@ -35,9 +35,9 @@ public:
 protected:
     
     void rotate(void);
-    void traverse(std::vector<Node*> inorder,
-                  std::vector<Node*> tips,
-                  std::vector<Node*> internals);
+    void traverse(std::vector<Node*> &inorder,
+                  std::vector<Node*> &tips,
+                  std::vector<Node*> &internals);
     
 };
 

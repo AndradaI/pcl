@@ -21,6 +21,7 @@ class NewickReader {
     int         _numtaxa;
     std::string _Newick;
     Tree        _tree;
+    
 public:
     
     NewickReader(int numtaxa)
@@ -36,7 +37,7 @@ public:
     
 private:
     
-    Node*   traverseNewick(std::string Newick, int *index);
+    Node*   traverseNewick(std::string &Newick, int *index);
     bool    checkValid(std::string Newick);
     
 };

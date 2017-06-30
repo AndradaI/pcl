@@ -8,13 +8,14 @@
 
 #include <iostream>
 #include "pcl.h"
-#include "testNewickReader.hpp"
+#include "tests.hpp"
 
 int main(int argc, const char * argv[]) {
     
     int failn = 0;
     
     failn += test_newick_reader_basic();
+    failn += test_topology_construction();
     
     return failn;
 }

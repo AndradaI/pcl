@@ -25,11 +25,14 @@ public:
     
     void    disconnectAll   (void);
     void    addDescendant   (Node& desc);
+    void    makeBinary      (void);
+    Node*   left            (void);
+    Node*   right           (void);
     
 protected:
-    void traverse(std::vector<Node*> inorder,
-                  std::vector<Node*> tips,
-                  std::vector<Node*> internals);
+    void traverse(std::vector<Node*> &inorder,
+                  std::vector<Node*> &tips,
+                  std::vector<Node*> &internals);
 };
 
 #endif /* PolyNode_hpp */

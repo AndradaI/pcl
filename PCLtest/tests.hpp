@@ -10,5 +10,6 @@
 #define testNewickReader_hpp
 
 int test_newick_reader_basic(void);
+int test_topology_construction(void);
 
 #endif /* testNewickReader_hpp */

@@ -14,6 +14,11 @@ void PolyNode::disconnectAll(void)
     _anc = NULL;
 }
 
+void PolyNode::makeBinary(void)
+{
+    
+}
+
 void PolyNode::addDescendant(Node &desc)
 {
     descs.push_back(desc);

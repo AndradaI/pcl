@@ -16,6 +16,7 @@ void Topology::clear()
     _as_Newick.erase();
     _node_order.clear();
     _anc_edges.clear();
+    _tipnum.clear();
     _branch_lengths.clear();
 }
 
@@ -27,13 +28,42 @@ void Topology::store(Tree &t)
     _is_rooted      = t.isrooted();
     
     int i = 0;
-    int max = t.size();
+    int max = static_cast<int>(t.capacity()-1);
     
-    for (i = 0; i < max; ++i) {
-        if (t._nodes[i]->parent() != NULL) {
+    for (i = 0; i <= max; ++i)
+    {
+        if (t._nodes[i]->parent() != NULL)
+        {
+            _indices.push_back(t._nodes[i]->memIndex());
+            _tipnum.push_back(t._nodes[i]->tipNumber());
             Node* n = NULL;
             n = t._nodes[i]->parent();
             _anc_edges.push_back(n->memIndex());
         }
+        
+        std::cout << *(_indices.end()-1) << std::endl;
+        std::cout << *(_anc_edges.end()-1) << ',' << std::endl;
     }
+    
+    assert(_indices.size() == _anc_edges.size());
+}
+
+int Topology::edge(int index)
+{
+    return _anc_edges[index];
+}
+
+int Topology::index(int index)
+{
+    return _indices[index];
+}
+
+int Topology::tipnumber(int index)
+{
+    return _tipnum[index];
+}
+
+unsigned long Topology::size(void)
+{
+    return _anc_edges.size();
 }

@@ -28,6 +28,8 @@ protected:
     bool                            _isrooted;
     
 private:
+    Node*                           _reserved_root;
+    Node*                           _dummy_root;
     std::vector<Node*>              _nodes;
     std::vector<Node*>              _tips;
     std::vector<Node*>              _internals;
@@ -38,6 +40,7 @@ private:
     
 public:
     
+    friend class Tree;
     friend class Topology;
     
     Tree ()
@@ -58,17 +61,38 @@ public:
         Node* newnode = NULL;
         int index = 0;
         
-        for (index = 0; index < num_nodes; ++index) {
+        for (index = 0; index < num_nodes; ++index)
+        {
+            
             newnode = NULL;
-            if (index < numtaxa) {
-                newnode = new BinNode(index, index + 1);
+            
+            if (index < numtaxa)
+            {
+                newnode = new Node(index, index + 1);
                 //_tips.push_back(*it);
-            } else {
-                newnode = new BinNode(index, 0);
+            }
+            else
+            {
+                if (index < num_nodes - 1)
+                {
+                    
+                    newnode = new Node(index, 0);
+                    
+                    if (index == num_nodes - 2)
+                    {
+                        _reserved_root = newnode;
+                    }
+                }
+                else {
+                    newnode = new Node(index, -1);
+                    _dummy_root = newnode;
+                }
                 //_internals.push_back(*it);
             }
             _nodes.push_back(newnode);
         }
+        
+        
         
         reset();
     }
@@ -84,7 +108,8 @@ public:
     }
     
     bool            isrooted    (void);
-    unsigned int    size        (void);
+    unsigned long   size        (void);
+    unsigned long   capacity    (void);
     void            restore     (Topology& topol);
     void            reset       (void);
     void            incrScore   (unsigned long s);
@@ -97,15 +122,17 @@ public:
     Node*           newTip      (int index);
     Node*           newVertex   (void);
     Node&           node        (int index);
-    Node&           rootNode    (void);
+    Node*           rootNode    (void);
     void            setStart    (Node& n);
     void            root        (int index);
+    void            root        (void);
     void            unroot      (void);
     void            traverse    (void);
     std::string     writeNewick (void);
     
 private:
     
+    void            markDownpass(int index);
 };
 
 #endif /* Tree_hpp */

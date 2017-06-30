@@ -10,20 +10,25 @@
 #define Node_hpp
 
 #include <vector>
+#include <list>
 #include <string>
+#include <algorithm>
 
 class Node {
     
-    int         _index;
-    int         _mem_index;
-    int         _tip;
-    int         _weight;
-    bool        _in_path;
-    int         _downpass_mark;
-    bool        _is_polynode;
-    std::string _label;
-    double      _length;
-    Node*       _anc;
+    int                 _index;
+    int                 _mem_index;
+    int                 _tip;
+    int                 _weight;
+    bool                _in_path;
+    int                 _downpass_mark;
+    bool                _is_polynode;
+    std::string         _label;
+    double              _length;
+    Node*               _anc;
+    Node*               _left;
+    Node*               _right;
+    std::list<Node*>    _descs;
     
     friend class BinNode;
     friend class PolyNode;
@@ -32,6 +37,14 @@ class Node {
 public:
     
     Node(int index, int tip)
+    :   _weight(0),
+        _in_path(false),
+        _downpass_mark(0),
+        _is_polynode(false),
+        _length(0.0),
+        _left(NULL),
+        _right(NULL),
+        _anc(NULL)
     {
         _mem_index  = index;
         _tip        = tip;
@@ -52,17 +65,24 @@ public:
     void    parent(Node& newparent);
     bool    isInPath(void);
     int     memIndex(void);
-    
-    virtual void disconnectAll(void) = 0;
-    virtual void addDescendant(Node& desc) = 0;
-    
+    int     tipNumber(void);
+    Node*   left(void);
+    Node*   right(void);
+    void    disconnectAll(void);
+    void    addDescendant(Node& desc);
+    void    traverse(std::vector<Node*> &inorder,
+                     std::vector<Node*> &tips,
+                     std::vector<Node*> &internals);
+    void    binTraverse(std::vector<Node*> &inorder,
+                     std::vector<Node*> &tips,
+                     std::vector<Node*> &internals);
+    void    pop(void);
 protected:
     
-    void            clip(void);
-    void            restore(void);
-    virtual void    traverse(std::vector<Node*> inorder,
-                             std::vector<Node*> tips,
-                             std::vector<Node*> internals) = 0;
+    void    rotate(void);
+    void    markTraverse(int index, bool* found);
+    void    clip(void);
+    void    restore(void);
     
 };
 

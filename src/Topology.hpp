@@ -11,19 +11,22 @@
 
 #include <vector>
 #include <string>
+#include <assert.h>
 
 class Tree;
 
 class Topology
 {
+    
     bool                _is_rooted;
     std::string         _as_Newick;
+    std::vector<int>    _tipnum;
+    std::vector<int>    _indices;
     std::vector<int>    _node_order;
     std::vector<int>    _anc_edges;
     std::vector<double> _branch_lengths;
     unsigned long       _natural_score;
     double              _real_score;
-    
     
 public:
     
@@ -37,8 +40,12 @@ public:
         _branch_lengths.reserve(numnodes);
     }
     
-    void clear(void);
-    void store(Tree& t);
+    void            clear(void);
+    void            store(Tree& t);
+    int             edge(int index);
+    int             index(int index);
+    int             tipnumber(int index);
+    unsigned long   size(void);
     
 };
 
