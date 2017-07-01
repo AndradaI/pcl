@@ -66,7 +66,7 @@ void Node::addDescendant(Node &desc)
     desc.parent(*this);
 }
 
-void Node::traverse
+int Node::traverse
 (std::vector<Node *> &inorder,
  std::vector<Node *> &tips,
  std::vector<Node *> &internals)
@@ -76,16 +76,17 @@ void Node::traverse
         std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
-        return;
+        return 1;
     }
     
+    int weight = 0;
     std::cout << '(';
     
     std::vector<Node*>::iterator p;
     p = _descs.begin();
     
     do {
-        (*p)->traverse(inorder, tips, internals);
+        weight += (*p)->traverse(inorder, tips, internals);
         ++p;
         if (p != _descs.end()) {
             std::cout << ',';
@@ -97,10 +98,12 @@ void Node::traverse
     inorder.push_back(this);
     internals.push_back(this);
     
-    return;
+    _weight = weight;
+    
+    return weight;
 }
 
-void Node::binTraverse
+int Node::binTraverse
 (std::vector<Node *> &inorder,
  std::vector<Node *> &tips,
  std::vector<Node *> &internals)
@@ -109,22 +112,25 @@ void Node::binTraverse
         std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
-        return;
+        return 1;
     }
     
+    int weight = 0;
     std::cout << '(';
     
-    _left->binTraverse(inorder, tips, internals);
+    weight += _left->binTraverse(inorder, tips, internals);
     std::cout << ',';
-    _right->binTraverse(inorder, tips, internals);
+    weight += _right->binTraverse(inorder, tips, internals);
+    
+    std::cout << ')';
     
     inorder.push_back(this);
     internals.push_back(this);
     
-    std::cout << ')';
-    return;
+    _weight = weight;
+    
+    return weight;
 }
-
 
 void Node::rotate(void)
 {
@@ -176,12 +182,7 @@ void Node::markTraverse(int index, bool *found)
     do {
         
         (*p)->markTraverse(index, found);
-        
         ++p;
-        
-        if (p != _descs.end()) {
-            std::cout << ',';
-        }
         
     } while (p != _descs.end());
     

@@ -89,9 +89,8 @@ Node* NewickReader::traverseNewick(std::string &Newick, int *index)
     
     Node* p = NULL;
     
-    std::cout << Newick[*index];
-    
     ++(*index);
+    
     do {
         
         if (Newick[*index] == '(') {
@@ -104,7 +103,6 @@ Node* NewickReader::traverseNewick(std::string &Newick, int *index)
         if (isalnum(Newick.at(*index))) {
             std::string label;
             do {
-                std::cout << Newick[*index];
                 label.push_back(Newick[*index]);
                 ++(*index);
             } while (Newick[*index] != ',' && Newick[*index] != ')');
@@ -127,15 +125,12 @@ Node* NewickReader::traverseNewick(std::string &Newick, int *index)
         }
         
         if (Newick[*index] == ',') {
-            std::cout << Newick[*index];
             ++(*index);
         }
         
     } while (Newick[*index] != ')');
     
-    std::cout << Newick[*index];
     ++(*index);
-    //std::cout << Newick[*index];
     
     return n;
 }

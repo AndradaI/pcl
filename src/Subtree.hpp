@@ -11,18 +11,27 @@
 
 #include "Tree.hpp"
 
-class Subtree : public Tree {
-    
-    
+class Subtree : public Tree
+{
     
 public:
     
-    Subtree(Node& n)
+    Subtree(int numtaxa)
     {
-        _start = &n;
-        this->traverse();
+        _postorder.reserve(2 * numtaxa - 2);
+        _tips.reserve(numtaxa);
+        _internals.reserve(numtaxa-1);
     }
     
+    Subtree(Node& n, int numtaxa)
+    {
+        _postorder.reserve(2 * numtaxa - 2);
+        init(n);
+    }
+    
+protected:
+    
+    void init(Node& n);
 };
 
 #endif /* Subtree_hpp */

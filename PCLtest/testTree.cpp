@@ -37,5 +37,6 @@ int test_rerooting(void)
     t.root(5);
     ttestr.checkTree(t);
     
+    t.pruneSubtree(8);
     return failn;
 }

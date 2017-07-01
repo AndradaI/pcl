@@ -36,8 +36,6 @@ void Tree::restore(Topology &topol)
         index = topol.index(i);
         anci = topol.edge(i);
         
-        std::cout << index << std::endl;
-        std::cout << anci << ',' << std::endl;
         _nodes[anci]->addDescendant(*_nodes[index]);
         _nodes[index]->_tip = topol.tipnumber(i);
     }
@@ -45,8 +43,6 @@ void Tree::restore(Topology &topol)
     _start = _reserved_root;
     
     traverse();
-    
-    //std::cout << "Not implemented\n";
 }
 
 void Tree::reset(void)
@@ -136,6 +132,19 @@ Node* Tree::rootNode(void)
     return _reserved_root;
 }
 
+Subtree* Tree::pruneSubtree(Node& subtr_root)
+{
+    
+    return _subtree;
+}
+
+Subtree* Tree::pruneSubtree(int index)
+{
+    Node* subtr_root = _nodes[index];
+    
+    return _subtree;
+}
+
 void Tree::setStart(Node &n)
 {
     _start = &n;
@@ -157,7 +166,6 @@ void Tree::root(int index)
     
     // TODO: Pop out root
     
-    //unroot();
     Node* bleft = _reserved_root->_left;
     Node* bright = _reserved_root->_right;
     bleft->parent(*bright);
@@ -251,15 +259,24 @@ void Tree::traverse(void)
     _tips.clear();
     _internals.clear();
     _start->traverse(_postorder, _tips, _internals);
+    
+    std::cout << "\n";
+}
+
+Node* Tree::postorder(int index)
+{
+    return _postorder[index];
+}
+
+Node* Tree::preorder(int index)
+{
+    return _postorder.back()-index;
 }
 
 void Tree::markDownpass(int index)
 {
     bool found = false;
     
-    // TODO: Make safe for
     _start->markTraverse(index, &found);
-    
-    // TODO: Unmark all
 }
 

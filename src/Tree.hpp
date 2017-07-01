@@ -13,11 +13,12 @@
 #include <iostream>
 
 #include "Node.hpp"
-#include "BinNode.hpp"
 
 class Topology;
+class Subtree;
 
-class Tree {
+class Tree
+{
     
 protected:
     
@@ -27,6 +28,7 @@ protected:
     unsigned long                   _natural_score;
     double                          _real_score;
     bool                            _isrooted;
+    Subtree*                        _subtree;
     
 private:
     
@@ -56,7 +58,8 @@ public:
     Tree(int numtaxa)
     :   _start(NULL),
         _natural_score(0),
-        _real_score(0.0)
+        _real_score(0.0),
+        _subtree(NULL)
     {
         int num_nodes = 2 * numtaxa;
         _num_taxa = numtaxa;
@@ -107,32 +110,36 @@ public:
         }
     }
     
-    bool            isrooted    (void);
-    unsigned long   size        (void);
-    unsigned long   capacity    (void);
-    void            restore     (Topology& topol);
-    void            reset       (void);
-    void            incrScore   (unsigned long s);
-    void            incrScore   (double s);
-    void            setScore    (double s);
-    void            setScore    (unsigned long s);
-    void            clearScore  (void);
-    unsigned long   natScore    (void);
-    double          realScore   (void);
-    Node*           newTip      (int index);
-    Node*           newVertex   (void);
-    Node&           node        (int index);
-    Node*           rootNode    (void);
-    void            setStart    (Node& n);
-    void            root        (int index);
-    void            root        (void);
-    void            unroot      (void);
-    void            traverse    (void);
-    std::string     writeNewick (void);
+    bool            isrooted        (void);
+    unsigned long   size            (void);
+    unsigned long   capacity        (void);
+    void            restore         (Topology& topol);
+    void            reset           (void);
+    void            incrScore       (unsigned long s);
+    void            incrScore       (double s);
+    void            setScore        (double s);
+    void            setScore        (unsigned long s);
+    void            clearScore      (void);
+    unsigned long   natScore        (void);
+    double          realScore       (void);
+    Node*           newTip          (int index);
+    Node*           newVertex       (void);
+    Node&           node            (int index);
+    Node*           rootNode        (void);
+    Subtree*        pruneSubtree    (int index);
+    Subtree*        pruneSubtree    (Node& subtr_root);
+    void            setStart        (Node& n);
+    void            root            (int index);
+    void            root            (void);
+    void            unroot          (void);
+    void            traverse        (void);
+    Node*           postorder       (int index);
+    Node*           preorder        (int index);
+    std::string     writeNewick     (void);
     
 private:
     
-    void            markDownpass(int index);
+    void            markDownpass    (int index);
 };
 
 #endif /* Tree_hpp */

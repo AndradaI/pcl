@@ -73,12 +73,12 @@ public:
     Node*   right(void);
     void    disconnectAll(void);
     void    addDescendant(Node& desc);
-    void    traverse(std::vector<Node*> &inorder,
+    int     traverse(std::vector<Node*> &inorder,
                      std::vector<Node*> &tips,
                      std::vector<Node*> &internals);
-    void    binTraverse(std::vector<Node*> &inorder,
-                     std::vector<Node*> &tips,
-                     std::vector<Node*> &internals);
+    int     binTraverse(std::vector<Node*> &inorder,
+                        std::vector<Node*> &tips,
+                        std::vector<Node*> &internals);
     void    pop(void);
 protected:
     

@@ -7,3 +7,11 @@
 //
 
 #include "Subtree.hpp"
+
+void Subtree::init(Node &n)
+{
+    _start = &n;
+    reset();
+    _isrooted = true;
+    this->traverse();
+}
