@@ -16,6 +16,7 @@ int main(int argc, const char * argv[]) {
     
     failn += test_newick_reader_basic();
     failn += test_topology_construction();
+    failn += test_rerooting();
     
     return failn;
 }

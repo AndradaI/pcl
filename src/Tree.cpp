@@ -144,6 +144,8 @@ void Tree::setStart(Node &n)
 void Tree::root(int index)
 {
 
+    traverse();
+    
     bool popstart = false;
     
     if (isrooted()) {
@@ -155,23 +157,42 @@ void Tree::root(int index)
     
     // TODO: Pop out root
     
-    unroot();
+    //unroot();
+    Node* bleft = _reserved_root->_left;
+    Node* bright = _reserved_root->_right;
+    bleft->parent(*bright);
+    bright->parent(*bleft);
     
-    int i = 0;
-    int max = _reserved_root->memIndex();
+    //int max = _reserved_root->memIndex();
+    std::vector<Node*>::iterator i;
     
-    for (i = 0; i < max; ++i) {
-        if (_nodes[i]->_in_path == true) {
-            _nodes[i]->rotate();
+    for (i = _internals.begin(); i != _internals.end(); ++i) {
+        
+        if (*i == _reserved_root) {
+            break;
+        }
+
+        if ((*i)->_in_path == true) {
+            (*i)->rotate();
         }
     }
    
-    for (i = 0; i < max; ++i) {
-        _nodes[i]->_in_path = false;
+    for (i = _nodes.begin(); i != _nodes.end(); ++i) {
+        (*i)->_in_path = false;
     }
     
-    root();
+    //_start = _reserved_root;
+    _start->_descs.clear();
+    _start->_descs.push_back(_nodes[index]);
+    _start->_descs.push_back(_nodes[index]->parent());
+    _start->_left = _start->_descs.front();
+    _start->_right = _start->_descs.back();
+    //    _start->_left = _nodes[index];
+    //_start->_right = _nodes[index]->parent();
+    _start->_left->parent(*_start);
+    _start->_right->parent(*_start);
     
+    //root();
     traverse();
 }
 
@@ -188,6 +209,7 @@ void Tree::root(void)
     if (isrooted()) {
         return;
     }
+    
     Node* p = NULL;
     Node* q = NULL;
     

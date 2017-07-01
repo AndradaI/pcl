@@ -11,5 +11,6 @@
 
 int test_newick_reader_basic(void);
 int test_topology_construction(void);
+int test_rerooting(void);
 
 #endif /* testNewickReader_hpp */

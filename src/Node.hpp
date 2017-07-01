@@ -28,11 +28,14 @@ class Node {
     Node*               _anc;
     Node*               _left;
     Node*               _right;
-    std::list<Node*>    _descs;
+    std::vector<Node*>    _descs;
     
     friend class BinNode;
     friend class PolyNode;
     friend class Tree;
+#ifdef DEBUG
+    friend class TreeTester;
+#endif
     
 public:
     

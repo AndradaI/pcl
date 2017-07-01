@@ -20,6 +20,7 @@ class Topology;
 class Tree {
     
 protected:
+    
     int                             _num_taxa;
     std::vector<Node*>              _postorder;
     Node*                           _start;
@@ -28,6 +29,7 @@ protected:
     bool                            _isrooted;
     
 private:
+    
     Node*                           _reserved_root;
     Node*                           _dummy_root;
     std::vector<Node*>              _nodes;
@@ -40,8 +42,11 @@ private:
     
 public:
     
-    friend class Tree;
     friend class Topology;
+    friend class Subtree;
+#ifdef DEBUG
+    friend class TreeTester;
+#endif
     
     Tree ()
     {
@@ -63,13 +68,11 @@ public:
         
         for (index = 0; index < num_nodes; ++index)
         {
-            
             newnode = NULL;
             
             if (index < numtaxa)
             {
                 newnode = new Node(index, index + 1);
-                //_tips.push_back(*it);
             }
             else
             {
@@ -87,12 +90,9 @@ public:
                     newnode = new Node(index, -1);
                     _dummy_root = newnode;
                 }
-                //_internals.push_back(*it);
             }
             _nodes.push_back(newnode);
         }
-        
-        
         
         reset();
     }

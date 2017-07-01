@@ -61,8 +61,8 @@ void Node::disconnectAll(void)
 void Node::addDescendant(Node &desc)
 {
     _descs.push_back(&desc);
-    _right = &desc;
-    _left = *_descs.begin();
+    _right = _descs.back();
+    _left = _descs.front();
     desc.parent(*this);
 }
 
@@ -81,7 +81,7 @@ void Node::traverse
     
     std::cout << '(';
     
-    std::list<Node*>::iterator p;
+    std::vector<Node*>::iterator p;
     p = _descs.begin();
     
     do {
@@ -93,6 +93,9 @@ void Node::traverse
     } while (p != _descs.end());
     
     std::cout << ')';
+    
+    inorder.push_back(this);
+    internals.push_back(this);
     
     return;
 }
@@ -125,19 +128,30 @@ void Node::binTraverse
 
 void Node::rotate(void)
 {
-    std::list<Node*>::iterator p;
-    p = _descs.begin();
-   
-    while ((*p)->_in_path != true) {
-        ++p;
+/*    if (_tip != 0) {
+        return;
+    }*/
+    
+    if (!_left->isInPath() && !_right->isInPath()) {
+        return;
     }
     
-    Node* q = NULL;
-    Node** r = &(*p);
+    Node* p = NULL;
+   
+    std::vector<Node*>::iterator i;
+    i = _descs.begin();
     
-    q = parent();
-    *r = q;
-    parent(**p); // I think........
+    while ((*i)->_in_path != true) {
+        ++i;
+    }
+    
+    p = *i;
+    _descs.erase(i);
+    _descs.push_back(_anc);
+    _left = _descs.front();
+    _right = _descs.back();
+    
+    _anc = p;
 }
 
 void Node::markTraverse(int index, bool *found)
@@ -147,6 +161,7 @@ void Node::markTraverse(int index, bool *found)
     }
     
     if (_mem_index == index) {
+        std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
         *found = true;
         _in_path = true;
     }
@@ -155,15 +170,19 @@ void Node::markTraverse(int index, bool *found)
         return;
     }
     
-    std::list<Node*>::iterator p;
+    std::vector<Node*>::iterator p;
     p = _descs.begin();
     
     do {
+        
         (*p)->markTraverse(index, found);
+        
         ++p;
+        
         if (p != _descs.end()) {
             std::cout << ',';
         }
+        
     } while (p != _descs.end());
     
     if (*found) {
