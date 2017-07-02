@@ -118,7 +118,7 @@ Node* NewickReader::traverseNewick(std::string &Newick, int *index)
                 // Copy label into node
             }
             
-            p = _tree.newTip(tipindex);
+            p = _tree.node(tipindex-1);//_tree.newTip(tipindex);
             assert(p != NULL);
             n->addDescendant(*p);
             p = NULL;

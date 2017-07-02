@@ -125,7 +125,7 @@ public:
     double          realScore       (void);
     Node*           newTip          (int index);
     Node*           newVertex       (void);
-    Node&           node            (int index);
+    Node*           node            (int index);
     Node*           rootNode        (void);
     void            setStart        (Node& n);
     void            root            (int index);

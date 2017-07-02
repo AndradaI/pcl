@@ -128,6 +128,11 @@ Node* Tree::newVertex(void)
     return NULL;
 }
 
+Node* Tree::node(int index)
+{
+    return _nodes[index];
+}
+
 Node* Tree::rootNode(void)
 {
     return _reserved_root;
@@ -298,8 +303,8 @@ void Tree::markUniquely(void)
     for (i = 0; i < max; ++i) {
         std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
         if (_tips[i]->parent() != NULL) {
-            q = _nodes[i]->parent();
-            while (q->parent() && q->parent()->parent() != q && q->uniqueIndex() == 0)
+            q = _tips[i]->parent();
+            while (q->parent() != NULL && q->uniqueIndex() == 0)
             {
                 std::cout << "Marking: " << index << std::endl;
                 q->_index = index;

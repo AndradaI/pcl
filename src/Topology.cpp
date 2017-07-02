@@ -36,8 +36,14 @@ void Topology::store(Tree &t)
     {
         if (t._nodes[i]->parent() != NULL)
         {
-            _node_order.push_back(t._nodes[i]->parent()->uniqueIndex());
-            std::cout<< _node_order.back() << ", ";
+            
+            if (t._nodes[i]->tipNumber() != 0) {
+                _node_order[t._nodes[i]->tipNumber() - 1] = t._nodes[i]->parent()->uniqueIndex();
+            }
+            else {
+                _node_order[t._nodes[i]->memIndex()] = t._nodes[i]->parent()->uniqueIndex();
+            }
+            //_node_order.push_back(t._nodes[i]->parent()->uniqueIndex());
             _indices.push_back(t._nodes[i]->memIndex());
             _tipnum.push_back(t._nodes[i]->tipNumber());
             Node* n = NULL;
