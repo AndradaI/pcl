@@ -30,9 +30,8 @@ class Node {
     Node*               _right;
     std::vector<Node*>    _descs;
     
-    friend class BinNode;
-    friend class PolyNode;
     friend class Tree;
+    friend class Subtree;
 #ifdef DEBUG
     friend class TreeTester;
 #endif
@@ -83,7 +82,7 @@ public:
 protected:
     
     void    rotate(void);
-    void    markTraverse(int index, bool* found);
+    void    markTraverse(int index, bool* found, Node** n);
     void    clip(void);
     void    restore(void);
     

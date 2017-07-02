@@ -160,7 +160,7 @@ void Node::rotate(void)
     _anc = p;
 }
 
-void Node::markTraverse(int index, bool *found)
+void Node::markTraverse(int index, bool *found, Node** n)
 {
     if (*found == true) {
         return;
@@ -169,6 +169,7 @@ void Node::markTraverse(int index, bool *found)
     if (_mem_index == index) {
         std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
         *found = true;
+        *n = this;
         _in_path = true;
     }
     
@@ -181,7 +182,7 @@ void Node::markTraverse(int index, bool *found)
     
     do {
         
-        (*p)->markTraverse(index, found);
+        (*p)->markTraverse(index, found, n);
         ++p;
         
     } while (p != _descs.end());

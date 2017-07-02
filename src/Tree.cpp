@@ -132,19 +132,6 @@ Node* Tree::rootNode(void)
     return _reserved_root;
 }
 
-Subtree* Tree::pruneSubtree(Node& subtr_root)
-{
-    
-    return _subtree;
-}
-
-Subtree* Tree::pruneSubtree(int index)
-{
-    Node* subtr_root = _nodes[index];
-    
-    return _subtree;
-}
-
 void Tree::setStart(Node &n)
 {
     _start = &n;
@@ -153,7 +140,7 @@ void Tree::setStart(Node &n)
 void Tree::root(int index)
 {
 
-    traverse();
+    //traverse();
     
     bool popstart = false;
     
@@ -162,12 +149,13 @@ void Tree::root(int index)
         popstart = true;
     }
     
-    markDownpass(index);
+    Node* target = NULL;
+    target = markDownpass(index);
     
     // TODO: Pop out root
     
-    Node* bleft = _reserved_root->_left;
-    Node* bright = _reserved_root->_right;
+    Node* bleft = _start->_left;
+    Node* bright = _start->_right;
     bleft->parent(*bright);
     bright->parent(*bleft);
     
@@ -176,7 +164,7 @@ void Tree::root(int index)
     
     for (i = _internals.begin(); i != _internals.end(); ++i) {
         
-        if (*i == _reserved_root) {
+        if (*i == _start) {
             break;
         }
 
@@ -185,14 +173,14 @@ void Tree::root(int index)
         }
     }
    
-    for (i = _nodes.begin(); i != _nodes.end(); ++i) {
+    for (i = _postorder.begin(); i != _postorder.end(); ++i) {
         (*i)->_in_path = false;
     }
     
     //_start = _reserved_root;
     _start->_descs.clear();
-    _start->_descs.push_back(_nodes[index]);
-    _start->_descs.push_back(_nodes[index]->parent());
+    _start->_descs.push_back(target);
+    _start->_descs.push_back(target->parent());
     _start->_left = _start->_descs.front();
     _start->_right = _start->_descs.back();
     //    _start->_left = _nodes[index];
@@ -202,6 +190,12 @@ void Tree::root(int index)
     
     //root();
     traverse();
+}
+
+void Tree::root(Node &n)
+{
+    int index = n.memIndex();
+    root(index);
 }
 
 /*!
@@ -273,10 +267,14 @@ Node* Tree::preorder(int index)
     return _postorder.back()-index;
 }
 
-void Tree::markDownpass(int index)
+Node* Tree::markDownpass(int index)
 {
     bool found = false;
     
-    _start->markTraverse(index, &found);
+    Node* n = NULL;
+    
+    _start->markTraverse(index, &found, &n);
+    
+    return n;
 }
 

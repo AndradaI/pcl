@@ -10,8 +10,8 @@
 
 void Subtree::init(Node &n)
 {
+    //reset();
     _start = &n;
-    reset();
     _isrooted = true;
     this->traverse();
 }

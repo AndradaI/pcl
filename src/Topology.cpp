@@ -40,8 +40,6 @@ void Topology::store(Tree &t)
             n = t._nodes[i]->parent();
             _anc_edges.push_back(n->memIndex());
         }
-        // std::cout << *(_indices.end()-1) << std::endl;
-        // std::cout << *(_anc_edges.end()-1) << ',' << std::endl;
     }
     
     assert(_indices.size() == _anc_edges.size());
@@ -65,4 +63,9 @@ int Topology::tipnumber(int index)
 unsigned long Topology::size(void)
 {
     return _anc_edges.size();
+}
+
+bool operator==(const Topology& a, const Topology& b)
+{
+    return (a._node_order == b._node_order);
 }

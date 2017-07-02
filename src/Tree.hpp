@@ -126,10 +126,9 @@ public:
     Node*           newVertex       (void);
     Node&           node            (int index);
     Node*           rootNode        (void);
-    Subtree*        pruneSubtree    (int index);
-    Subtree*        pruneSubtree    (Node& subtr_root);
     void            setStart        (Node& n);
     void            root            (int index);
+    void            root            (Node& n);
     void            root            (void);
     void            unroot          (void);
     void            traverse        (void);
@@ -139,7 +138,7 @@ public:
     
 private:
     
-    void            markDownpass    (int index);
+    Node*           markDownpass    (int index);
 };
 
 #endif /* Tree_hpp */

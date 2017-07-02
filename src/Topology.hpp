@@ -47,6 +47,8 @@ public:
     int             tipnumber(int index);
     unsigned long   size(void);
     
+    friend bool     operator==(const Topology& a, const Topology& b);
+    
 };
 
 #endif /* Topology_hpp */

@@ -11,6 +11,7 @@
 
 #include "Tree.hpp"
 
+
 class Subtree : public Tree
 {
     
@@ -28,8 +29,6 @@ public:
         _postorder.reserve(2 * numtaxa - 2);
         init(n);
     }
-    
-protected:
     
     void init(Node& n);
 };

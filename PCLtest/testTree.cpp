@@ -36,7 +36,51 @@ int test_rerooting(void)
     ttestr.checkTree(t);
     t.root(5);
     ttestr.checkTree(t);
+    t.root(5);
+    ttestr.checkTree(t);
+    t.root(6);
+    ttestr.checkTree(t);
+    t.root(7);
+    ttestr.checkTree(t);
+    t.root(8);
+    ttestr.checkTree(t);
+    t.root(9);
+    ttestr.checkTree(t);
     
-    t.pruneSubtree(8);
+    return failn;
+}
+
+int test_subtrees_and_rerooting(void)
+{
+    //theader("<#testheader#>");
+    int err     = 0;
+    int failn   = 0;
+    
+    std::string testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));";
+    int numtaxa = 10;
+    
+    NewickReader reader(numtaxa);
+    reader.read(testnwk, false, true);
+    Topology &topol = reader.getTopol();
+    
+    Tree t(numtaxa);
+    
+    t.restore(topol);
+    
+    TreeTester ttestr;
+    ttestr.checkTree(t);
+    
+    Subtree subtr(numtaxa);
+    
+    Node* node = t.postorder(6);
+    
+    subtr.init(*node);
+    
+    Node* target = subtr.postorder(0);
+    subtr.root(*target);
+    
+    std::cout<<"\n";
+    t.traverse();
+    ttestr.checkTree(t);
     return failn;
 }
