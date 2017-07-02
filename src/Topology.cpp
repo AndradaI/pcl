@@ -30,10 +30,14 @@ void Topology::store(Tree &t)
     int i = 0;
     int max = static_cast<int>(t.capacity()-1);
     
+    t.markUniquely();
+    
     for (i = 0; i <= max; ++i)
     {
         if (t._nodes[i]->parent() != NULL)
         {
+            _node_order.push_back(t._nodes[i]->parent()->uniqueIndex());
+            std::cout<< _node_order.back() << ", ";
             _indices.push_back(t._nodes[i]->memIndex());
             _tipnum.push_back(t._nodes[i]->tipNumber());
             Node* n = NULL;

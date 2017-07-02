@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "Node.hpp"
 
@@ -135,6 +136,7 @@ public:
     Node*           postorder       (int index);
     Node*           preorder        (int index);
     std::string     writeNewick     (void);
+    void            markUniquely    (void);
     
 private:
     

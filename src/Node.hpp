@@ -40,6 +40,7 @@ public:
     
     Node(int index, int tip)
     :   _weight(0),
+        _index(0),
         _in_path(false),
         _downpass_mark(0),
         _is_polynode(false),
@@ -68,6 +69,7 @@ public:
     bool    isInPath(void);
     int     memIndex(void);
     int     tipNumber(void);
+    int     uniqueIndex(void);
     Node*   left(void);
     Node*   right(void);
     void    disconnectAll(void);
@@ -79,6 +81,7 @@ public:
                         std::vector<Node*> &tips,
                         std::vector<Node*> &internals);
     void    pop(void);
+    
 protected:
     
     void    rotate(void);

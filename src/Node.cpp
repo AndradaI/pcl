@@ -39,6 +39,11 @@ int Node::tipNumber(void)
     return _tip;
 }
 
+int Node::uniqueIndex(void)
+{
+    return _index;
+}
+
 void Node::parent(Node& newparent)
 {
     _anc = &newparent;

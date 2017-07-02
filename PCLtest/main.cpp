@@ -18,5 +18,6 @@ int main(int argc, const char * argv[]) {
     failn += test_topology_construction();
     failn += test_rerooting();
     failn += test_subtrees_and_rerooting();
+    failn += test_tree_marking();
     return failn;
 }

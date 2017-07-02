@@ -38,6 +38,7 @@ public:
         int numnodes = 2 * num_taxa - 1;
         _anc_edges.reserve(numnodes);
         _branch_lengths.reserve(numnodes);
+        _node_order.reserve(numnodes);
     }
     
     void            clear(void);

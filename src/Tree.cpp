@@ -26,6 +26,7 @@ unsigned long Tree::capacity(void)
 
 void Tree::restore(Topology &topol)
 {
+    reset();
     int i = 0;
     unsigned long index = 0;
     unsigned long anci = 0;
@@ -267,6 +268,48 @@ Node* Tree::preorder(int index)
     return _postorder.back()-index;
 }
 
+
+/* Private functions */
+
+bool cmpTips(Node* a, Node* b)
+{
+    return (a->tipNumber() < b->tipNumber());
+}
+
+void Tree::markUniquely(void)
+{
+    int i = 0;
+    int max = _tips.size();
+    int index = max;
+    std::vector<Node*>::iterator p;
+    
+    for (p = _nodes.begin(); p != _nodes.end(); ++p) {
+        (*p)->_index = 0;
+    }
+    
+    p = _nodes.begin() + _num_taxa;
+    std::sort(_tips.begin(), _tips.end(), cmpTips);
+    
+    Node *q = NULL;
+    
+    std::cout << "Root's index: " << _start->memIndex();
+    _start->_index = _start->memIndex();
+    
+    for (i = 0; i < max; ++i) {
+        std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
+        if (_tips[i]->parent() != NULL) {
+            q = _nodes[i]->parent();
+            while (q->parent() && q->parent()->parent() != q && q->uniqueIndex() == 0)
+            {
+                std::cout << "Marking: " << index << std::endl;
+                q->_index = index;
+                q = q->parent();
+                ++index;
+            }
+        }
+    }
+}
+
 Node* Tree::markDownpass(int index)
 {
     bool found = false;
@@ -277,4 +320,6 @@ Node* Tree::markDownpass(int index)
     
     return n;
 }
+
+
 
