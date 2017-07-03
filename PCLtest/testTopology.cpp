@@ -86,7 +86,7 @@ int test_tree_marking(void)
         ++failn;
     }
     else {
-        std::cout << "Topolos 1 & 3 are different\n";
+        std::cout << "Topols 1 & 3 are different\n";
     }
     
     return failn;

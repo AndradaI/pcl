@@ -14,5 +14,5 @@ int test_topology_construction(void);
 int test_tree_marking(void);
 int test_rerooting(void);
 int test_subtrees_and_rerooting(void);
-
+int test_node_pop(void);
 #endif /* testNewickReader_hpp */

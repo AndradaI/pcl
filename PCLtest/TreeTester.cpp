@@ -32,7 +32,7 @@ int TreeTester::checkTree(Tree &t)
     
     i = 0;
     
-    for (; p != ancestors.end() && q != innodes.end(); ++p, ++q)
+    for (; p != ancestors.end() && *q != t._dummy_root; ++p, ++q)
     {
         if (!findDesc(*q, *p)) {
             ++errors;
