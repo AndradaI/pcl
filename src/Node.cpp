@@ -19,14 +19,34 @@ Node* Node::parent(void)
     return NULL;
 }
 
+void Node::parent(Node& newparent)
+{
+    _anc = &newparent;
+}
+
+int Node::parentIndex(void)
+{
+    return _anc->memIndex();
+}
+
 Node* Node::left(void)
 {
     return _left;
 }
 
+int Node::leftIndex(void)
+{
+    return _left->memIndex();
+}
+
 Node* Node::right()
 {
     return _right;
+}
+
+int Node::rightIndex(void)
+{
+    return _right->memIndex();
 }
 
 int Node::memIndex(void)
@@ -42,11 +62,6 @@ int Node::tipNumber(void)
 int Node::uniqueIndex(void)
 {
     return _index;
-}
-
-void Node::parent(Node& newparent)
-{
-    _anc = &newparent;
 }
 
 bool Node::isInPath(void)

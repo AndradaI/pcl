@@ -24,12 +24,17 @@ unsigned long Tree::capacity(void)
     return _nodes.size()-1;
 }
 
+unsigned long Tree::numVertices(void)
+{
+    return _internals.size();
+}
+
 int Tree::numTaxa(void)
 {
     return _num_taxa;
 }
 
-int Tree::numTaxaIn(void)
+int Tree::numTips(void)
 {
     return static_cast<int>(_tips.size());
 }
@@ -280,9 +285,24 @@ Node* Tree::postorder(int index)
     return _postorder[index];
 }
 
+Node* Tree::postorderIntern(int index)
+{
+    return _internals[index];
+}
+
 Node* Tree::preorder(int index)
 {
     return _postorder.back()-index;
+}
+
+Node* Tree::preorderIntern(int index)
+{
+    return _internals.back()-index;
+}
+
+Node* Tree::tip(int index)
+{
+    return _tips[index];
 }
 
 

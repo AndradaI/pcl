@@ -64,36 +64,37 @@ public:
         
     }
     
-    Node*   parent(void);
-    void    parent(Node& newparent);
-    bool    isInPath(void);
-    int     memIndex(void);
-    int     tipNumber(void);
-    int     uniqueIndex(void);
-    Node*   left(void);
-    Node*   right(void);
-    void    disconnectAll(void);
-    void    addDescendant(Node& desc);
-    int     traverse(std::vector<Node*> &inorder,
-                     std::vector<Node*> &tips,
-                     std::vector<Node*> &internals);
-    int     binTraverse(std::vector<Node*> &inorder,
-                        std::vector<Node*> &tips,
-                        std::vector<Node*> &internals);
-    
-    // TODO: Probably best to protect this guy:
-    void    removeWithBase(void);
+    Node*   parent          (void);
+    void    parent          (Node& newparent);
+    int     parentIndex     (void);
+    bool    isInPath        (void);
+    int     memIndex        (void);
+    int     tipNumber       (void);
+    int     uniqueIndex     (void);
+    Node*   left            (void);
+    int     leftIndex       (void);
+    Node*   right           (void);
+    int     rightIndex      (void);
+    void    disconnectAll   (void);
+    void    addDescendant   (Node& desc);
+    int     traverse        (std::vector<Node*> &inorder,
+                             std::vector<Node*> &tips,
+                             std::vector<Node*> &internals);
+    int     binTraverse     (std::vector<Node*> &inorder,
+                             std::vector<Node*> &tips,
+                             std::vector<Node*> &internals);
+    void    removeWithBase  (void);
     
 protected:
     
-    void    rotate(void);
-    void    markTraverse(int index, bool* found, Node** n);
-    void    clip(void);
-    void    restore(void);
+    void    rotate          (void);
+    void    markTraverse    (int index, bool* found, Node** n);
+    void    clip            (void);
+    void    restore         (void);
     
 private:
     
-    void    popDesc(Node& desc); /*!< Removes desc from node */
+    void    popDesc         (Node& desc); /*!< Removes desc from node */
     
 };
 

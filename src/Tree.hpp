@@ -114,8 +114,9 @@ public:
     bool            isrooted        (void);
     unsigned long   size            (void);
     unsigned long   capacity        (void);
+    unsigned long   numVertices     (void);
     int             numTaxa         (void);
-    int             numTaxaIn       (void);
+    int             numTips         (void);
     void            restore         (Topology& topol);
     void            reset           (void);
     void            incrScore       (unsigned long s);
@@ -136,7 +137,10 @@ public:
     void            unroot          (void);
     void            traverse        (void);
     Node*           postorder       (int index);
+    Node*           postorderIntern (int index);
     Node*           preorder        (int index);
+    Node*           preorderIntern  (int index);
+    Node*           tip             (int index);
     std::string     writeNewick     (void);
     void            markUniquely    (void);
     void            removeBranch    (Node& subtr);
