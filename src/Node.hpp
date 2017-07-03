@@ -39,15 +39,15 @@ class Node {
 public:
     
     Node(int index, int tip)
-    :   _weight(0),
-        _index(0),
+    :   _index(0),
+        _weight(0),
         _in_path(false),
         _downpass_mark(0),
         _is_polynode(false),
         _length(0.0),
+        _anc(NULL),
         _left(NULL),
-        _right(NULL),
-        _anc(NULL)
+        _right(NULL)
     {
         _mem_index  = index;
         _tip        = tip;

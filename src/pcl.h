@@ -13,8 +13,6 @@
 #include "Subtree.hpp"
 #include "NewickReader.hpp"
 #include "Node.hpp"
-#include "BinNode.hpp"
-#include "PolyNode.hpp"
 #include "Topology.hpp"
 #include "Treelist.hpp"
 

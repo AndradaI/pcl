@@ -31,7 +31,7 @@ int Tree::numTaxa(void)
 
 int Tree::numTaxaIn(void)
 {
-    return _tips.size();
+    return static_cast<int>(_tips.size());
 }
 
 void Tree::restore(Topology &topol)

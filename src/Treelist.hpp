@@ -11,7 +11,6 @@
 
 #include <vector>
 #include <list>
-#include "Tree.hpp"
 #include "Topology.hpp"
 
 class Treelist {
