@@ -24,6 +24,16 @@ unsigned long Tree::capacity(void)
     return _nodes.size()-1;
 }
 
+int Tree::numTaxa(void)
+{
+    return _num_taxa;
+}
+
+int Tree::numTaxaIn(void)
+{
+    return _tips.size();
+}
+
 void Tree::restore(Topology &topol)
 {
     reset();
@@ -281,6 +291,11 @@ bool cmpTips(Node* a, Node* b)
     return (a->tipNumber() < b->tipNumber());
 }
 
+bool cmpInternals(Node* a, Node* b)
+{
+    return (a->uniqueIndex() < b->uniqueIndex());
+}
+
 void Tree::markUniquely(void)
 {
     int i = 0;
@@ -303,16 +318,19 @@ void Tree::markUniquely(void)
     for (i = 0; i < max; ++i) {
         std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
         if (_tips[i]->parent() != NULL) {
+            
             q = _tips[i]->parent();
             while (q->parent() != NULL && q->uniqueIndex() == 0)
             {
-                std::cout << "Marking: " << index << std::endl;
+                std::cout << "Mark: " << index << std::endl;
                 q->_index = index;
                 q = q->parent();
                 ++index;
             }
         }
     }
+    
+    std::sort(_internals.begin(), _internals.end(), cmpInternals);
 }
 
 Node* Tree::markDownpass(int index)
