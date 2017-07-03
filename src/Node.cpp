@@ -137,6 +137,39 @@ int Node::binTraverse
     return weight;
 }
 
+
+void Node::removeWithBase(void)
+{
+    Node* base = parent();
+    
+    if (base->_descs.size() > 2)
+    {
+        std::cout << "ERROR: Extraction on non-binary node\n";
+        // TODO: Might call the node resolver when that is written
+        return;
+    }
+    
+    std::vector<Node*>::iterator q = base->_descs.begin();
+    
+    while (*q == this) ++q;
+    
+    Node* dn = base->parent();
+    Node* up = *q;
+    
+    base->popDesc(*up);
+    dn->popDesc(*base);
+    
+    dn->addDescendant(*up);
+    
+}
+
+
+/******************************************************************************
+ *                                                                            *
+ *  Protected member functions                                                *
+ *                                                                            *
+ ******************************************************************************/
+
 void Node::rotate(void)
 {
 /*    if (_tip != 0) {
@@ -196,4 +229,25 @@ void Node::markTraverse(int index, bool *found, Node** n)
         _in_path = true;
     }
 }
+
+/******************************************************************************
+ *
+ * Private member functions
+ *
+ ******************************************************************************/
+
+void Node::popDesc(Node &desc)
+{
+    std::vector<Node*>::iterator p = _descs.begin();
+    
+    while (*p != &desc) ++p;
+    
+    (*p)->_anc = NULL;
+    
+    _descs.erase(p);
+    
+    _left = *_descs.begin();
+    _right = _descs.back();
+}
+
 

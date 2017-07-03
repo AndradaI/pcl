@@ -80,7 +80,9 @@ public:
     int     binTraverse(std::vector<Node*> &inorder,
                         std::vector<Node*> &tips,
                         std::vector<Node*> &internals);
-    void    pop(void);
+    
+    // TODO: Probably best to protect this guy:
+    void    removeWithBase(void);
     
 protected:
     
@@ -88,6 +90,10 @@ protected:
     void    markTraverse(int index, bool* found, Node** n);
     void    clip(void);
     void    restore(void);
+    
+private:
+    
+    void    popDesc(Node& desc); /*!< Removes desc from node */
     
 };
 
