@@ -114,6 +114,8 @@ public:
     bool            isrooted        (void);
     unsigned long   size            (void);
     unsigned long   capacity        (void);
+    int             numTaxa         (void);
+    int             numTaxaIn       (void);
     void            restore         (Topology& topol);
     void            reset           (void);
     void            incrScore       (unsigned long s);
