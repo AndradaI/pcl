@@ -85,6 +85,16 @@ unsigned long Topology::size(void)
     return _anc_edges.size();
 }
 
+unsigned long Topology::natScore(void)
+{
+    return _natural_score;
+}
+
+double Topology::realScore(void)
+{
+    return _real_score;
+}
+
 bool operator==(const Topology& a, const Topology& b)
 {
     return (a._node_order == b._node_order);

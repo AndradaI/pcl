@@ -56,17 +56,38 @@ int test_tree_marking(void)
     TreeTester ttestr;
     ttestr.checkTree(t);
     
+    Topology* topol2;
     reader.read(testnwk2, false, true);
-    topol = reader.getTopol();
-    t.restore(topol);
+    topol2 = &reader.getTopol();
+    t.restore(*topol2);
     
+    Topology* topol3;
     reader.read(testnwk3, false, true);
-    topol = reader.getTopol();
-    t.restore(topol);
+    topol3 = &reader.getTopol();
+    t.restore(*topol3);
     
+    Topology* topol4;
     reader.read(testnwk4, false, true);
-    topol = reader.getTopol();
-    t.restore(topol);
+    topol4 = &reader.getTopol();
+    t.restore(*topol4);
+    
+    if (topol == *topol2)
+    {
+        std::cout << "Topols 1 & 2 are same\n";
+    }
+    else {
+        std::cout << "Topols 1 & 2 are different\n";
+        ++failn;
+    }
+    
+    if (topol == *topol3)
+    {
+        std::cout << "Topols 1 & 3 are same\n";
+        ++failn;
+    }
+    else {
+        std::cout << "Topolos 1 & 3 are different\n";
+    }
     
     return failn;
 }

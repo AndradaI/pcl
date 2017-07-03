@@ -30,25 +30,27 @@ class Topology
     
 public:
     
-    
-    Topology(int num_taxa, bool isrooted)
+    Topology(unsigned long num_taxa)
+    :   _is_rooted(false),
+        _natural_score(0),
+        _real_score(0.0)
     {
-        _is_rooted = isrooted;
-        
-        int numnodes = 2 * num_taxa - 1;
+        unsigned long numnodes = 2 * num_taxa - 1;
         _anc_edges.reserve(numnodes);
         _branch_lengths.reserve(numnodes);
         _node_order.reserve(numnodes);
     }
     
-    void            clear(void);
-    void            store(Tree& t);
-    int             edge(int index);
-    int             index(int index);
-    int             tipnumber(int index);
-    unsigned long   size(void);
+    void            clear       (void);
+    void            store       (Tree& t);
+    int             edge        (int index);
+    int             index       (int index);
+    int             tipnumber   (int index);
+    unsigned long   size        (void);
+    unsigned long   natScore    (void);
+    double          realScore   (void);
     
-    friend bool     operator==(const Topology& a, const Topology& b);
+    friend bool     operator==  (const Topology& a, const Topology& b);
     
 };
 

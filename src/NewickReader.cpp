@@ -162,7 +162,7 @@ void NewickReader::read(char *Newick, bool wnames, bool rooted)
 
 Topology& NewickReader::getTopol(void)
 {
-    Topology* topol = new Topology(_numtaxa, _tree.isrooted());
+    Topology* topol = new Topology(_numtaxa);
     
     topol->store(_tree);
     
