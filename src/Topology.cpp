@@ -32,18 +32,21 @@ void Topology::store(Tree &t)
     
     t.markUniquely();
     
+    int j = 0;
+    int k = 0;
     for (i = 0; i <= max; ++i)
     {
         if (t._nodes[i]->parent() != NULL)
         {
             
-            if (t._nodes[i]->tipNumber() != 0) {
-                _node_order[t._nodes[i]->tipNumber() - 1] = t._nodes[i]->parent()->uniqueIndex();
+            if (i < t.numTaxa()) {
+                _node_order.push_back(t._tips[j]->parent()->uniqueIndex());
+                ++j;
+            } else {
+                _node_order.push_back(t._internals[k]->parent()->uniqueIndex());
+                ++k;
             }
-            else {
-                _node_order[t._nodes[i]->memIndex()] = t._nodes[i]->parent()->uniqueIndex();
-            }
-            //_node_order.push_back(t._nodes[i]->parent()->uniqueIndex());
+            
             _indices.push_back(t._nodes[i]->memIndex());
             _tipnum.push_back(t._nodes[i]->tipNumber());
             Node* n = NULL;
@@ -51,6 +54,13 @@ void Topology::store(Tree &t)
             _anc_edges.push_back(n->memIndex());
         }
     }
+    
+    std::vector<int>::iterator it;
+    for (it = _node_order.begin(); it != _node_order.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    
+    std::cout << std::endl;
     
     assert(_indices.size() == _anc_edges.size());
 }
