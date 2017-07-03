@@ -41,8 +41,8 @@ int test_tree_marking(void)
     
     std::string testnwk1 = "((2,((5,6),4)),(1,3));";
     std::string testnwk2 = "((1,3),(2,(4,(5,6))));";
-    std::string testnwk3 = "((2,((5,6),4)),(1,3));";
-    std::string testnwk4 = "((2,((5,6),4)),(1,3));";
+    std::string testnwk3 = "((4,((5,6),2)),(1,3));";
+    std::string testnwk4 = "((3,((1,6),4)),(5,2));";
     int numtaxa = 6;
     
     NewickReader reader(numtaxa);
@@ -57,9 +57,16 @@ int test_tree_marking(void)
     ttestr.checkTree(t);
     
     reader.read(testnwk2, false, true);
-
-    Topology &topol2 = reader.getTopol();
-    t.restore(topol2);
+    topol = reader.getTopol();
+    t.restore(topol);
+    
+    reader.read(testnwk3, false, true);
+    topol = reader.getTopol();
+    t.restore(topol);
+    
+    reader.read(testnwk4, false, true);
+    topol = reader.getTopol();
+    t.restore(topol);
     
     return failn;
 }
