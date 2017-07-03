@@ -67,6 +67,8 @@ void Tree::reset(void)
         n->disconnectAll();
     }
     
+    connectDummy();
+    
     _postorder.clear();
     _tips.clear();
     _internals.clear();
@@ -333,6 +335,46 @@ void Tree::markUniquely(void)
     std::sort(_internals.begin(), _internals.end(), cmpInternals);
 }
 
+void Tree::removeBranch(Node &subtr)
+{
+    Node* base = subtr.parent();
+    Node* up = NULL;
+    Node* dn = base->parent();
+    
+    base->popDesc(*up);
+    dn->popDesc(*base);
+}
+
+void Tree::connectBranch(Node &subtr, Node &tgt)
+{
+    Node* base = NULL;
+    Node* anc = NULL;
+    
+    if (subtr.parent() == NULL) {
+        // TODO: Get a free internal node
+    }
+    else {
+        base = subtr.parent();
+    }
+    
+    anc = tgt.parent();
+    anc->popDesc(tgt);
+    
+    base->addDescendant(tgt);
+    anc->addDescendant(*base);
+}
+
+void Tree::connectBranch(int subtrIndex, int tgtIndex)
+{
+    std::cout << "Not implemented\n";
+}
+
+/******************************************************************************
+ *
+ * Private member functions 
+ *
+ ******************************************************************************/
+
 Node* Tree::markDownpass(int index)
 {
     bool found = false;
@@ -344,5 +386,12 @@ Node* Tree::markDownpass(int index)
     return n;
 }
 
-
+void Tree::connectDummy(void)
+{
+    _dummy_root = _nodes[2 * _num_taxa - 1];
+    
+    _dummy_root->_tip = -1;
+    _dummy_root->_anc = _reserved_root;
+    _reserved_root->_anc = _dummy_root;
+}
 

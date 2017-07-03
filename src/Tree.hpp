@@ -139,10 +139,14 @@ public:
     Node*           preorder        (int index);
     std::string     writeNewick     (void);
     void            markUniquely    (void);
+    void            removeBranch    (Node& subtr);
+    void            connectBranch   (Node& subtr, Node& tgt);
+    void            connectBranch   (int subtrIndex, int tgtIndex);
     
 private:
     
     Node*           markDownpass    (int index);
+    void            connectDummy    (void);
 };
 
 #endif /* Tree_hpp */
