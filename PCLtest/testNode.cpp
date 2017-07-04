@@ -28,6 +28,10 @@ int test_node_pop(void)
     Node* np = NULL;
    
     np = t.node(4);
+    Node *n1 = np->parent();
+    Node *n2 = n1->parent();
+    n1->storeDescs();
+    n2->storeDescs();
     
     np->removeWithBase();
     
@@ -37,11 +41,22 @@ int test_node_pop(void)
     ttestr.checkTree(t);
     
     Node *tgt = t.node(2);
+    Node *tgtp = tgt->parent();
+    tgtp->storeDescs();
     
     t.connectBranch(*np, *tgt);
     
     t.traverse();
     ttestr.checkTree(t);
+    
+    
+    n1->restoreDescs();
+    n2->restoreDescs();
+    tgtp->restoreDescs();
+    
+    ttestr.checkTree(t);
+    t.traverse();
+
     
     return failn;
 }

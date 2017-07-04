@@ -178,7 +178,31 @@ void Node::removeWithBase(void)
     
 }
 
+void Node::storeDescs(void)
+{
+    _storeddescs = _descs;
+}
 
+void Node::restoreDescs(void)
+{
+    std::vector<Node*>::iterator p;
+    
+    _descs.clear();
+    
+    for (p = _storeddescs.begin(); p != _storeddescs.end(); ++p)
+    {
+        addDescendant(**p);
+    }
+    
+    _left = _descs.front();
+    _right = _descs.back();
+    clearStoredDescs();
+}
+
+void Node::clearStoredDescs(void)
+{
+    _storeddescs.clear();
+}
 /******************************************************************************
  *                                                                            *
  *  Protected member functions                                                *
@@ -191,7 +215,8 @@ void Node::rotate(void)
         return;
     }*/
     
-    if (!_left->isInPath() && !_right->isInPath()) {
+    if (!_left->isInPath() && !_right->isInPath())
+    {
         return;
     }
     
@@ -200,7 +225,8 @@ void Node::rotate(void)
     std::vector<Node*>::iterator i;
     i = _descs.begin();
     
-    while ((*i)->_in_path != true) {
+    while ((*i)->_in_path != true)
+    {
         ++i;
     }
     
@@ -215,11 +241,13 @@ void Node::rotate(void)
 
 void Node::markTraverse(int index, bool *found, Node** n)
 {
-    if (*found == true) {
+    if (*found == true)
+    {
         return;
     }
     
-    if (_mem_index == index) {
+    if (_mem_index == index)
+    {
         std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
         *found = true;
         *n = this;
@@ -233,12 +261,12 @@ void Node::markTraverse(int index, bool *found, Node** n)
     std::vector<Node*>::iterator p;
     p = _descs.begin();
     
-    do {
-        
+    do
+    {
         (*p)->markTraverse(index, found, n);
         ++p;
-        
-    } while (p != _descs.end());
+    }
+    while (p != _descs.end());
     
     if (*found) {
         _in_path = true;

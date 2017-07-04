@@ -39,6 +39,8 @@ private:
     std::vector<Node*>              _tips;
     std::vector<Node*>              _internals;
     std::vector<Node*>              _outgroup;
+    std::list<Node*>                _free_tips;
+    std::list<Node*>                _free_vertices;
     std::vector<Node*>::iterator    _nextFreeTip;
     std::vector<Node*>::iterator    _nextFreeInternal;
     std::vector<Node*>::iterator    _nextFreeOutgroup;
@@ -77,17 +79,20 @@ public:
             if (index < numtaxa)
             {
                 newnode = new Node(index, index + 1);
+                _free_tips.push_back(newnode);
             }
             else
             {
                 if (index < num_nodes - 1)
                 {
-                    
                     newnode = new Node(index, 0);
                     
                     if (index == num_nodes - 2)
                     {
                         _reserved_root = newnode;
+                    }
+                    else {
+                        _free_vertices.push_back(newnode);
                     }
                 }
                 else {

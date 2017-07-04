@@ -41,7 +41,7 @@ bool Treelist::push(Topology &topol)
     }
     
     _saved_trees.push_back(&topol);
-    
+    ++_num_trees;
     return true;
 }
 

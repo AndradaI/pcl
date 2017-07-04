@@ -32,7 +32,7 @@ public:
     }
     
     void        read(std::string Newick, bool wnames, bool rooted);
-    void        read(char* Newick, bool wnames, bool rooted);
+    void        read_cstr(char* Newick, bool wnames, bool rooted);
     Topology&   getTopol(void);
     
 private:

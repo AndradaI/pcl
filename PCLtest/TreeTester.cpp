@@ -34,7 +34,8 @@ int TreeTester::checkTree(Tree &t)
     
     for (; p != ancestors.end() && *q != t._dummy_root; ++p, ++q)
     {
-        if (!findDesc(*q, *p)) {
+        if (!findDesc(*q, *p))
+        {
             ++errors;
             std::cout << "Your goddamned tree is broken!\n";
         }

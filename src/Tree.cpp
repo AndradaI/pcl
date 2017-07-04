@@ -292,7 +292,7 @@ Node* Tree::postorderIntern(int index)
 
 Node* Tree::preorder(int index)
 {
-    return _postorder.back()-index;
+    return _postorder[_postorder.size() - index - 1];
 }
 
 Node* Tree::preorderIntern(int index)

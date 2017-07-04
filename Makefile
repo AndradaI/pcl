@@ -12,10 +12,10 @@ SRC		:= *.cpp
 
 all: $(SLNAME) $(DLNAME)
 
-release: $(CFLAGS) := $(CFLAGS) -O2
+release: CFLAGS := $(CFLAGS) -O2
 release: all
 
-debug:	$(CFLAGS) := $(CFLAGS) $(DBGF) 
+debug:	CFLAGS := $(CFLAGS) $(DBGF) 
 debug:	all
 
 $(SLNAME) : $(OBJ)

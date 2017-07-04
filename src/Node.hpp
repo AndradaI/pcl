@@ -28,7 +28,8 @@ class Node {
     Node*               _anc;
     Node*               _left;
     Node*               _right;
-    std::vector<Node*>    _descs;
+    std::vector<Node*>  _descs;
+    std::vector<Node*>  _storeddescs;
     
     friend class Tree;
     friend class Subtree;
@@ -51,6 +52,8 @@ public:
     {
         _mem_index  = index;
         _tip        = tip;
+        _descs.reserve(2);
+        _storeddescs.reserve(2);
     }
     
     Node(int index, int tip, std::string label) :
@@ -84,6 +87,9 @@ public:
                              std::vector<Node*> &tips,
                              std::vector<Node*> &internals);
     void    removeWithBase  (void);
+    void    storeDescs      (void);
+    void    restoreDescs    (void);
+    void    clearStoredDescs(void);
     
 protected:
     
