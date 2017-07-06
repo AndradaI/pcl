@@ -9,6 +9,8 @@
 #include "pcl.h"
 #include "TreeTester.hpp"
 
+#include <numeric>
+
 int test_rerooting(void)
 {
     //theader("Testing simple tree rerooting");
@@ -83,4 +85,49 @@ int test_subtrees_and_rerooting(void)
     t.traverse();
     ttestr.checkTree(t);
     return failn;
+}
+
+int test_stepwise_addition(void)
+{
+    int err = 0;
+    int failn = 0;
+    
+    int ntax = 6;
+    
+    std::vector<int> tipnums(ntax);
+    std::iota(tipnums.begin(), tipnums.end(), 0);
+    
+    Tree tree(ntax);
+    
+    tree.prepStepwise(1, 2, 0);
+    
+    Node* newtip = NULL;
+    Node* target = NULL;
+    
+    newtip = tree.taxon(3);
+    target = tree.postorder(0);
+    
+    tree.connectBranch(*newtip, *target);
+    tree.traverse();
+    
+    newtip = tree.taxon(4);
+    target = tree.postorder(3);
+    
+    tree.connectBranch(*newtip, *target);
+    tree.traverse();
+    
+    newtip = tree.taxon(5);
+    target = tree.postorder(0);
+    
+    tree.connectBranch(*newtip, *target);
+    tree.traverse();
+    
+    tree.root();
+    tree.traverse();
+    
+    TreeTester ttestr;
+    ttestr.checkTree(tree);
+    
+    return failn;
+    
 }

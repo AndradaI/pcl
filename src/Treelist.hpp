@@ -20,6 +20,8 @@ class Treelist {
     unsigned long           _max_trees;
     unsigned long           _auto_increase;
     std::list<Topology*>    _saved_trees;
+    std::vector<Topology*>  _held_trees;
+    std::list<Topology*>    _free_topols;
     
 public:
     
@@ -29,21 +31,22 @@ public:
         _max_trees(maxtrees),
         _auto_increase(autoincr)
     {
-        int i = 0;
-        for (i = 0; i < numtrees; ++i) {
-            _saved_trees.push_back(new Topology(numtaxa));
-        }
+        extend(_max_trees);
     }
     
     unsigned long   numTrees    (void);
     unsigned long   maxTrees    (void);
     unsigned long   autoIncr    (void);
     void            autoIncr    (unsigned long incr);
-    bool            push        (Topology& topol);
-    Topology*       pop         (void); /*!< Get a topology */
+    bool            save        (Topology& topol);
+    Topology*       getNewTopol (void);                 /*!< Get a topology */
+    void            setHold     (unsigned long hold);   /*!< Set the number of trees to hold while comparing */
     void            clearSaved  (void);
-    bool            extend      (unsigned long s);
-    bool            checkNew    (Topology& newTopol); /*!< Checks whether proposed topology is not found in list */
+    bool            checkNew    (Topology& newTopol);   /*!< Checks whether proposed topology is not found in list */
+    
+private:
+    
+    void            extend      (unsigned long extension);
     
 };
 

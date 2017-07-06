@@ -28,7 +28,7 @@ void Treelist::autoIncr(unsigned long incr)
     _auto_increase = incr;
 }
 
-bool Treelist::push(Topology &topol)
+bool Treelist::save(Topology &topol)
 {
     if (_saved_trees.size() >= _max_trees)
     {
@@ -45,7 +45,7 @@ bool Treelist::push(Topology &topol)
     return true;
 }
 
-Topology* Treelist::pop(void)
+Topology* Treelist::getNewTopol(void)
 {
     if (_saved_trees.size() == 0) {
         return NULL;
@@ -56,4 +56,31 @@ Topology* Treelist::pop(void)
     --_num_trees;
     assert(_num_trees == _saved_trees.size());
     return ret;
+}
+
+void Treelist::setHold(unsigned long hold)
+{
+    _held_trees.reserve(hold);
+}
+
+void Treelist::clearSaved(void)
+{
+    _free_topols.splice(_free_topols.end(), _saved_trees);
+    _saved_trees.clear();
+}
+
+/******************************************************************************
+ *
+ *  Private
+ *
+ ******************************************************************************/
+
+void Treelist::extend(unsigned long extension)
+{
+    unsigned long i = 0;
+    
+    for (i = 0; i < extension; ++i) {
+        _free_topols.push_back(new Topology(_num_taxa));
+    }
+    
 }

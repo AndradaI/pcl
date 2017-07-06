@@ -1,5 +1,5 @@
 # Makefile for Phylogenetic Class Library
-CC		:= g++
+CC		:= icc #g++
 CFLAGS	:= -c -Wall -fPIC -std=c++11
 LFLAGS	:= -L./
 DBGF	:= -g -DDEBUG

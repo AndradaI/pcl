@@ -66,11 +66,30 @@ void Tree::reset(void)
     
     std::vector<Node*>::iterator it;
     
+    _free_tips.clear();
+    _free_vertices.clear();
     
     for (it = _nodes.begin(); it != _nodes.end(); ++it) {
         Node* n = *it;
         n->disconnectAll();
+        if (n->tipNumber() != 0)
+        {
+            _free_tips.push_back(n);
+        }
+        else {
+            _free_vertices.push_back(n);
+        }
     }
+    
+#ifdef DEBUG
+    int i = 0;
+    std::vector<Node*>::iterator dbit = _free_tips.begin();
+    unsigned long int listmax = _free_tips.size()-1;
+    for (i = 0; i < listmax; ++i) {
+        assert((*dbit)->tipNumber() == i + 1);
+        ++dbit;
+    }
+#endif
     
     connectDummy();
     
@@ -132,6 +151,7 @@ Node* Tree::newTip(int id_number)
     
     return NULL;
 }
+
 
 Node* Tree::newVertex(void)
 {
@@ -244,6 +264,8 @@ void Tree::root(void)
     _reserved_root->addDescendant(*p);
     _reserved_root->addDescendant(*q);
     
+    _start = _reserved_root;
+    
     _isrooted = true;
 }
 
@@ -305,6 +327,41 @@ Node* Tree::tip(int index)
     return _tips[index];
 }
 
+Node* Tree::taxon(int index)
+{
+    if (index >= _num_taxa) {
+        return NULL;
+    }
+    return _nodes[index];
+}
+
+void Tree::prepStepwise(int left, int right, int anc)
+{
+    reset();
+    
+    // Create starting fork
+    Node* base = NULL;
+    base = newVertex();
+    
+    base->addDescendant(*_nodes[left]);
+    base->addDescendant(*_nodes[right]);
+    base->parent(*_nodes[anc]);
+    _nodes[anc]->parent(*base);
+    _start = base;
+    
+    // Insert all remaining tips on a base
+    int i = 0;
+    for (i = 0; i < _num_taxa; ++i)
+    {
+        if (_nodes[i]->parent() == NULL) {
+            base = newVertex();
+            base->addDescendant(*_nodes[i]);
+        }
+    }
+   
+    // Do traversal
+    traverse();
+}
 
 /* Private functions */
 

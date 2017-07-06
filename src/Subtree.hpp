@@ -15,9 +15,13 @@
 class Subtree : public Tree
 {
     
+	Node* oldparent;
+	Node* oldchild;
+
 public:
     
     Subtree(int numtaxa)
+    : Tree(numtaxa)
     {
         _postorder.reserve(2 * numtaxa - 2);
         _tips.reserve(numtaxa);
@@ -31,6 +35,7 @@ public:
     }
     
     void init(Node& n);
+	void reconnect(Tree& t);
 };
 
 #endif /* Subtree_hpp */
