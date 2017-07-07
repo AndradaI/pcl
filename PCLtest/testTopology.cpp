@@ -73,20 +73,20 @@ int test_tree_marking(void)
     
     if (topol == *topol2)
     {
-        std::cout << "Topols 1 & 2 are same\n";
+        // std::cout << "Topols 1 & 2 are same\n";
     }
     else {
-        std::cout << "Topols 1 & 2 are different\n";
+        // std::cout << "Topols 1 & 2 are different\n";
         ++failn;
     }
     
     if (topol == *topol3)
     {
-        std::cout << "Topols 1 & 3 are same\n";
+        // std::cout << "Topols 1 & 3 are same\n";
         ++failn;
     }
     else {
-        std::cout << "Topols 1 & 3 are different\n";
+        // std::cout << "Topols 1 & 3 are different\n";
     }
     
     return failn;

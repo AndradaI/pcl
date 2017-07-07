@@ -299,7 +299,7 @@ void Tree::traverse(void)
     _internals.clear();
     _start->traverse(_postorder, _tips, _internals);
     
-    std::cout << "\n";
+    // std::cout << "\n";
 }
 
 Node* Tree::postorder(int index)
@@ -391,17 +391,17 @@ void Tree::markUniquely(void)
     
     Node *q = NULL;
     
-    std::cout << "Root's index: " << _start->memIndex();
+    // std::cout << "Root's index: " << _start->memIndex();
     _start->_index = _start->memIndex();
     
     for (i = 0; i < max; ++i) {
-        std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
+        // std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
         if (_tips[i]->parent() != NULL) {
             
             q = _tips[i]->parent();
             while (q->parent() != NULL && q->uniqueIndex() == 0)
             {
-                std::cout << "Mark: " << index << std::endl;
+                // std::cout << "Mark: " << index << std::endl;
                 q->_index = index;
                 q = q->parent();
                 ++index;
@@ -443,7 +443,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
 
 void Tree::connectBranch(int subtrIndex, int tgtIndex)
 {
-    std::cout << "Not implemented\n";
+    // std::cout << "Not implemented\n";
 }
 
 /******************************************************************************

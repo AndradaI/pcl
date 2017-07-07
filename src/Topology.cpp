@@ -57,10 +57,10 @@ void Topology::store(Tree &t)
     
     std::vector<int>::iterator it;
     for (it = _node_order.begin(); it != _node_order.end(); ++it) {
-        std::cout << *it << " ";
+        // std::cout << *it << " ";
     }
     
-    std::cout << std::endl;
+    // std::cout << std::endl;
     
     assert(_indices.size() == _anc_edges.size());
 }

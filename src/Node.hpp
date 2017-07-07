@@ -57,7 +57,16 @@ public:
     }
     
     Node(int index, int tip, std::string label) :
-    Node(index, tip)
+    //Node(index, tip)
+    _index(0),
+    _weight(0),
+    _in_path(false),
+    _downpass_mark(0),
+    _is_polynode(false),
+    _length(0.0),
+    _anc(NULL),
+    _left(NULL),
+    _right(NULL)
     {
         _label = label;
     }
