@@ -58,10 +58,6 @@ Topology* Treelist::getNewTopol(void)
     return ret;
 }
 
-void Treelist::setHold(unsigned long hold)
-{
-    _held_trees.reserve(hold);
-}
 
 void Treelist::clearSaved(void)
 {

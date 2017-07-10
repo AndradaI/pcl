@@ -15,13 +15,13 @@
 
 class Treelist {
     
-    unsigned long           _num_taxa;
-    unsigned long           _num_trees;
-    unsigned long           _max_trees;
-    unsigned long           _auto_increase;
-    std::list<Topology*>    _saved_trees;
-    std::vector<Topology*>  _held_trees;
-    std::list<Topology*>    _free_topols;
+    unsigned long                   _num_taxa;
+    unsigned long                   _num_trees;
+    unsigned long                   _max_trees;
+    unsigned long                   _auto_increase;
+    std::list<Topology*>            _saved_trees;
+    std::list<Topology*>::iterator  _next_tree;
+    std::list<Topology*>            _free_topols;
     
 public:
     
@@ -40,7 +40,6 @@ public:
     void            autoIncr    (unsigned long incr);
     bool            save        (Topology& topol);
     Topology*       getNewTopol (void);                 /*!< Get a topology */
-    void            setHold     (unsigned long hold);   /*!< Set the number of trees to hold while comparing */
     void            clearSaved  (void);
     bool            checkNew    (Topology& newTopol);   /*!< Checks whether proposed topology is not found in list */
     
