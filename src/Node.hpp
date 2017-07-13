@@ -16,35 +16,34 @@
 
 class Node {
     
-    int                 _index;
-    int                 _mem_index;
-    int                 _tip;
-    int                 _weight;
-    bool                _in_path;
-    int                 _downpass_mark;
-    bool                _is_polynode;
-    std::string         _label;
-    double              _length;
-    Node*               _anc;
-    Node*               _left;
-    Node*               _right;
-    std::vector<Node*>  _descs;
-    std::vector<Node*>  _storeddescs;
+    int                 _index;     /*!< Unique in-tree identifier based on tip-ordered downpass */
+    int                 _mem_index; /*!< Unique serial identifier. Do not change. */
+    int                 _tip;       /*!< A non-zero identifier if the node is a tip. 0 if not a tip. */
+    int                 _weight;    /*!< The number of terminal descendants from this node. */
+    bool                _in_path;   /*!< For marking paths to nodes. Used in updates and rerooting. */
+    int                 _downpass_mark; /*!< I don't remember. */
+    std::string         _label;         /*!< The name of this node (if applied). */
+    double              _length; /*!< The length of the branch subtending this node. */
+    Node*               _anc;   /*!< Pointer to the immediate ancestor fo this node. */
+    Node*               _left;  /*!< Pointer to the left descendant of this node. */
+    Node*               _right; /*!< Pointer to the right descendant of this node. */
+    std::vector<Node*>  _descs; /*!< Pointers to all descendants of this node. */
+    std::vector<Node*>  _storeddescs; /*!< Storage for current descendant values for temporary topology changes. */
     
-    friend class Tree;
-    friend class Subtree;
+    friend class Tree; /*!< Trees have access to private members of nodes. */
+    friend class Subtree; /*!< Subtrees have access to private members of nodes. */
 #ifdef DEBUG
-    friend class TreeTester;
+    friend class TreeTester; /*!< In debug mode, TreeTesters have access to private members of nodes. */
 #endif
     
 public:
     
-    Node(int index, int tip)
+    Node(int index = 0, int tip = 0)
     :   _index(0),
         _weight(0),
         _in_path(false),
         _downpass_mark(0),
-        _is_polynode(false),
+    //_is_polynode(false),
         _length(0.0),
         _anc(NULL),
         _left(NULL),
@@ -62,7 +61,7 @@ public:
     _weight(0),
     _in_path(false),
     _downpass_mark(0),
-    _is_polynode(false),
+    //_is_polynode(false),
     _length(0.0),
     _anc(NULL),
     _left(NULL),
@@ -78,7 +77,9 @@ public:
     
     Node*   parent          (void);
     void    parent          (Node& newparent);
+    void    assignIndex     (unsigned long index);
     int     parentIndex     (void);
+    bool    isPolynode      (void);
     bool    isInPath        (void);
     int     memIndex        (void);
     int     tipNumber       (void);

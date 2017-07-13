@@ -37,7 +37,7 @@ public:
     
 private:
     
-    Node*   traverseNewick(std::string &Newick, int *index);
+    Node*   traverseNewick(std::string &Newick, int *index, bool isrooted);
     bool    checkValid(std::string Newick);
     
 };

@@ -22,8 +22,8 @@ class Topology
     std::string         _as_Newick;
     std::vector<int>    _tipnum;
     std::vector<int>    _indices;
-    std::vector<int>    _node_order;
-    std::vector<int>    _anc_edges;
+    std::vector<int>    _node_order; /*!< Node ordering valid for comparisons & reconstruction. */
+    std::vector<int>    _anc_edges; /*!< Edge list valid for reconstruction of tree only. */
     std::vector<double> _branch_lengths;
     unsigned long       _natural_score;
     double              _real_score;
@@ -49,6 +49,7 @@ public:
     unsigned long   size        (void);
     unsigned long   natScore    (void);
     double          realScore   (void);
+    bool            isrooted    (void);
     
     friend bool     operator==  (const Topology& a, const Topology& b);
     

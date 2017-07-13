@@ -11,41 +11,37 @@
 
 #include <vector>
 #include <list>
+#include <algorithm>
 #include "Topology.hpp"
 
-class Treelist {
+class Treelist
+{
     
     unsigned long                   _num_taxa;
-    unsigned long                   _num_trees;
-    unsigned long                   _max_trees;
     unsigned long                   _auto_increase;
-    std::list<Topology*>            _saved_trees;
-    std::list<Topology*>::iterator  _next_tree;
-    std::list<Topology*>            _free_topols;
+    std::list<Topology*>            _topologies;
     
 public:
     
-    Treelist(unsigned long numtaxa, unsigned long numtrees, unsigned long maxtrees, unsigned long autoincr)
+    Treelist(unsigned long numtaxa, unsigned long numtrees, unsigned long autoincr)
     :   _num_taxa(numtaxa),
-        _num_trees(numtrees),
-        _max_trees(maxtrees),
         _auto_increase(autoincr)
     {
-        extend(_max_trees);
+        if (numtrees != 0) {
+            extend(numtrees);
+        }
     }
     
-    unsigned long   numTrees    (void);
-    unsigned long   maxTrees    (void);
-    unsigned long   autoIncr    (void);
-    void            autoIncr    (unsigned long incr);
-    bool            save        (Topology& topol);
-    Topology*       getNewTopol (void);                 /*!< Get a topology */
-    void            clearSaved  (void);
-    bool            checkNew    (Topology& newTopol);   /*!< Checks whether proposed topology is not found in list */
+    unsigned long   numTrees            (void);
+    unsigned long   autoIncr            (void);
+    void            autoIncr            (unsigned long incr);
+    bool            save                (Topology& topol);
+    Topology*       getTopol            (void);                 /*!< Get a topology */
+    void            clear               (void);
+    bool            checkNew            (Topology& newTopol);   /*!< Checks whether proposed topology is not found in list */
     
-private:
-    
-    void            extend      (unsigned long extension);
+    void            spliceTopolList     (Treelist& treelist);
+    void            extend              (unsigned long extension);
     
 };
 

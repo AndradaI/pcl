@@ -10,12 +10,7 @@
 
 unsigned long Treelist::numTrees(void)
 {
-    return _num_trees;
-}
-
-unsigned long Treelist::maxTrees(void)
-{
-    return _max_trees;
+    return _topologies.size();
 }
 
 unsigned long Treelist::autoIncr(void)
@@ -30,39 +25,42 @@ void Treelist::autoIncr(unsigned long incr)
 
 bool Treelist::save(Topology &topol)
 {
-    if (_saved_trees.size() >= _max_trees)
-    {
-        if (_auto_increase != 0) {
-            _max_trees += _auto_increase;
-        }
-        else {
-            return false;
-        }
-    }
-    
-    _saved_trees.push_back(&topol);
-    ++_num_trees;
+    _topologies.push_back(&topol);
     return true;
 }
 
-Topology* Treelist::getNewTopol(void)
+Topology* Treelist::getTopol(void)
 {
-    if (_saved_trees.size() == 0) {
+    if (_topologies.size() == 0)
+    {
         return NULL;
     }
     
-    Topology* ret = _saved_trees.front();
-    _saved_trees.pop_front();
-    --_num_trees;
-    assert(_num_trees == _saved_trees.size());
+    Topology* ret = NULL;
+    ret = _topologies.front();
+    _topologies.pop_front();
+    
     return ret;
 }
 
 
-void Treelist::clearSaved(void)
+void Treelist::clear(void)
 {
-    _free_topols.splice(_free_topols.end(), _saved_trees);
-    _saved_trees.clear();
+    _topologies.clear();
+}
+
+void Treelist::extend(unsigned long extension)
+{
+    unsigned long i = 0;
+    
+    for (i = 0; i < extension; ++i) {
+        _topologies.push_back(new Topology(_num_taxa));
+    }
+}
+
+void Treelist::spliceTopolList(Treelist &treelist)
+{
+    _topologies.splice(_topologies.begin(), treelist._topologies);
 }
 
 /******************************************************************************
@@ -71,12 +69,3 @@ void Treelist::clearSaved(void)
  *
  ******************************************************************************/
 
-void Treelist::extend(unsigned long extension)
-{
-    unsigned long i = 0;
-    
-    for (i = 0; i < extension; ++i) {
-        _free_topols.push_back(new Topology(_num_taxa));
-    }
-    
-}

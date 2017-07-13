@@ -7,11 +7,13 @@
 //
 
 #include "pcl.h"
+#include "tests.hpp"
 #include "TreeTester.hpp"
 
 int test_node_pop(void)
 {
     
+    theader("Testing node extraction and reinsertion");
     int failn = 0;
     std::string testnwk = "((2,((5,6),4)),(1,3));";
     
@@ -57,6 +59,9 @@ int test_node_pop(void)
     ttestr.checkTree(t);
     t.traverse();
 
+    Node a_node;
+    
+    a_node.assignIndex(1);
     
     return failn;
 }

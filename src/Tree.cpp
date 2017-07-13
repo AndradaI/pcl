@@ -9,6 +9,16 @@
 #include "Tree.hpp"
 #include "Topology.hpp"
 
+bool cmpTips(Node* a, Node* b)
+{
+    return (a->tipNumber() < b->tipNumber());
+}
+
+bool cmpInternals(Node* a, Node* b)
+{
+    return (a->uniqueIndex() < b->uniqueIndex());
+}
+
 bool Tree::isrooted(void)
 {
     return _isrooted;
@@ -49,14 +59,23 @@ void Tree::restore(Topology &topol)
     
     for (i = 0; i < max; ++i)
     {
-        index = topol.index(i);
-        anci = topol.edge(i);
+        if (topol.edge(i) != 0) {
+            index = topol.index(i);
+            anci = topol.edge(i)-1;
+            _nodes[anci]->addDescendant(*_nodes[index]);
+            _nodes[index]->_tip = topol.tipnumber(i);
+        }
         
-        _nodes[anci]->addDescendant(*_nodes[index]);
-        _nodes[index]->_tip = topol.tipnumber(i);
     }
     
-    _start = _reserved_root;
+    if (topol.isrooted() == true) {
+        _start = _reserved_root;
+        _isrooted = topol.isrooted();
+    }
+    else {
+        _start = _nodes[0];
+        _isrooted = topol.isrooted();
+    }
     
     traverse();
 }
@@ -141,11 +160,11 @@ double Tree::realScore(void)
 
 Node* Tree::newTip(int id_number)
 {
-    if (_nextFreeTip != _nodes.begin() + _num_taxa)
+    if (_nextFreeTip != (_nodes.begin() + _num_taxa))
     {
-        Node *ret = *_nextFreeTip;
-        ret->_tip = id_number;
-        ++_nextFreeTip;
+        Node *ret = _nodes[id_number];
+        //ret->_tip = id_number;
+        //++_nextFreeTip;
         return ret;
     }
     
@@ -254,19 +273,30 @@ void Tree::root(void)
     if (isrooted()) {
         return;
     }
+    else if (_start == _reserved_root)
+    {
+        _isrooted = true;
+        return;
+    }
     
     Node* p = NULL;
     Node* q = NULL;
     
     p = _start;
-    q = _start->parent();
+    q = _start->left();
     
+    p->disconnectAll();
+    q->_anc = NULL;
+    
+    _reserved_root->_descs.clear();
     _reserved_root->addDescendant(*p);
     _reserved_root->addDescendant(*q);
     
+    _reserved_root->parent(*_dummy_root);
     _start = _reserved_root;
     
     _isrooted = true;
+    traverse();
 }
 
 /*!
@@ -283,13 +313,28 @@ void Tree::unroot(void)
     
     index = _tips[0]->memIndex(); // Get the lowest tip in the tree
     
-    // TODO: Need to accommodate different root configurations and implement the description accurately.
-    _reserved_root->left()->parent(*_start->right());
-    _reserved_root->right()->parent(*_start->left());
+    root(index);
+    
+    Node* tipstart = _tips[0];
+    tipstart->disconnectAll();
+    
+    _reserved_root->popDesc(*tipstart);
+    
+    Node* instart = _reserved_root->left();
+    
+    instart->_anc = NULL;
+    
+    tipstart->addDescendant(*instart);
+    instart->_anc = tipstart;
+    
+    _reserved_root->_descs.clear();
     _reserved_root->_left = NULL;
     _reserved_root->_right = NULL;
     
+    _start = tipstart;
+    
     _isrooted = false;
+    traverse();
 }
 
 void Tree::traverse(void)
@@ -297,9 +342,17 @@ void Tree::traverse(void)
     _postorder.clear();
     _tips.clear();
     _internals.clear();
-    _start->traverse(_postorder, _tips, _internals);
     
-    // std::cout << "\n";
+    if (_isrooted == true) {
+        _start->traverse(_postorder, _tips, _internals);
+    } else {
+        _start->left()->traverse(_postorder, _tips, _internals);
+        _postorder.push_back(_start);
+        _tips.push_back(_start);
+    }
+    
+    std::sort(_tips.begin(), _tips.end(), cmpTips);
+    std::cout << "\n";
 }
 
 Node* Tree::postorder(int index)
@@ -345,15 +398,16 @@ void Tree::prepStepwise(int left, int right, int anc)
     
     base->addDescendant(*_nodes[left]);
     base->addDescendant(*_nodes[right]);
-    base->parent(*_nodes[anc]);
-    _nodes[anc]->parent(*base);
-    _start = base;
+    _nodes[anc]->addDescendant(*base);
+    _nodes[anc]->_anc = NULL;
+    _start = _nodes[anc];
+    _isrooted = false;
     
     // Insert all remaining tips on a base
     int i = 0;
     for (i = 0; i < _num_taxa; ++i)
     {
-        if (_nodes[i]->parent() == NULL) {
+        if (i != left && i != right && i != anc) {
             base = newVertex();
             base->addDescendant(*_nodes[i]);
         }
@@ -365,19 +419,11 @@ void Tree::prepStepwise(int left, int right, int anc)
 
 /* Private functions */
 
-bool cmpTips(Node* a, Node* b)
-{
-    return (a->tipNumber() < b->tipNumber());
-}
-
-bool cmpInternals(Node* a, Node* b)
-{
-    return (a->uniqueIndex() < b->uniqueIndex());
-}
-
 void Tree::markUniquely(void)
 {
     int i = 0;
+    
+    // TODO: Make safer
     int max = _tips.size();
     int index = max;
     std::vector<Node*>::iterator p;
@@ -386,22 +432,19 @@ void Tree::markUniquely(void)
         (*p)->_index = 0;
     }
     
-    p = _nodes.begin() + _num_taxa;
-    std::sort(_tips.begin(), _tips.end(), cmpTips);
-    
     Node *q = NULL;
     
-    // std::cout << "Root's index: " << _start->memIndex();
-    _start->_index = _start->memIndex();
+    // This is a problem.
     
-    for (i = 0; i < max; ++i) {
-        // std::cout << "For tip " << _tips[i]->tipNumber() << std::endl;
-        if (_tips[i]->parent() != NULL) {
-            
-            q = _tips[i]->parent();
-            while (q->parent() != NULL && q->uniqueIndex() == 0)
+    for (i = 0; i < max; ++i)
+    {
+        q = NULL;
+        q = _tips[i]->parent();
+        
+        if (q != NULL)
+        {
+            while (q && q->uniqueIndex() == 0 && q->tipNumber() >= 0)
             {
-                // std::cout << "Mark: " << index << std::endl;
                 q->_index = index;
                 q = q->parent();
                 ++index;
@@ -409,7 +452,12 @@ void Tree::markUniquely(void)
         }
     }
     
-    std::sort(_internals.begin(), _internals.end(), cmpInternals);
+    //if (isrooted()) {
+    //_start->_index = index;
+    //}
+    
+    
+    //std::sort(_internals.begin(), _internals.end(), cmpInternals);
 }
 
 void Tree::removeBranch(Node &subtr)
@@ -420,6 +468,7 @@ void Tree::removeBranch(Node &subtr)
     
     base->popDesc(*up);
     dn->popDesc(*base);
+    base->_anc = NULL;
 }
 
 void Tree::connectBranch(Node &subtr, Node &tgt)
@@ -446,6 +495,21 @@ void Tree::connectBranch(int subtrIndex, int tgtIndex)
     // std::cout << "Not implemented\n";
 }
 
+void Tree::tempInsert(Node& src, Node& tgt)
+{
+    src.parent()->storeDescs();
+    tgt.parent()->storeDescs();
+    connectBranch(src, tgt);
+}
+
+void Tree::undoTempInsert(Node& src)
+{
+    src.parent()->parent()->restoreDescs();
+    src.parent()->restoreDescs();
+    src.parent()->_anc = NULL;
+}
+
+
 /******************************************************************************
  *
  * Private member functions 
@@ -468,7 +532,7 @@ void Tree::connectDummy(void)
     _dummy_root = _nodes[2 * _num_taxa - 1];
     
     _dummy_root->_tip = -1;
-    _dummy_root->_anc = _reserved_root;
-    _reserved_root->_anc = _dummy_root;
+    _dummy_root->_anc = NULL;
+    _dummy_root->addDescendant(*_reserved_root);
 }
 

@@ -21,17 +21,17 @@ class Subtree;
 class Tree
 {
     
-protected:
+    //protected:
     
     int                             _num_taxa;
-    std::vector<Node*>              _postorder;
-    Node*                           _start;
-    unsigned long                   _natural_score;
-    double                          _real_score;
     bool                            _isrooted;
+    Node*                           _start;
+    double                          _real_score;
     Subtree*                        _subtree;
+    unsigned long                   _natural_score;
+    std::vector<Node*>              _postorder;
     
-private:
+    //private:
     
     Node*                           _reserved_root;
     Node*                           _dummy_root;
@@ -153,6 +153,8 @@ public:
     void            removeBranch    (Node& subtr);
     void            connectBranch   (Node& subtr, Node& tgt);
     void            connectBranch   (int subtrIndex, int tgtIndex);
+    void            tempInsert      (Node& src, Node& tgt);
+    void            undoTempInsert  (Node& src);
     
 private:
     

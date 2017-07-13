@@ -74,10 +74,10 @@ bool NewickReader::checkValid(std::string Newick)
 }
 
 
-Node* NewickReader::traverseNewick(std::string &Newick, int *index)
+Node* NewickReader::traverseNewick(std::string &Newick, int *index, bool isrooted)
 {
     Node* n = NULL;
-    if (*index == 0)
+    if (*index == 0 && isrooted == true)
     {
         n = _tree.rootNode();
     }
@@ -94,7 +94,7 @@ Node* NewickReader::traverseNewick(std::string &Newick, int *index)
     do {
         
         if (Newick[*index] == '(') {
-            p = traverseNewick(Newick, index);
+            p = traverseNewick(Newick, index, isrooted);
             assert(p != NULL);
             n->addDescendant(*p);
             p = NULL;
@@ -144,18 +144,25 @@ void NewickReader::read(std::string Newick, bool wnames, bool rooted)
     _tree.reset();
     
     int index = 0;
-    Node* s = traverseNewick(Newick, &index);
+    Node* s = traverseNewick(Newick, &index, rooted);
 
 #ifdef DEBUG
-    // std::cout << std::endl;
+    std::cout << std::endl;
 #endif
     
     _tree.setStart(*s);
+    
+    if (rooted == true) {
+        _tree.root();
+    } else {
+        _tree.unroot();
+    }
+    
     _tree.traverse();
     
-#ifdef DEBUG
-    // std::cout << std::endl;
-#endif
+    //#ifdef DEBUG
+    std::cout << std::endl;
+    //#endif
     
     return;
 }

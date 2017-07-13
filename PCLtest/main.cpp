@@ -17,10 +17,13 @@ int main(int argc, const char * argv[]) {
     failn += test_newick_reader_basic();
     failn += test_topology_construction();
     failn += test_rerooting();
+    failn += test_unrooted_trees();
     failn += test_subtrees_and_rerooting();
     failn += test_tree_marking();
     failn += test_node_pop();
     failn += test_stepwise_addition();
+    failn += test_temp_insert_and_restore();
+    failn += test_storing_and_restoring_unrooted_trees();
     
     return failn;
 }

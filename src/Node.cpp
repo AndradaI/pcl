@@ -24,9 +24,23 @@ void Node::parent(Node& newparent)
     _anc = &newparent;
 }
 
+void Node::assignIndex(unsigned long index)
+{
+    _index = index;
+}
+
 int Node::parentIndex(void)
 {
     return _anc->memIndex();
+}
+
+bool Node::isPolynode(void)
+{
+    if (_descs.size() > 2) {
+        return true;
+    }
+    
+    return false;
 }
 
 Node* Node::left(void)
@@ -93,14 +107,14 @@ int Node::traverse
 {
     if (_tip != 0)
     {
-        // std::cout << _tip;
+        std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
         return 1;
     }
     
     int weight = 0;
-    // std::cout << '(';
+    std::cout << '(';
     
     std::vector<Node*>::iterator p;
     p = _descs.begin();
@@ -109,11 +123,11 @@ int Node::traverse
         weight += (*p)->traverse(inorder, tips, internals);
         ++p;
         if (p != _descs.end()) {
-            // std::cout << ',';
+            std::cout << ',';
         }
     } while (p != _descs.end());
     
-    // std::cout << ')';
+    std::cout << ')';
     
     inorder.push_back(this);
     internals.push_back(this);
@@ -129,20 +143,20 @@ int Node::binTraverse
  std::vector<Node *> &internals)
 {
     if (_tip != 0) {
-        // std::cout << _tip;
+        std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
         return 1;
     }
     
     int weight = 0;
-    // std::cout << '(';
+    std::cout << '(';
     
     weight += _left->binTraverse(inorder, tips, internals);
-    // std::cout << ',';
+    std::cout << ',';
     weight += _right->binTraverse(inorder, tips, internals);
     
-    // std::cout << ')';
+    std::cout << ')';
     
     inorder.push_back(this);
     internals.push_back(this);
@@ -159,7 +173,7 @@ void Node::removeWithBase(void)
     
     if (base->_descs.size() > 2)
     {
-        // std::cout << "ERROR: Extraction on non-binary node\n";
+        std::cout << "ERROR: Extraction on non-binary node\n";
         // TODO: Might call the node resolver when that is written
         return;
     }
@@ -180,6 +194,7 @@ void Node::removeWithBase(void)
 
 void Node::storeDescs(void)
 {
+    _storeddescs.clear();
     _storeddescs = _descs;
 }
 
@@ -203,6 +218,8 @@ void Node::clearStoredDescs(void)
 {
     _storeddescs.clear();
 }
+
+
 /******************************************************************************
  *                                                                            *
  *  Protected member functions                                                *
@@ -248,7 +265,7 @@ void Node::markTraverse(int index, bool *found, Node** n)
     
     if (_mem_index == index)
     {
-        // std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
+        std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
         *found = true;
         *n = this;
         _in_path = true;
