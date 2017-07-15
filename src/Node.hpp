@@ -32,6 +32,7 @@ class Node {
     
     friend class Tree; /*!< Trees have access to private members of nodes. */
     friend class Subtree; /*!< Subtrees have access to private members of nodes. */
+    friend class Topology;
 #ifdef DEBUG
     friend class TreeTester; /*!< In debug mode, TreeTesters have access to private members of nodes. */
 #endif
@@ -100,6 +101,7 @@ public:
     void    storeDescs      (void);
     void    restoreDescs    (void);
     void    clearStoredDescs(void);
+    void    clearDescs      (void);
     
 protected:
     

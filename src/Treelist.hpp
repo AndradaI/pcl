@@ -17,9 +17,11 @@
 class Treelist
 {
     
-    unsigned long                   _num_taxa;
-    unsigned long                   _auto_increase;
-    std::list<Topology*>            _topologies;
+    unsigned long           _num_taxa;
+    unsigned long           _auto_increase;
+    std::list<Topology*>    _topologies;
+    std::list<Topology*>    _tree_queue;
+    std::list<Topology*>    _free_topols;
     
 public:
     
@@ -39,6 +41,7 @@ public:
     Topology*       getTopol            (void);                 /*!< Get a topology */
     void            clear               (void);
     bool            checkNew            (Topology& newTopol);   /*!< Checks whether proposed topology is not found in list */
+    void            pushList            (std::list<Topology*>& exlist);
     
     void            spliceTopolList     (Treelist& treelist);
     void            extend              (unsigned long extension);

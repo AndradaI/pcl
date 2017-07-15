@@ -219,6 +219,10 @@ void Node::clearStoredDescs(void)
     _storeddescs.clear();
 }
 
+void Node::clearDescs(void)
+{
+    _descs.clear();
+}
 
 /******************************************************************************
  *                                                                            *

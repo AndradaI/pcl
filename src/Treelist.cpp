@@ -58,9 +58,14 @@ void Treelist::extend(unsigned long extension)
     }
 }
 
+void Treelist::pushList(std::list<Topology*> &exlist)
+{
+    _topologies.splice(_topologies.begin(), exlist);
+}
+
 void Treelist::spliceTopolList(Treelist &treelist)
 {
-    _topologies.splice(_topologies.begin(), treelist._topologies);
+    _topologies.splice(_topologies.end(), treelist._topologies);
 }
 
 /******************************************************************************

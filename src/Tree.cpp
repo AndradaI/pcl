@@ -57,13 +57,21 @@ void Tree::restore(Topology &topol)
     unsigned long anci = 0;
     unsigned long max = topol.size();
     
-    for (i = 0; i < max; ++i)
+    for (i = 0; i < max-1; ++i)
     {
+//        _nodes[i]->_descs = topol._descendants[i];
+//        _nodes[i]->_left = _nodes[i]->_descs.front();
+//        _nodes[i]->_right= _nodes[i]->_descs.back();
+//        _nodes[i]->_anc = topol._parents[i];
         if (topol.edge(i) != 0) {
             index = topol.index(i);
             anci = topol.edge(i)-1;
             _nodes[anci]->addDescendant(*_nodes[index]);
-            _nodes[index]->_tip = topol.tipnumber(i);
+            //_nodes[index]->_tip = topol.tipnumber(i);
+            if (_nodes[index] == _reserved_root)
+            {
+                std::cout << "Get the fuck out!\n";
+            }
         }
         
     }
@@ -73,7 +81,7 @@ void Tree::restore(Topology &topol)
         _isrooted = topol.isrooted();
     }
     else {
-        _start = _nodes[0];
+        _start = _nodes[topol.startIndex()];
         _isrooted = topol.isrooted();
     }
     
@@ -91,11 +99,13 @@ void Tree::reset(void)
     for (it = _nodes.begin(); it != _nodes.end(); ++it) {
         Node* n = *it;
         n->disconnectAll();
+        n->clearDescs();
+        n->clearStoredDescs();
         if (n->tipNumber() != 0)
         {
             _free_tips.push_back(n);
         }
-        else {
+        else if (n != _reserved_root && n != _dummy_root){
             _free_vertices.push_back(n);
         }
     }
@@ -160,24 +170,22 @@ double Tree::realScore(void)
 
 Node* Tree::newTip(int id_number)
 {
-    if (_nextFreeTip != (_nodes.begin() + _num_taxa))
-    {
-        Node *ret = _nodes[id_number];
-        //ret->_tip = id_number;
-        //++_nextFreeTip;
-        return ret;
-    }
+    Node *ret = _nodes[id_number];
+    //Node *base = newVertex();
+    //base->addDescendant(*ret);
     
-    return NULL;
+    return ret;
 }
 
 
 Node* Tree::newVertex(void)
 {
-    if (_nextFreeInternal != _nodes.end()-1)
+    if (_free_vertices.size() != 0)
     {
-        Node *ret = *_nextFreeInternal;
-        ++_nextFreeInternal;
+        Node *ret = _free_vertices.back();
+        _free_vertices.pop_back();
+        ret->disconnectAll();
+        //ret->_descs.clear();
         return ret;
     }
     
@@ -424,8 +432,8 @@ void Tree::markUniquely(void)
     int i = 0;
     
     // TODO: Make safer
-    int max = _tips.size();
-    int index = max;
+    unsigned long max = _tips.size();
+    int index = (int)max;
     std::vector<Node*>::iterator p;
     
     for (p = _nodes.begin(); p != _nodes.end(); ++p) {
@@ -433,8 +441,6 @@ void Tree::markUniquely(void)
     }
     
     Node *q = NULL;
-    
-    // This is a problem.
     
     for (i = 0; i < max; ++i)
     {
@@ -451,13 +457,6 @@ void Tree::markUniquely(void)
             }
         }
     }
-    
-    //if (isrooted()) {
-    //_start->_index = index;
-    //}
-    
-    
-    //std::sort(_internals.begin(), _internals.end(), cmpInternals);
 }
 
 void Tree::removeBranch(Node &subtr)
@@ -478,6 +477,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
     
     if (subtr.parent() == NULL) {
         // TODO: Get a free internal node
+        std::cout << "Warning! Failing to base subtree\n";
     }
     else {
         base = subtr.parent();

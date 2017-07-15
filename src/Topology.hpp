@@ -14,6 +14,7 @@
 #include <assert.h>
 
 class Tree;
+class Node;
 
 class Topology
 {
@@ -25,6 +26,9 @@ class Topology
     std::vector<int>    _node_order; /*!< Node ordering valid for comparisons & reconstruction. */
     std::vector<int>    _anc_edges; /*!< Edge list valid for reconstruction of tree only. */
     std::vector<double> _branch_lengths;
+    std::vector<std::vector<Node*>> _descendants;
+    std::vector<Node*>              _parents;
+    int                 _start_index;
     unsigned long       _natural_score;
     double              _real_score;
     
@@ -39,6 +43,8 @@ public:
         _anc_edges.reserve(numnodes);
         _branch_lengths.reserve(numnodes);
         _node_order.reserve(numnodes);
+        _descendants.reserve(numnodes + 1);
+        _parents.reserve(numnodes + 1);
     }
     
     void            clear       (void);
@@ -50,8 +56,12 @@ public:
     unsigned long   natScore    (void);
     double          realScore   (void);
     bool            isrooted    (void);
+    int             startIndex  (void);
     
     friend bool     operator==  (const Topology& a, const Topology& b);
+    
+    friend class Node;
+    friend class Tree;
     
 };
 

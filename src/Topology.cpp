@@ -19,6 +19,15 @@ void Topology::clear()
     _indices.clear();
     _tipnum.clear();
     _branch_lengths.clear();
+    _descendants.clear();
+    _parents.clear();
+    
+    int i = 0;
+    int max = _anc_edges.capacity();
+    for (i = 0; i < max; ++i)
+    {
+        _anc_edges[i] = 0;
+    }
 }
 
 void Topology::store(Tree &t)
@@ -30,7 +39,7 @@ void Topology::store(Tree &t)
     
     int i = 0;
     int max = static_cast<int>(t.capacity());
-    _node_order.reserve(max);
+    _node_order.resize(max);
     
     t.markUniquely();
     
@@ -40,56 +49,91 @@ void Topology::store(Tree &t)
     
     int j = 0;
     
-    max = t.size();
+    //    max = t.size();
+    max = t.capacity();
+    _indices.resize(max);
+    _tipnum.resize(max);
+    _anc_edges.resize(max);
+//    _descendants.resize(max);
+//    _parents.resize(max);
     
     for (i = 0; i < max; ++i)
     {
-        j = 0;
-       
-        if (t.postorder(i)->tipNumber() != 0)
-        {
-            j = t.postorder(i)->memIndex();
-        }
-        else
-        {
-            j = t.postorder(i)->uniqueIndex();
-        }
-        
-        if (t.postorder(i)->parent() != NULL) {
-            local_ndorder[j] = t.postorder(i)->parent()->uniqueIndex();
-        }
-            
-        _indices.push_back(t._nodes[i]->memIndex());
-        _tipnum.push_back(t._nodes[i]->tipNumber());
-        
-        if (t._nodes[i]->parent() != NULL)
-        {
-            Node* n = NULL;
-            n = t._nodes[i]->parent();
-            _anc_edges.push_back(n->memIndex() + 1);
+//        _descendants[i] = t._nodes[i]->_descs;
+//        _parents[i] = t._nodes[i]->parent();
+        _indices[i] = t.node(i)->memIndex();
+        if (t.node(i)->parent() != NULL) {
+            _node_order[i] = t.node(i)->parent()->uniqueIndex();
+            _anc_edges[i] = t.node(i)->parent()->memIndex() + 1;
         }
         else {
-            _anc_edges.push_back(0);
+            _anc_edges[i] = 0;
         }
+        
+//        j = 0;
+//       
+//        if (t.postorder(i)->tipNumber() != 0)
+//        {
+//            j = t.postorder(i)->memIndex();
+//        }
+//        else
+//        {
+//            j = t.postorder(i)->uniqueIndex();
+//        }
+//        
+//        if (t.postorder(i)->parent() != NULL) {
+//            _node_order[j] = t.postorder(i)->parent()->uniqueIndex();
+//        }
+        
+        //_indices.push_back(t._nodes[i]->memIndex());
+        //_tipnum.push_back(t._nodes[i]->tipNumber());
+//        _indices[i] = t.postorder(i)->memIndex();
+//        _tipnum[i] = t.postorder(i)->tipNumber();
+        
+//        if (t.postorder(i)->parent() != NULL) {
+//            _anc_edges[i] = t.postorder(i)->parent()->memIndex() + 1;
+//        }
+//        else {
+//            _anc_edges[i] = 0;
+//        }
+//        
+//        if (t._nodes[i]->parent() != NULL)
+//        {
+//            Node* n = NULL;
+//            n = t._nodes[i]->parent();
+//            _anc_edges.push_back(n->memIndex() + 1);
+//        }
+//        else {
+//            _anc_edges.push_back(0);
+//        }
+    }
+    _indices.shrink_to_fit();
+    _anc_edges.shrink_to_fit();
+    
+    //_node_order.assign(local_ndorder, local_ndorder + t.capacity());
+    
+    if (t.isrooted() == false) {
+        _start_index = t._start->memIndex();
     }
     
-    // Copy the array into the node order vector
-    // This is inefficient, but not sure of another way to do this.
-    _node_order.assign(local_ndorder, local_ndorder + t.capacity());
-    
+#ifdef DEBUG
+    std::cout << "Reconstruction order:\n";
+    for (i = 0; i < _indices.size(); ++i) {
+        std::cout << _indices[i] << " ";
+    }
+    std::cout << "\n";
+    for (i = 0; i < _anc_edges.size(); ++i) {
+        std::cout << _anc_edges[i] << " ";
+    }
+    std::cout << "\n";
+    std::cout << "Comparison order:\n";
     for (i = 0; i < _node_order.size(); ++i) {
         std::cout << _node_order[i] << " ";
     }
+    std::cout << "\n";
+#endif
     
-//    std::vector<int>::iterator it;
-//    
-//    for (it = _node_order.begin(); it != _node_order.end(); ++it) {
-//        //std::cout << *it << " ";
-//    }
-//    
-//    std::cout << std::endl;
-    
-    assert(_indices.size() == _anc_edges.size());
+    //assert(_indices.size() == _anc_edges.size());
 }
 
 int Topology::edge(int index)
@@ -125,6 +169,11 @@ double Topology::realScore(void)
 bool Topology::isrooted(void)
 {
     return _is_rooted;
+}
+
+int Topology::startIndex()
+{
+    return _start_index;
 }
 
 bool operator==(const Topology& a, const Topology& b)

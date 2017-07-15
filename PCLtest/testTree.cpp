@@ -101,10 +101,12 @@ int test_subtrees_and_rerooting(void)
     
     Subtree subtr(numtaxa);
     
-    Node* node = t.postorder(6);
+    Node* node = t.postorderIntern(3);
     
     subtr.init(*node);
     
+    t.traverse();
+    subtr.traverse();
     Node* target = subtr.postorder(0);
     subtr.root(*target);
     
@@ -165,6 +167,33 @@ int test_stepwise_addition(void)
     
     return failn;
     
+}
+
+int test_stepwise_addition_larger(void)
+{
+    theader("Testing a crude stepwise addition of branches");
+    int err = 0;
+    int failn = 0;
+    
+    int ntax = 10;
+    
+    std::vector<int> tipnums(ntax);
+    std::iota(tipnums.begin(), tipnums.end(), 0);
+    
+    Tree tree(ntax);
+    TreeTester treetester;
+    
+    tree.prepStepwise(2, 1, 0);
+    
+    tree.traverse();
+    
+    Topology storage(ntax);
+    storage.store(tree);
+    
+    tree.reset();
+    tree.restore(storage);
+    
+    return failn;
 }
 
 int test_temp_insert_and_restore(void)
