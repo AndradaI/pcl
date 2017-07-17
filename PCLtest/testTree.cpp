@@ -135,7 +135,7 @@ int test_stepwise_addition(void)
     Node* newtip = NULL;
     Node* target = NULL;
     
-    newtip = tree.taxon(3);
+    newtip = tree.newTip(3);
     target = tree.postorder(0);
     
     tree.connectBranch(*newtip, *target);
@@ -143,7 +143,7 @@ int test_stepwise_addition(void)
     
     treetester.checkTree(tree);
     
-    newtip = tree.taxon(4);
+    newtip = tree.newTip(4);
     target = tree.postorder(0);
     
     tree.connectBranch(*newtip, *target);
@@ -151,7 +151,7 @@ int test_stepwise_addition(void)
     
     treetester.checkTree(tree);
     
-    newtip = tree.taxon(5);
+    newtip = tree.newTip(5);
     target = tree.postorder(0);
     
     tree.connectBranch(*newtip, *target);

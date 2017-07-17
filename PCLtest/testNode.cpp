@@ -14,6 +14,7 @@ int test_node_pop(void)
 {
     
     theader("Testing node extraction and reinsertion");
+    int err = 0;
     int failn = 0;
     std::string testnwk = "((2,((5,6),4)),(1,3));";
     
@@ -23,9 +24,21 @@ int test_node_pop(void)
     reader.read(testnwk, false, true);
     Topology &topol = reader.getTopol();
     
+    TreeTester ttestr;
+    
     Tree t(numtaxa);
     
     t.restore(topol);
+    
+    err = ttestr.checkTree(t);
+    if (err) {
+        ++failn;
+        pfail;
+        err = 0;
+    }
+    else {
+        ppass;
+    }
     
     Node* np = NULL;
    
@@ -39,8 +52,15 @@ int test_node_pop(void)
     
     t.traverse();
     
-    TreeTester ttestr;
     ttestr.checkTree(t);
+    if (err) {
+        ++failn;
+        pfail;
+        err = 0;
+    }
+    else {
+        ppass;
+    }
     
     Node *tgt = t.node(2);
     Node *tgtp = tgt->parent();
@@ -51,12 +71,28 @@ int test_node_pop(void)
     t.traverse();
     ttestr.checkTree(t);
     
+    if (err) {
+        ++failn;
+        pfail;
+        err = 0;
+    }
+    else {
+        ppass;
+    }
     
     n1->restoreDescs();
     n2->restoreDescs();
     tgtp->restoreDescs();
     
     ttestr.checkTree(t);
+    if (err) {
+        ++failn;
+        pfail;
+        err = 0;
+    }
+    else {
+        ppass;
+    }
     t.traverse();
 
     Node a_node;

@@ -54,63 +54,27 @@ void Topology::store(Tree &t)
     _indices.resize(max);
     _tipnum.resize(max);
     _anc_edges.resize(max);
-//    _descendants.resize(max);
-//    _parents.resize(max);
     
     for (i = 0; i < max; ++i)
     {
-//        _descendants[i] = t._nodes[i]->_descs;
-//        _parents[i] = t._nodes[i]->parent();
         _indices[i] = t.node(i)->memIndex();
-        if (t.node(i)->parent() != NULL) {
-            _node_order[i] = t.node(i)->parent()->uniqueIndex();
+        
+        if (t.node(i)->parent() != NULL)
+        {
+            if (t.node(i)->tipNumber() != 0)
+            {
+                _node_order[i] = t.node(i)->parent()->uniqueIndex();
+            }
+            else
+            {
+                _node_order[t.node(i)->uniqueIndex()] = t.node(i)->parent()->uniqueIndex();
+            }
             _anc_edges[i] = t.node(i)->parent()->memIndex() + 1;
         }
         else {
             _anc_edges[i] = 0;
         }
-        
-//        j = 0;
-//       
-//        if (t.postorder(i)->tipNumber() != 0)
-//        {
-//            j = t.postorder(i)->memIndex();
-//        }
-//        else
-//        {
-//            j = t.postorder(i)->uniqueIndex();
-//        }
-//        
-//        if (t.postorder(i)->parent() != NULL) {
-//            _node_order[j] = t.postorder(i)->parent()->uniqueIndex();
-//        }
-        
-        //_indices.push_back(t._nodes[i]->memIndex());
-        //_tipnum.push_back(t._nodes[i]->tipNumber());
-//        _indices[i] = t.postorder(i)->memIndex();
-//        _tipnum[i] = t.postorder(i)->tipNumber();
-        
-//        if (t.postorder(i)->parent() != NULL) {
-//            _anc_edges[i] = t.postorder(i)->parent()->memIndex() + 1;
-//        }
-//        else {
-//            _anc_edges[i] = 0;
-//        }
-//        
-//        if (t._nodes[i]->parent() != NULL)
-//        {
-//            Node* n = NULL;
-//            n = t._nodes[i]->parent();
-//            _anc_edges.push_back(n->memIndex() + 1);
-//        }
-//        else {
-//            _anc_edges.push_back(0);
-//        }
     }
-    _indices.shrink_to_fit();
-    _anc_edges.shrink_to_fit();
-    
-    //_node_order.assign(local_ndorder, local_ndorder + t.capacity());
     
     if (t.isrooted() == false) {
         _start_index = t._start->memIndex();
@@ -131,9 +95,9 @@ void Topology::store(Tree &t)
         std::cout << _node_order[i] << " ";
     }
     std::cout << "\n";
-#endif
     
-    //assert(_indices.size() == _anc_edges.size());
+    assert(_indices.size() == _anc_edges.size());
+#endif
 }
 
 int Topology::edge(int index)

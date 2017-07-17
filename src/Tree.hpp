@@ -35,14 +35,14 @@ class Tree
     
     Node*                           _reserved_root;
     Node*                           _dummy_root;
+    int                             _starttip;
     std::vector<Node*>              _nodes;
     std::vector<Node*>              _tips;
     std::vector<Node*>              _internals;
-    std::vector<Node*>              _outgroup;
     std::vector<Node*>              _free_tips;
     std::vector<Node*>              _free_vertices;
-    std::vector<Node*>::iterator    _nextFreeTip;
-    std::vector<Node*>::iterator    _nextFreeInternal;
+    //std::vector<Node*>::iterator    _nextFreeTip;
+    //std::vector<Node*>::iterator    _nextFreeInternal;
     std::vector<Node*>::iterator    _nextFreeOutgroup;
     
 public:
@@ -60,9 +60,10 @@ public:
     
     Tree(int numtaxa)
     :   _start(NULL),
-        _natural_score(0),
         _real_score(0.0),
-        _subtree(NULL)
+        _subtree(NULL),
+        _natural_score(0),
+        _starttip(0)
     {
         int num_nodes = 2 * numtaxa;
         _num_taxa = numtaxa;
@@ -141,12 +142,15 @@ public:
     void            root            (void);
     void            unroot          (void);
     void            traverse        (void);
+    void            traverse        (std::vector<Node*> &inorder);
     Node*           postorder       (int index);
     Node*           postorderIntern (int index);
     Node*           preorder        (int index);
     Node*           preorderIntern  (int index);
     Node*           tip             (int index);
     Node*           taxon           (int index); // Returns a pointer to a terminal in the dataset, regardless of whether or not it is currently placed in the tree.
+    void            putInOutgroup   (int index);
+    void            putInIngroup    (int index);
     void            prepStepwise    (int left, int right, int anc);
     std::string     writeNewick     (void);
     void            markUniquely    (void);
@@ -160,6 +164,7 @@ private:
     
     Node*           markDownpass    (int index);
     void            connectDummy    (void);
+    
 };
 
 #endif /* Tree_hpp */

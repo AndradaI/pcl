@@ -224,6 +224,21 @@ void Node::clearDescs(void)
     _descs.clear();
 }
 
+void Node::outgroup(void)
+{
+    _is_outgroup_member = true;
+}
+
+void Node::ingroup(void)
+{
+    _is_outgroup_member = false;
+}
+
+bool Node::isOutgroup(void)
+{
+    return _is_outgroup_member;
+}
+
 /******************************************************************************
  *                                                                            *
  *  Protected member functions                                                *

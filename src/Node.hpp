@@ -21,6 +21,7 @@ class Node {
     int                 _tip;       /*!< A non-zero identifier if the node is a tip. 0 if not a tip. */
     int                 _weight;    /*!< The number of terminal descendants from this node. */
     bool                _in_path;   /*!< For marking paths to nodes. Used in updates and rerooting. */
+    bool                _is_outgroup_member;
     int                 _downpass_mark; /*!< I don't remember. */
     std::string         _label;         /*!< The name of this node (if applied). */
     double              _length; /*!< The length of the branch subtending this node. */
@@ -43,6 +44,7 @@ public:
     :   _index(0),
         _weight(0),
         _in_path(false),
+        _is_outgroup_member(false),
         _downpass_mark(0),
     //_is_polynode(false),
         _length(0.0),
@@ -102,6 +104,9 @@ public:
     void    restoreDescs    (void);
     void    clearStoredDescs(void);
     void    clearDescs      (void);
+    void    outgroup        (void);
+    void    ingroup         (void);
+    bool    isOutgroup      (void);
     
 protected:
     

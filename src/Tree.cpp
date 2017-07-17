@@ -51,27 +51,22 @@ int Tree::numTips(void)
 
 void Tree::restore(Topology &topol)
 {
-    reset();
+    //reset();
     int i = 0;
     unsigned long index = 0;
     unsigned long anci = 0;
     unsigned long max = topol.size();
     
+    for (i = 0; i < max; ++i) {
+        _nodes[i]->clearDescs();
+    }
+    
     for (i = 0; i < max-1; ++i)
     {
-//        _nodes[i]->_descs = topol._descendants[i];
-//        _nodes[i]->_left = _nodes[i]->_descs.front();
-//        _nodes[i]->_right= _nodes[i]->_descs.back();
-//        _nodes[i]->_anc = topol._parents[i];
         if (topol.edge(i) != 0) {
             index = topol.index(i);
             anci = topol.edge(i)-1;
             _nodes[anci]->addDescendant(*_nodes[index]);
-            //_nodes[index]->_tip = topol.tipnumber(i);
-            if (_nodes[index] == _reserved_root)
-            {
-                std::cout << "Get the fuck out!\n";
-            }
         }
         
     }
@@ -128,8 +123,8 @@ void Tree::reset(void)
     _start = NULL;
     _natural_score = 0;
     _real_score = 0.0;
-    _nextFreeTip = _nodes.begin();
-    _nextFreeInternal = _nodes.begin() + _num_taxa;
+    //_nextFreeTip = _nodes.begin();
+    //_nextFreeInternal = _nodes.begin() + _num_taxa;
 }
 
 void Tree::incrScore(unsigned long s)
@@ -317,13 +312,13 @@ void Tree::root(void)
  */
 void Tree::unroot(void)
 {
-    int index = 0;
+    int index = _starttip;
     
-    index = _tips[0]->memIndex(); // Get the lowest tip in the tree
+    //index = _tips[_starttip]->memIndex(); // Get the lowest tip in the tree
     
     root(index);
     
-    Node* tipstart = _tips[0];
+    Node* tipstart = _nodes[_starttip];
     tipstart->disconnectAll();
     
     _reserved_root->popDesc(*tipstart);
@@ -342,7 +337,7 @@ void Tree::unroot(void)
     _start = tipstart;
     
     _isrooted = false;
-    traverse();
+    //traverse();
 }
 
 void Tree::traverse(void)
@@ -360,6 +355,25 @@ void Tree::traverse(void)
     }
     
     std::sort(_tips.begin(), _tips.end(), cmpTips);
+    std::cout << "\n";
+}
+
+void Tree::traverse(std::vector<Node *> &inorder)
+{
+    if (inorder.capacity() < capacity())
+    {
+        inorder.resize(capacity());
+    }
+    
+    inorder.clear();
+    
+    if (_isrooted == true) {
+        _start->traverse(inorder, _tips, _internals);
+    } else {
+        _start->left()->traverse(inorder, _tips, _internals);
+        inorder.push_back(_start);
+        _tips.push_back(_start);
+    }
     std::cout << "\n";
 }
 
@@ -420,6 +434,8 @@ void Tree::prepStepwise(int left, int right, int anc)
             base->addDescendant(*_nodes[i]);
         }
     }
+    
+    _starttip = anc;
    
     // Do traversal
     traverse();
@@ -509,6 +525,15 @@ void Tree::undoTempInsert(Node& src)
     src.parent()->_anc = NULL;
 }
 
+void Tree::putInOutgroup(int index)
+{
+    _nodes[index]->outgroup();
+}
+
+void Tree::putInIngroup(int index)
+{
+    _nodes[index]->ingroup();
+}
 
 /******************************************************************************
  *

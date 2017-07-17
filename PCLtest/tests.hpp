@@ -32,7 +32,9 @@ int test_rerooting(void);
 int test_unrooted_trees(void);
 int test_subtrees_and_rerooting(void);
 int test_stepwise_addition(void);
+int test_stepwise_addition_larger(void);
 int test_node_pop(void);
 int test_temp_insert_and_restore(void);
 int test_storing_and_restoring_unrooted_trees(void);
+int test_simulated_stepwise_addition(void);
 #endif /* testNewickReader_hpp */

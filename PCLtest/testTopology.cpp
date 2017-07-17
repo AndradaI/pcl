@@ -80,19 +80,23 @@ int test_tree_marking(void)
     if (topol == *topol2)
     {
         std::cout << "Topols 1 & 2 are same\n";
+        ppass;
     }
     else {
         std::cout << "Topols 1 & 2 are different\n";
+        pfail;
         ++failn;
     }
     
     if (topol == *topol3)
     {
         std::cout << "Topols 1 & 3 are same\n";
+        pfail;
         ++failn;
     }
     else {
         std::cout << "Topols 1 & 3 are different\n";
+        ppass;
     }
     
     return failn;
@@ -142,5 +146,54 @@ int test_storing_and_restoring_unrooted_trees(void)
     t.traverse();
     
     ttestr.checkTree(t);
+    return failn;
+}
+
+int test_simulated_stepwise_addition(void)
+{
+    theader("Testing simulated stepwise addition");
+    int err     = 0;
+    int failn   = 0;
+    
+    int ntax = 6;
+    int hold = 2;
+    Tree t(ntax);
+    TreeTester ttester;
+    
+    t.prepStepwise(2, 1, 0);
+    t.traverse();
+    ttester.checkTree(t);
+    
+    Node* newtip = t.newTip(3);
+    
+    Treelist saved(ntax, 0, 0);
+    Treelist held(ntax, 0, 0);
+    Treelist freetrees(ntax, 2 * hold, 0);
+    
+    Topology *savetopo;
+    Topology *resttopo;
+    
+    savetopo = freetrees.getTopol();
+    savetopo->store(t);
+    saved.save(*savetopo);
+    
+    resttopo = saved.getTopol();
+    t.restore(*resttopo);
+    
+    t.tempInsert(*newtip, *t.postorder(0));
+    
+    savetopo->store(t);
+    saved.save(*savetopo);
+    
+    t.undoTempInsert(*newtip);
+    
+    t.traverse();
+    
+    resttopo = saved.getTopol();
+    
+    t.restore(*resttopo);
+    
+    
+    
     return failn;
 }

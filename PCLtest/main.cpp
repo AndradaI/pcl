@@ -12,18 +12,27 @@
 
 int main(int argc, const char * argv[]) {
     
-    int failn = 0;
+    int fails = 0;
     
-    failn += test_newick_reader_basic();
-    failn += test_topology_construction();
-    failn += test_rerooting();
-    failn += test_unrooted_trees();
-    failn += test_subtrees_and_rerooting();
-    failn += test_tree_marking();
-    failn += test_node_pop();
-    failn += test_stepwise_addition();
-    failn += test_temp_insert_and_restore();
-    failn += test_storing_and_restoring_unrooted_trees();
+    fails += test_newick_reader_basic();
+    fails += test_topology_construction();
+    fails += test_rerooting();
+    fails += test_unrooted_trees();
+    fails += test_subtrees_and_rerooting();
+    fails += test_tree_marking();
+    fails += test_node_pop();
+    fails += test_stepwise_addition();
+    fails += test_stepwise_addition_larger();
+    fails += test_temp_insert_and_restore();
+    fails += test_storing_and_restoring_unrooted_trees();
+    fails += test_simulated_stepwise_addition();
     
-    return failn;
+    if (fails) {
+        psumf(fails);
+    }
+    else {
+        psump;
+    }
+    
+    return fails;
 }
