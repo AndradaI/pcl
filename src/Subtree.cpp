@@ -15,3 +15,48 @@ void Subtree::init(Node &n)
     _isrooted = true;
     this->traverse();
 }
+
+Node* Subtree::rootNode(void)
+{
+    return _start;
+}
+
+void Subtree::clip(void)
+{
+    Node* base = _start->parent();
+    Node* dn   = base->parent();
+    
+    //_oldp_descs.clear();
+    _oldchild = base;
+    _oldp_descs = dn->_descs;
+    //_oldc_descs.clear();
+    _oldc_descs = base->_descs;
+    _oldparent = dn;
+    
+    _start->removeWithBase();
+}
+
+void Subtree::reconnect(void)
+{
+    _oldparent->restoreDescs(_oldp_descs);
+    _oldchild->restoreDescs(_oldc_descs);
+}
+
+void Subtree::root(int index)
+{
+    if (_start->_weight < 3) {
+        return;
+    }
+    
+    Tree::root(index);
+}
+
+void Subtree::root(Node &n)
+{
+    
+    if (_start->_weight < 3) {
+        return;
+    }
+    
+    Tree::root(n);
+}

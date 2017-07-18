@@ -274,3 +274,29 @@ int test_temp_insert_and_restore(void)
     
     return failn;
 }
+
+int test_write_newick(void)
+{
+    theader("Testing Newick string writing");
+    int err     = 0;
+    int failn   = 0;
+    
+    int ntax = 10;
+    
+    std::string newick1 = "((((1,((2,7),(5,9))),(4,8)),6),(3,10));";
+    std::string newick2 = "(((1,(((2,4),3),((7,9),8))),(5,10)),6);";
+    
+    Topology* topol;
+    NewickReader reader(ntax);
+    
+    reader.read(newick1, 0, true);
+    topol = &reader.getTopol();
+    
+    Tree tree(ntax);
+    
+    tree.restore(*topol);
+    
+    std::cout << "The reprocessed as Newick:\n" << tree.writeNewick() << std::endl;
+    
+    return failn;
+}

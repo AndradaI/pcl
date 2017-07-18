@@ -143,6 +143,7 @@ public:
     void            unroot          (void);
     void            traverse        (void);
     void            traverse        (std::vector<Node*> &inorder);
+    std::string     writeNewick     (void);
     Node*           postorder       (int index);
     Node*           postorderIntern (int index);
     Node*           preorder        (int index);
@@ -152,7 +153,6 @@ public:
     void            putInOutgroup   (int index);
     void            putInIngroup    (int index);
     void            prepStepwise    (int left, int right, int anc);
-    std::string     writeNewick     (void);
     void            markUniquely    (void);
     void            removeBranch    (Node& subtr);
     void            connectBranch   (Node& subtr, Node& tgt);

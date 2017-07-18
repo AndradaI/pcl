@@ -377,6 +377,32 @@ void Tree::traverse(std::vector<Node *> &inorder)
     std::cout << "\n";
 }
 
+std::string Tree::writeNewick(void)
+{
+    bool unrooted = false;
+    std::string Newick;
+    Newick.reserve(_num_taxa * 2);
+    Newick.clear();
+    if (_isrooted) {
+        Newick.append("[&R] ");
+    } else {
+        Newick.append("[&U] ");
+        unrooted = true;
+        root();
+    }
+    
+    _start->writeNewick(Newick);
+    
+    if (unrooted)
+    {
+        unroot();
+    }
+    
+    Newick.push_back(';');
+    
+    return Newick;
+}
+
 Node* Tree::postorder(int index)
 {
     return _postorder[index];

@@ -166,6 +166,31 @@ int Node::binTraverse
     return weight;
 }
 
+void Node::writeNewick(std::string &Newick)
+{
+    if (_tip != 0)
+    {
+        Newick.append(std::to_string(_tip));
+        return;
+    }
+    
+    Newick.push_back('(');
+    
+    std::vector<Node*>::iterator p;
+    p = _descs.begin();
+    
+    do {
+        (*p)->writeNewick(Newick);
+        ++p;
+        if (p != _descs.end()) {
+            Newick.push_back(',');
+        }
+    } while (p != _descs.end());
+    
+    Newick.push_back(')');
+    return;
+}
+
 
 void Node::removeWithBase(void)
 {
@@ -205,6 +230,22 @@ void Node::restoreDescs(void)
     _descs.clear();
     
     for (p = _storeddescs.begin(); p != _storeddescs.end(); ++p)
+    {
+        addDescendant(**p);
+    }
+    
+    _left = _descs.front();
+    _right = _descs.back();
+    clearStoredDescs();
+}
+
+void Node::restoreDescs(std::vector<Node *> &descs)
+{
+    std::vector<Node*>::iterator p;
+    
+    _descs.clear();
+    
+    for (p = descs.begin(); p != descs.end(); ++p)
     {
         addDescendant(**p);
     }

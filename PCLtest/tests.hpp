@@ -38,4 +38,8 @@ int test_temp_insert_and_restore(void);
 int test_storing_and_restoring_unrooted_trees(void);
 int test_simulated_stepwise_addition(void);
 int test_duplicate_checks(void);
+int test_write_newick(void);
+int test_single_taxon_subtree(void);
+int test_subtree_removal_reconnection(void);
+int test_all_subtree_rerootings(void);
 #endif /* testNewickReader_hpp */

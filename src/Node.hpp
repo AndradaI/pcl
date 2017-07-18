@@ -99,9 +99,11 @@ public:
     int     binTraverse     (std::vector<Node*> &inorder,
                              std::vector<Node*> &tips,
                              std::vector<Node*> &internals);
+    void    writeNewick     (std::string &Newick);
     void    removeWithBase  (void);
     void    storeDescs      (void);
     void    restoreDescs    (void);
+    void    restoreDescs    (std::vector<Node*> &descs);
     void    clearStoredDescs(void);
     void    clearDescs      (void);
     void    outgroup        (void);

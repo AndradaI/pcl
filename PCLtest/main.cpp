@@ -27,6 +27,10 @@ int main(int argc, const char * argv[]) {
     fails += test_storing_and_restoring_unrooted_trees();
     fails += test_simulated_stepwise_addition();
     fails += test_duplicate_checks();
+    fails += test_write_newick();
+    fails += test_single_taxon_subtree();
+    fails += test_subtree_removal_reconnection();
+    fails += test_all_subtree_rerootings();
     
     if (fails) {
         psumf(fails);
