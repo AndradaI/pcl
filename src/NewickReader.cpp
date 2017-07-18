@@ -77,7 +77,7 @@ bool NewickReader::checkValid(std::string Newick)
 Node* NewickReader::traverseNewick(std::string &Newick, int *index, bool isrooted)
 {
     Node* n = NULL;
-    if (*index == 0 && isrooted == true)
+    if (*index == 0)
     {
         n = _tree.rootNode();
     }

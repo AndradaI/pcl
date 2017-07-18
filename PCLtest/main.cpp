@@ -26,6 +26,7 @@ int main(int argc, const char * argv[]) {
     fails += test_temp_insert_and_restore();
     fails += test_storing_and_restoring_unrooted_trees();
     fails += test_simulated_stepwise_addition();
+    fails += test_duplicate_checks();
     
     if (fails) {
         psumf(fails);

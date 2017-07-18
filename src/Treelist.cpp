@@ -43,17 +43,22 @@ Topology* Treelist::getTopol(void)
     return ret;
 }
 
-
 void Treelist::clear(void)
 {
     _topologies.clear();
+}
+
+bool Treelist::checkNew(Topology &newTopol)
+{
+    return newTopol.search(_topologies);
 }
 
 void Treelist::extend(unsigned long extension)
 {
     unsigned long i = 0;
     
-    for (i = 0; i < extension; ++i) {
+    for (i = 0; i < extension; ++i)
+    {
         _topologies.push_back(new Topology(_num_taxa));
     }
 }

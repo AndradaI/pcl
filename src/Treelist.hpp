@@ -20,8 +20,6 @@ class Treelist
     unsigned long           _num_taxa;
     unsigned long           _auto_increase;
     std::list<Topology*>    _topologies;
-    std::list<Topology*>    _tree_queue;
-    std::list<Topology*>    _free_topols;
     
 public:
     

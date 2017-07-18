@@ -137,9 +137,9 @@ void Tree::incrScore(double s)
     _real_score += s;
 }
 
-void Tree::setScore(unsigned long s)
+void Tree::setNatScore(unsigned long s)
 {
-    _natural_score = 0;
+    _natural_score = s;
 }
 
 void Tree::setScore(double s)

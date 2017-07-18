@@ -140,6 +140,26 @@ int Topology::startIndex()
     return _start_index;
 }
 
+bool Topology::search(std::list<Topology *> &topolist)
+{
+    if (topolist.size() == 0)
+    {
+        return false;
+    }
+    
+    std::list<Topology*>::iterator tp = topolist.begin();
+    
+    for(; tp != topolist.end(); ++tp)
+    {
+        if ((**tp) == *this)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool operator==(const Topology& a, const Topology& b)
 {
     return (a._node_order == b._node_order);

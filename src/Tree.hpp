@@ -128,7 +128,7 @@ public:
     void            incrScore       (unsigned long s);
     void            incrScore       (double s);
     void            setScore        (double s);
-    void            setScore        (unsigned long s);
+    void            setNatScore     (unsigned long s);
     void            clearScore      (void);
     unsigned long   natScore        (void);
     double          realScore       (void);

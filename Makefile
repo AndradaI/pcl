@@ -16,6 +16,7 @@ release: CFLAGS := $(CFLAGS) -O3
 release: all
 
 debug:	CFLAGS := $(CFLAGS) $(DBGF) 
+debug:  LFLAGS := $(LFLAGS)
 debug:	all
 
 $(SLNAME) : $(OBJ)

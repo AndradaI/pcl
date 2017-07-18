@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <assert.h>
+#include <list>
 
 class Tree;
 class Node;
@@ -57,6 +58,7 @@ public:
     double          realScore   (void);
     bool            isrooted    (void);
     int             startIndex  (void);
+    bool            search      (std::list<Topology*> &topolist);
     
     friend bool     operator==  (const Topology& a, const Topology& b);
     
