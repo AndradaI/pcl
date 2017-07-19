@@ -96,6 +96,7 @@ void Tree::reset(void)
         n->disconnectAll();
         n->clearDescs();
         n->clearStoredDescs();
+        n->unmarkClipSite();
         if (n->tipNumber() != 0)
         {
             _free_tips.push_back(n);
@@ -467,7 +468,41 @@ void Tree::prepStepwise(int left, int right, int anc)
     traverse();
 }
 
-/* Private functions */
+void Tree::doBreakList(std::vector<Node *> breaklist)
+{
+    breaklist.clear();
+    int max_subtr_size = 0;
+    max_subtr_size = (int)size() - 3;
+    
+    if(isrooted() == 0)
+    {
+        _start->travBreakList(breaklist, max_subtr_size);
+    }
+    else
+    {
+        _start->left()->travBreakList(breaklist, max_subtr_size);
+    }
+}
+
+void Tree::doReconnectList(std::vector<Node *> reconnectlist)
+{
+    reconnectlist.clear();
+    
+    if (isrooted() == true)
+    {
+        _start->travReconnectList(reconnectlist);
+    }
+    else
+    {
+        _start->left()->travReconnectList(reconnectlist);
+    }
+}
+
+/******************************************************************************
+ *
+ * Private functions 
+ *
+ ******************************************************************************/
 
 void Tree::markUniquely(void)
 {

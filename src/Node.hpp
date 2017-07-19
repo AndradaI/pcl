@@ -22,6 +22,7 @@ class Node {
     int                 _weight;    /*!< The number of terminal descendants from this node. */
     bool                _in_path;   /*!< For marking paths to nodes. Used in updates and rerooting. */
     bool                _is_outgroup_member;
+    bool                _is_clipsite; /*!< Marks the location of a clipping in the root part of the tree. */
     int                 _downpass_mark; /*!< I don't remember. */
     std::string         _label;         /*!< The name of this node (if applied). */
     double              _length; /*!< The length of the branch subtending this node. */
@@ -109,6 +110,11 @@ public:
     void    outgroup        (void);
     void    ingroup         (void);
     bool    isOutgroup      (void);
+    void    markClipSite    (void);
+    void    unmarkClipSite  (void);
+    bool    isClipSite      (void);
+    void    travBreakList   (std::vector<Node*> &breaksites, const int max_subtr_size);
+    void    travReconnectList(std::vector<Node*> &reconnectsites);
     
 protected:
     

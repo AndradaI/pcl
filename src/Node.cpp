@@ -280,6 +280,48 @@ bool Node::isOutgroup(void)
     return _is_outgroup_member;
 }
 
+void Node::markClipSite(void)
+{
+    _is_clipsite = true;
+}
+
+void Node::unmarkClipSite(void)
+{
+    _is_clipsite = false;
+}
+
+bool Node::isClipSite(void)
+{
+    return _is_clipsite;
+}
+
+void Node::travBreakList(std::vector<Node *> &breaksites, const int max_subtr_size)
+{
+    if (_tip == 0)
+    {
+        _left->travBreakList(breaksites, max_subtr_size);
+        _right->travBreakList(breaksites, max_subtr_size);
+    }
+    
+    if (_anc->_weight < max_subtr_size) {
+        breaksites.push_back(this);
+    }
+}
+
+void Node::travReconnectList(std::vector<Node *> &reconnectsites)
+{
+    if (_tip == 0)
+    {
+        _left->travReconnectList(reconnectsites);
+        _right->travReconnectList(reconnectsites);
+    }
+    
+//    if (_anc->isClipSite() == false)
+//    {
+        reconnectsites.push_back(this);
+    //    }
+}
+
 /******************************************************************************
  *                                                                            *
  *  Protected member functions                                                *

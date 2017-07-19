@@ -159,6 +159,8 @@ public:
     void            connectBranch   (int subtrIndex, int tgtIndex);
     void            tempInsert      (Node& src, Node& tgt);
     void            undoTempInsert  (Node& src);
+    void            doBreakList     (std::vector<Node*> breaklist);
+    void            doReconnectList (std::vector<Node*> reconnectlist);
     
 private:
     

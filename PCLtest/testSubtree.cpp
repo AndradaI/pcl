@@ -146,13 +146,17 @@ int test_all_subtree_rerootings(void)
     if (left->parent() == right)
     {
         orig_site = left;
+        ppass;
     }
     else if (right->parent() == left)
     {
         orig_site = right;
+        ppass;
     }
     else {
         std::cout << "Looks like you're back where you started\n";
+        ++failn;
+        pfail;
     }
     
     subtr.root(*orig_site);
