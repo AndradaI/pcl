@@ -81,6 +81,7 @@ public:
     
     Node*   parent          (void);
     void    parent          (Node& newparent);
+    Node*   sibling         (void);
     void    assignIndex     (unsigned long index);
     int     parentIndex     (void);
     bool    isPolynode      (void);

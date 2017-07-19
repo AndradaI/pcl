@@ -468,42 +468,6 @@ void Tree::prepStepwise(int left, int right, int anc)
     traverse();
 }
 
-void Tree::doBreakList(std::vector<Node *> breaklist)
-{
-    breaklist.clear();
-    int max_subtr_size = 0;
-    max_subtr_size = (int)size() - 3;
-    
-    if(isrooted() == 0)
-    {
-        _start->travBreakList(breaklist, max_subtr_size);
-    }
-    else
-    {
-        _start->left()->travBreakList(breaklist, max_subtr_size);
-    }
-}
-
-void Tree::doReconnectList(std::vector<Node *> reconnectlist)
-{
-    reconnectlist.clear();
-    
-    if (isrooted() == true)
-    {
-        _start->travReconnectList(reconnectlist);
-    }
-    else
-    {
-        _start->left()->travReconnectList(reconnectlist);
-    }
-}
-
-/******************************************************************************
- *
- * Private functions 
- *
- ******************************************************************************/
-
 void Tree::markUniquely(void)
 {
     int i = 0;
@@ -594,6 +558,36 @@ void Tree::putInOutgroup(int index)
 void Tree::putInIngroup(int index)
 {
     _nodes[index]->ingroup();
+}
+
+void Tree::doBreakList(std::vector<Node *> &breaklist)
+{
+    breaklist.clear();
+    int max_subtr_size = 0;
+    max_subtr_size = (int)size() - 3;
+    
+    if(isrooted() == true)
+    {
+        _start->travBreakList(breaklist, max_subtr_size);
+    }
+    else
+    {
+        _start->left()->travBreakList(breaklist, max_subtr_size);
+    }
+}
+
+void Tree::doReconnectList(std::vector<Node *> &reconnectlist)
+{
+    reconnectlist.clear();
+    
+    if (isrooted() == true)
+    {
+        _start->travReconnectList(reconnectlist);
+    }
+    else
+    {
+        _start->left()->travReconnectList(reconnectlist);
+    }
 }
 
 /******************************************************************************

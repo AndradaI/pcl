@@ -148,8 +148,8 @@ public:
     Node*           postorderIntern (int index);
     Node*           preorder        (int index);
     Node*           preorderIntern  (int index);
-    Node*           tip             (int index);
-    Node*           taxon           (int index); // Returns a pointer to a terminal in the dataset, regardless of whether or not it is currently placed in the tree.
+    Node*           tip             (int index); /*!< Returns a tip that is currently placed in the tree. */
+    Node*           taxon           (int index); /*!< Returns a pointer to a terminal in the dataset, regardless of whether or not it is currently placed in the tree. */
     void            putInOutgroup   (int index);
     void            putInIngroup    (int index);
     void            prepStepwise    (int left, int right, int anc);
@@ -159,8 +159,8 @@ public:
     void            connectBranch   (int subtrIndex, int tgtIndex);
     void            tempInsert      (Node& src, Node& tgt);
     void            undoTempInsert  (Node& src);
-    void            doBreakList     (std::vector<Node*> breaklist);
-    void            doReconnectList (std::vector<Node*> reconnectlist);
+    void            doBreakList     (std::vector<Node*> &breaklist);
+    void            doReconnectList (std::vector<Node*> &reconnectlist);
     
 private:
     

@@ -24,6 +24,21 @@ void Node::parent(Node& newparent)
     _anc = &newparent;
 }
 
+Node* Node::sibling(void)
+{
+    Node* base = this->parent();
+    Node* ret = NULL;
+    
+    if (base->left() == this) {
+        ret = base->right();
+    }
+    else {
+        ret = base->left();
+    }
+    
+    return ret;
+}
+
 void Node::assignIndex(unsigned long index)
 {
     _index = index;
@@ -303,9 +318,9 @@ void Node::travBreakList(std::vector<Node *> &breaksites, const int max_subtr_si
         _right->travBreakList(breaksites, max_subtr_size);
     }
     
-    if (_anc->_weight < max_subtr_size) {
+    //if (_anc->_weight < max_subtr_size) {
         breaksites.push_back(this);
-    }
+    //}
 }
 
 void Node::travReconnectList(std::vector<Node *> &reconnectsites)

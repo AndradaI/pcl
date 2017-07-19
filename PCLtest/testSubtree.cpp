@@ -119,6 +119,8 @@ int test_all_subtree_rerootings(void)
     Tree t(numtaxa);
     
     t.restore(topol);
+    t.unroot();
+    t.traverse();
     Subtree subtr(numtaxa);
     Node* node = t.postorderIntern(3);
     subtr.init(*node);
