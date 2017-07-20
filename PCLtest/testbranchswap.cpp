@@ -30,71 +30,99 @@ int test_simple_tbr(void)
     NewickReader reader(numtaxa);
     reader.read(testnwk, false, true);
     Topology &topol = reader.getTopol();
+    Treelist savedtrees(numtaxa, 0, 1000);
     
     Tree t(numtaxa);
     
     t.restore(topol);
     t.unroot();
     Subtree subtr(numtaxa);
-    Node* node = t.postorderIntern(3);
-    subtr.init(*node);
     
     Topology before(numtaxa);
     before.store(t);
     
     // Store original root:
-    
-    
     std::vector<Node*> breaksites;
     std::vector<Node*> reconnectsites;
     
     t.doBreakList(breaksites);
     
+    int swapcounter = 0;
+    
     int i = 0;
-    for (i = 0; i < breaksites.size()-1; ++i)
+    for (i = 0; i < breaksites.size(); ++i)
     {
         std::cout << "\n\n*** Clipping at " << i << "\n";
         subtr.init(*breaksites.at(i));
-        subtr.clip();
+        if (i < breaksites.size()-1)
+        {
+            subtr.clip();
+        }
         
         // Enumerate the rerooting sites:
         std::vector<Node*> rootsites;
         
-        subtr.traverse(rootsites);
+        subtr.doRerootList(rootsites);
         // Store the original rooting site
         Node* orig_site = NULL;
         Node* left = subtr.rootNode()->left();
         Node* right = subtr.rootNode()->right();
         
-        int maxroot = (int)rootsites.size()-1;
-        int k = 0;
+        int maxroot = (int)rootsites.size();
         
+        t.doReconnectList(reconnectsites);
+        
+        int maxiter = maxroot;
+        if (maxroot > 0) {
+            ++maxiter;
+        }
+        
+        if (maxroot < 0)
+        {
+            std::cout << "Break!\n";
+        }
+        
+        int k = 0;
         do
         {
-            if (maxroot > 2) { // Only reroot the tree if a) ya can, b) the unrooted tree has already been done
-                subtr.root(*rootsites[k]);
+            if (maxroot > 0 && k > 0) { // Only reroot the tree if a) ya can, b) the unrooted tree has already been done
+                subtr.root(*rootsites.at(k-1));
             }
             
             int j = 0;
-            t.doReconnectList(reconnectsites);
-            
-            for (j = 0; j < reconnectsites.size(); ++j)
+            int max;
+            if (i < breaksites.size()-1)
             {
-                if ((reconnectsites.at(j)->isClipSite() == false) || k > 0)
+                max = (int)reconnectsites.size();
+                assert(max > 0);
+            }
+            else {
+                max = 1;
+            }
+        
+            
+            for (j = 0; j < max; ++j)
+            {
+                std::cout << "--- Reconnecting at " << j << "\n";
+                if (i < breaksites.size()-1)
                 {
-                    std::cout << "--- Reconnecting at " << j << "\n";
                     t.tempInsert(*subtr.rootNode(), *reconnectsites.at(j));
-                    t.traverse();
-                    t.undoTempInsert(*subtr.rootNode());
                 }
-                else {
-                    std::cout << "Skipping...\n";
+                t.traverse();
+                Topology *saver = new Topology(numtaxa);
+                saver->store(t);
+                savedtrees.save(*saver);
+                ++swapcounter;
+                if (i < breaksites.size()-1)
+                {
+                    t.undoTempInsert(*subtr.rootNode());
                 }
             }
             ++k;
         }
-        while (k < maxroot-1);
+        while (k < maxiter);
         
+        orig_site = NULL;
         if (left != NULL && right != NULL) {
             if (left->parent() == right)
             {
@@ -113,13 +141,38 @@ int test_simple_tbr(void)
             }
         }
         
+        if (orig_site != NULL)
         subtr.root(*orig_site);
-        subtr.reconnect();
+        
+        if (i < breaksites.size()-1)
+        {
+            subtr.reconnect();
+        }
     }
     
     t.traverse();
     Topology after(numtaxa);
     after.store(t);
+    
+    
+    Topology* restore = NULL;
+    i = 1;
+    while (savedtrees.numTrees() != 0)
+    {
+        restore = savedtrees.getTopol();
+        t.restore(*restore);
+        std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
+        ++i;
+    }
+    std::cout << swapcounter << " rearrangements tried\n";
+    
+    if (swapcounter != 322) {
+        ++failn;
+        pfail;
+    }
+    else {
+        ppass;
+    }
     
     if (before == after) {
         ppass;

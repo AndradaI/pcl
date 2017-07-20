@@ -122,14 +122,14 @@ int Node::traverse
 {
     if (_tip != 0)
     {
-        std::cout << _tip;
+        //std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
         return 1;
     }
     
     int weight = 0;
-    std::cout << '(';
+    //std::cout << '(';
     
     std::vector<Node*>::iterator p;
     p = _descs.begin();
@@ -138,11 +138,11 @@ int Node::traverse
         weight += (*p)->traverse(inorder, tips, internals);
         ++p;
         if (p != _descs.end()) {
-            std::cout << ',';
+            //std::cout << ',';
         }
     } while (p != _descs.end());
     
-    std::cout << ')';
+    //std::cout << ')';
     
     inorder.push_back(this);
     internals.push_back(this);
@@ -318,9 +318,7 @@ void Node::travBreakList(std::vector<Node *> &breaksites, const int max_subtr_si
         _right->travBreakList(breaksites, max_subtr_size);
     }
     
-    //if (_anc->_weight < max_subtr_size) {
-        breaksites.push_back(this);
-    //}
+    breaksites.push_back(this);
 }
 
 void Node::travReconnectList(std::vector<Node *> &reconnectsites)
@@ -331,10 +329,10 @@ void Node::travReconnectList(std::vector<Node *> &reconnectsites)
         _right->travReconnectList(reconnectsites);
     }
     
-//    if (_anc->isClipSite() == false)
-//    {
+    if (isClipSite() == false && parent()->isClipSite() == false)
+    {
         reconnectsites.push_back(this);
-    //    }
+    }
 }
 
 /******************************************************************************
@@ -382,7 +380,7 @@ void Node::markTraverse(int index, bool *found, Node** n)
     
     if (_mem_index == index)
     {
-        std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
+        //std::cout << "Found node: " << _mem_index << " tip number: " << _tip << std::endl;
         *found = true;
         *n = this;
         _in_path = true;

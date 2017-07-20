@@ -161,6 +161,7 @@ public:
     void            undoTempInsert  (Node& src);
     void            doBreakList     (std::vector<Node*> &breaklist);
     void            doReconnectList (std::vector<Node*> &reconnectlist);
+    void            doRerootList(std::vector<Node *> &rerootlist);
     
 private:
     

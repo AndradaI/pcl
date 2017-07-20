@@ -9,6 +9,7 @@
 #ifndef Subtree_hpp
 #define Subtree_hpp
 
+#include <assert.h>
 #include "Tree.hpp"
 
 

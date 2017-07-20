@@ -590,6 +590,25 @@ void Tree::doReconnectList(std::vector<Node *> &reconnectlist)
     }
 }
 
+void Tree::doRerootList(std::vector<Node *> &rerootlist)
+{
+    rerootlist.clear();
+    
+    if (_start->tipNumber() == 0)
+    {
+        if (_start->left()->_weight > 1)
+        {
+            _start->left()->traverse(rerootlist, _tips, _internals);
+            rerootlist.pop_back();
+        }
+        if (_start->right()->_weight > 1)
+        {
+            _start->right()->traverse(rerootlist, _tips, _internals);
+            //            _start->right()->travReconnectList(rerootlist);
+            rerootlist.pop_back();
+        }
+    }
+}
 /******************************************************************************
  *
  * Private member functions 
