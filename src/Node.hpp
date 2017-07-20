@@ -116,6 +116,7 @@ public:
     bool    isClipSite      (void);
     void    travBreakList   (std::vector<Node*> &breaksites, const int max_subtr_size);
     void    travReconnectList(std::vector<Node*> &reconnectsites);
+    void travTBReconnectList(std::vector<Node *> &reconnectsites);
     
 protected:
     

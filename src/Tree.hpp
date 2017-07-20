@@ -162,6 +162,7 @@ public:
     void            doBreakList     (std::vector<Node*> &breaklist);
     void            doReconnectList (std::vector<Node*> &reconnectlist);
     void            doRerootList(std::vector<Node *> &rerootlist);
+    void            doTBReconnectList(std::vector<Node*> &reconnectlist);
     
 private:
     

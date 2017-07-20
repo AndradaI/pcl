@@ -590,6 +590,20 @@ void Tree::doReconnectList(std::vector<Node *> &reconnectlist)
     }
 }
 
+void Tree::doTBReconnectList(std::vector<Node *> &reconnectlist)
+{
+    reconnectlist.clear();
+    
+    if (isrooted() == true)
+    {
+        _start->travTBReconnectList(reconnectlist);
+    }
+    else
+    {
+        _start->left()->travTBReconnectList(reconnectlist);
+    }
+}
+
 void Tree::doRerootList(std::vector<Node *> &rerootlist)
 {
     rerootlist.clear();

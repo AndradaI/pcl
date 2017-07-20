@@ -24,7 +24,8 @@ int test_simple_tbr(void)
     // Compare with topology from before pruning and rerooting
     
     std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));";
-    //    std::string testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));";
+    //testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));";
+    //testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));";
     int numtaxa = 10;
     
     NewickReader reader(numtaxa);
@@ -59,9 +60,7 @@ int test_simple_tbr(void)
         subtr.init(*breaksites.at(i));
         
         // Generate a list of possible subtree rerootings
-        rootsites.clear();
         subtr.doRerootList(rootsites);
-        int max = rootsites.size();
         
         // Store original root location
         Node* left = subtr.rootNode()->left();
@@ -72,7 +71,7 @@ int test_simple_tbr(void)
         
         if (rootsites.size() > 0)
         {
-            for (j = 0; j < max; ++j )
+            for (j = 0; j < rootsites.size(); ++j )
             {
                 // Perform re-root
                 subtr.root(*rootsites.at(j));
@@ -81,10 +80,10 @@ int test_simple_tbr(void)
                 savedtrees.save(*topol);
                 ++swapcounter;
                 
-                if (i < breaksites.size()-1 && j > 2) {
+                if (i < breaksites.size()-1) {
                     subtr.clip();
                     
-                    t.doReconnectList(reconnectsites);
+                    t.doTBReconnectList(reconnectsites);
 
                     int k = 0;
                     for (k = 0; k < reconnectsites.size(); ++k)
@@ -110,7 +109,8 @@ int test_simple_tbr(void)
                 
             }
         }
-        else
+        
+        if (i < breaksites.size()-1)
         {
             subtr.clip();
             

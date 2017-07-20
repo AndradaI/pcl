@@ -335,6 +335,23 @@ void Node::travReconnectList(std::vector<Node *> &reconnectsites)
     }
 }
 
+void Node::travTBReconnectList(std::vector<Node *> &reconnectsites)
+{
+    if (_tip == 0)
+    {
+        _left->travTBReconnectList(reconnectsites);
+        _right->travTBReconnectList(reconnectsites);
+    }
+    
+    if (parent()->isClipSite() == false)
+    {
+        reconnectsites.push_back(this);
+    }
+    else if (isClipSite() == false)
+    {
+        reconnectsites.push_back(this);
+    }
+}
 /******************************************************************************
  *                                                                            *
  *  Protected member functions                                                *
