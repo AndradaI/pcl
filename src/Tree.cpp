@@ -596,16 +596,22 @@ void Tree::doRerootList(std::vector<Node *> &rerootlist)
     
     if (_start->tipNumber() == 0)
     {
+        unsigned long firstsize = 0;
         if (_start->left()->_weight > 1)
         {
             _start->left()->traverse(rerootlist, _tips, _internals);
-            rerootlist.pop_back();
+            if (rerootlist.size() > 0) {
+                rerootlist.pop_back();
+            }
+            firstsize = rerootlist.size();
         }
         if (_start->right()->_weight > 1)
         {
             _start->right()->traverse(rerootlist, _tips, _internals);
             //            _start->right()->travReconnectList(rerootlist);
-            rerootlist.pop_back();
+            if (rerootlist.size() > firstsize) {
+                rerootlist.pop_back();
+            }
         }
     }
 }
