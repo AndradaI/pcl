@@ -25,9 +25,11 @@ int test_simple_tbr(void)
     
     bool doTBR = true;
     
-    std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));";
-    //testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));";
-    //testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));";
+    unsigned long expected = 0;
+    std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));"; expected = 322;
+    //testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));"; expected = 270;
+    testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));"; expected = 322;
+    if (doTBR == false) expected = 182;
     int numtaxa = 10;
     
     NewickReader reader(numtaxa);
@@ -87,10 +89,15 @@ int test_simple_tbr(void)
                 if (i < breaksites.size()-1) {
                     subtr.clip();
                     
-                    if (j > 0 && doTBR == true)
-                        t.doTBReconnectList(reconnectsites);
+                    if (doTBR == true)
+                        if (j > 0)
+                            t.doTBReconnectList(reconnectsites);
+                        else
+                            t.doReconnectList(reconnectsites);
                     else
-                        t.doReconnectList(reconnectsites);
+                        if (j < 1)
+                            t.doReconnectList(reconnectsites);
+                        else reconnectsites.clear();
                     
                     int k = 0;
                     for (k = 0; k < reconnectsites.size(); ++k)
@@ -116,7 +123,6 @@ int test_simple_tbr(void)
                     subtr.root(*orig);
                 }
                 
-                if (doTBR == false) break;
             }
     }
     
@@ -135,7 +141,7 @@ int test_simple_tbr(void)
     }
     std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
     
-    if (swapcounter != 322) {
+    if (swapcounter != expected) {
         ++failn;
         pfail;
     }
