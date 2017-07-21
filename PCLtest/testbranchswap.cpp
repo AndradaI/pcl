@@ -23,6 +23,8 @@ int test_simple_tbr(void)
     // Restore original root.
     // Compare with topology from before pruning and rerooting
     
+    bool doTBR = true;
+    
     std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));";
     //testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));";
     //testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));";
@@ -62,29 +64,34 @@ int test_simple_tbr(void)
         // Generate a list of possible subtree rerootings
         subtr.doRerootList(rootsites);
         
+        // For each possible rerooting, perform the
+        int j = 0;
+        
+//        if (rootsites.size() > 0)
+//        {
         // Store original root location
         Node* left = subtr.rootNode()->left();
         Node* right = subtr.rootNode()->right();
         
-        // For each possible rerooting, perform the
-        int j = 0;
-        
-        if (rootsites.size() > 0)
-        {
-            for (j = 0; j < rootsites.size(); ++j )
+            for (j = 0; j <= rootsites.size(); ++j )
             {
                 // Perform re-root
-                subtr.root(*rootsites.at(j));
-                Topology *topol = new Topology(numtaxa);
-                topol->store(t);
-                savedtrees.save(*topol);
-                ++swapcounter;
+                if (rootsites.size() > 0 && j > 0) {
+                    subtr.root(*rootsites.at(j-1));
+                    Topology *topol = new Topology(numtaxa);
+                    topol->store(t);
+                    savedtrees.save(*topol);
+                    ++swapcounter;
+                }
                 
                 if (i < breaksites.size()-1) {
                     subtr.clip();
                     
-                    t.doTBReconnectList(reconnectsites);
-
+                    if (j > 0 && doTBR == true)
+                        t.doTBReconnectList(reconnectsites);
+                    else
+                        t.doReconnectList(reconnectsites);
+                    
                     int k = 0;
                     for (k = 0; k < reconnectsites.size(); ++k)
                     {
@@ -99,34 +106,18 @@ int test_simple_tbr(void)
                 }
                 
                 // Restore the root
-                Node* orig = NULL;
-                if (left->parent() == right) {
-                    orig = left;
-                } else {
-                    orig = right;
+                if (rootsites.size() > 0) {
+                    Node* orig = NULL;
+                    if (left->parent() == right) {
+                        orig = left;
+                    } else {
+                        orig = right;
+                    }
+                    subtr.root(*orig);
                 }
-                subtr.root(*orig);
                 
+                if (doTBR == false) break;
             }
-        }
-        
-        if (i < breaksites.size()-1)
-        {
-            subtr.clip();
-            
-            t.doReconnectList(reconnectsites);
-            int k = 0;
-            for (k = 0; k < reconnectsites.size(); ++k)
-            {
-                t.tempInsert(*subtr.rootNode(), *reconnectsites.at(k));
-                Topology *topol = new Topology(numtaxa);
-                topol->store(t);
-                savedtrees.save(*topol);
-                ++swapcounter;
-                t.undoTempInsert(*subtr.rootNode());
-            }
-            subtr.reconnect();
-        }
     }
     
     t.traverse();
