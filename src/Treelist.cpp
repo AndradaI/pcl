@@ -69,10 +69,9 @@ bool Treelist::save(Tree &t)
     {
         _next_topol = _topolbuffer.begin();
     }
-    else if (_topolbuffer.size() == 2)
+    else if (_next_topol == _topolbuffer.end())
     {
-        _next_topol = _topolbuffer.begin();
-        ++_next_topol;
+        --_next_topol;
     }
     
     return res;
@@ -113,6 +112,7 @@ bool Treelist::checkNew(Tree &t)
 {
     // TODO: Can be optimised by using an existing topology object.
     Topology topol(_num_taxa);
+    topol.store(t);
     return checkNew(topol);
 }
 
@@ -151,7 +151,8 @@ void Treelist::spliceTopolList(Treelist &treelist)
 {
     unsigned long oldbufsize = treelist.numTrees();
     
-    if (_topolbuffer.size() == 0) {
+    if (_topolbuffer.size() == 0)
+    {
         _topolbuffer.splice(_topolbuffer.end(), treelist._topolbuffer);
         _next_topol = _topolbuffer.begin();
     }
@@ -174,6 +175,11 @@ Topology* Treelist::getNext(void)
     return ret;
 }
 
+void Treelist::resetTopolIterator(void)
+{
+    _next_topol = _topolbuffer.begin();
+}
+
 unsigned long Treelist::getBestNatScore(void)
 {
     unsigned long bestscore = 0;
@@ -181,6 +187,7 @@ unsigned long Treelist::getBestNatScore(void)
     bestscore = _topolbuffer.front()->natScore();
     
     std::list<Topology*>::iterator t = _topolbuffer.begin();
+    
     while (t != _topolbuffer.end())
     {
         if ((*t)->natScore() < bestscore)

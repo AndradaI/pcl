@@ -55,6 +55,7 @@ public:
     void            spliceTopolList     (Treelist& treelist);
     void            extend              (unsigned long extension);
     Topology*       getNext             (void);
+    void            resetTopolIterator  (void);
     void            incrNext            (void);
     unsigned long   getBestNatScore     (void);
     void            keepBest            (void);
