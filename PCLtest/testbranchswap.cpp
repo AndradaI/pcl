@@ -75,55 +75,70 @@ int test_simple_tbr(void)
         Node* left = subtr.rootNode()->left();
         Node* right = subtr.rootNode()->right();
         
-            for (j = 0; j <= rootsites.size(); ++j )
+        for (j = 0; j <= rootsites.size(); ++j )
+        {
+            // Perform re-root
+            if (rootsites.size() > 0 && j > 0)
             {
-                // Perform re-root
-                if (rootsites.size() > 0 && j > 0) {
-                    subtr.root(*rootsites.at(j-1));
+                subtr.root(*rootsites.at(j-1));
+                Topology *topol = new Topology(numtaxa);
+                topol->store(t);
+                savedtrees.save(*topol);
+                ++swapcounter;
+            }
+            
+            if (i < breaksites.size()-1) {
+                subtr.clip();
+                
+                if (doTBR == true)
+                {
+                    if (j > 0)
+                    {
+                        t.doTBReconnectList(reconnectsites);
+                    }
+                    else
+                    {
+                        t.doReconnectList(reconnectsites);
+                    }
+                }
+                else
+                {
+                    if (j < 1)
+                    {
+                        t.doReconnectList(reconnectsites);
+                    }
+                    else
+                    {
+                         reconnectsites.clear();
+                    }
+                }
+                
+                int k = 0;
+                for (k = 0; k < reconnectsites.size(); ++k)
+                {
+                    t.tempInsert(*subtr.rootNode(), *reconnectsites.at(k));
                     Topology *topol = new Topology(numtaxa);
                     topol->store(t);
                     savedtrees.save(*topol);
                     ++swapcounter;
+                    t.undoTempInsert(*subtr.rootNode());
                 }
                 
-                if (i < breaksites.size()-1) {
-                    subtr.clip();
-                    
-                    if (doTBR == true)
-                        if (j > 0)
-                            t.doTBReconnectList(reconnectsites);
-                        else
-                            t.doReconnectList(reconnectsites);
-                    else
-                        if (j < 1)
-                            t.doReconnectList(reconnectsites);
-                        else reconnectsites.clear();
-                    
-                    int k = 0;
-                    for (k = 0; k < reconnectsites.size(); ++k)
-                    {
-                        t.tempInsert(*subtr.rootNode(), *reconnectsites.at(k));
-                        Topology *topol = new Topology(numtaxa);
-                        topol->store(t);
-                        savedtrees.save(*topol);
-                        ++swapcounter;
-                        t.undoTempInsert(*subtr.rootNode());
-                    }
-                    subtr.reconnect();
-                }
-                
-                // Restore the root
-                if (rootsites.size() > 0) {
-                    Node* orig = NULL;
-                    if (left->parent() == right) {
-                        orig = left;
-                    } else {
-                        orig = right;
-                    }
-                    subtr.root(*orig);
-                }
-                
+                subtr.reconnect();
             }
+            
+            // Restore the root
+            if (rootsites.size() > 0) {
+                Node* orig = NULL;
+                if (left->parent() == right) {
+                    orig = left;
+                } else {
+                    orig = right;
+                }
+                subtr.root(*orig);
+            }
+            
+        }
     }
     
     t.traverse();
@@ -136,10 +151,10 @@ int test_simple_tbr(void)
     {
         restore = savedtrees.getTopol();
         t.restore(*restore);
-        std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
+        //std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
         ++i;
     }
-    std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
+    //std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
     
     if (swapcounter != expected) {
         ++failn;

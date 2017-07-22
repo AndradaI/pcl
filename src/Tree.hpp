@@ -141,6 +141,7 @@ public:
     void            root            (Node& n);
     void            root            (void);
     void            unroot          (void);
+    void            simpleUnroot    (void);
     void            traverse        (void);
     void            traverse        (std::vector<Node*> &inorder);
     std::string     writeNewick     (void);

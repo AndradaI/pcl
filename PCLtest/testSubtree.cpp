@@ -38,7 +38,7 @@ int test_single_taxon_subtree(void)
     // TODO: Make safe for attempts to root
     subtr.root(2);
     
-    std::cout << subtr.writeNewick() << std::endl;
+    //std::cout << subtr.writeNewick() << std::endl;
 
     std::string expected = "[&R] 6;";
     
@@ -75,12 +75,12 @@ int test_subtree_removal_reconnection(void)
     
     subtr.clip();
     
-    std::cout << "Original tree after the clip:\n";
+    //std::cout << "Original tree after the clip:\n";
     t.traverse();
     
     subtr.reconnect();
     
-    std::cout << "Original tree after restoring:\n";
+    //std::cout << "Original tree after restoring:\n";
     t.traverse();
     TreeTester ttestr;
     err = ttestr.checkTree(t);
@@ -156,7 +156,7 @@ int test_all_subtree_rerootings(void)
         ppass;
     }
     else {
-        std::cout << "Looks like you're back where you started\n";
+        //std::cout << "Looks like you're back where you started\n";
         ++failn;
         pfail;
     }

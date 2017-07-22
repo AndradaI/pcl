@@ -158,20 +158,20 @@ int Node::binTraverse
  std::vector<Node *> &internals)
 {
     if (_tip != 0) {
-        std::cout << _tip;
+        //std::cout << _tip;
         inorder.push_back(this);
         tips.push_back(this);
         return 1;
     }
     
     int weight = 0;
-    std::cout << '(';
+    //std::cout << '(';
     
     weight += _left->binTraverse(inorder, tips, internals);
-    std::cout << ',';
+    //std::cout << ',';
     weight += _right->binTraverse(inorder, tips, internals);
     
-    std::cout << ')';
+    //std::cout << ')';
     
     inorder.push_back(this);
     internals.push_back(this);
@@ -213,7 +213,7 @@ void Node::removeWithBase(void)
     
     if (base->_descs.size() > 2)
     {
-        std::cout << "ERROR: Extraction on non-binary node\n";
+        //std::cout << "ERROR: Extraction on non-binary node\n";
         // TODO: Might call the node resolver when that is written
         return;
     }

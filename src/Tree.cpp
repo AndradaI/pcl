@@ -338,7 +338,35 @@ void Tree::unroot(void)
     _start = tipstart;
     
     _isrooted = false;
-    //traverse();
+    traverse();
+}
+
+void Tree::simpleUnroot(void)
+{
+    assert(_isrooted == true);
+    
+    Node* p = NULL;
+    Node* q = NULL;
+    Node* r = NULL;
+    
+    p = _start->left();
+    q = _start->right();
+    
+    assert(p->tipNumber() > 0 || q->tipNumber() > 0);
+    assert(!(p->tipNumber() > 0 && q->tipNumber() > 0));
+    
+    if (q->tipNumber() > 0)
+    {
+        r = q;
+        q = p;
+        p = r;
+    }
+    
+    p->disconnectAll();
+    q->_anc = NULL;
+    p->addDescendant(*q);
+    _start = p;
+    _isrooted = false;
 }
 
 void Tree::traverse(void)
@@ -356,7 +384,7 @@ void Tree::traverse(void)
     }
     
     std::sort(_tips.begin(), _tips.end(), cmpTips);
-    std::cout << "\n";
+    //std::cout << "\n";
 }
 
 void Tree::traverse(std::vector<Node *> &inorder)
@@ -375,7 +403,7 @@ void Tree::traverse(std::vector<Node *> &inorder)
         inorder.push_back(_start);
         _tips.push_back(_start);
     }
-    std::cout << "\n";
+    //std::cout << "\n";
 }
 
 std::string Tree::writeNewick(void)
@@ -518,7 +546,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
     
     if (subtr.parent() == NULL) {
         // TODO: Get a free internal node
-        std::cout << "Warning! Failing to base subtree\n";
+        //std::cout << "Warning! Failing to base subtree\n";
     }
     else {
         base = subtr.parent();
@@ -533,7 +561,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
 
 void Tree::connectBranch(int subtrIndex, int tgtIndex)
 {
-    // std::cout << "Not implemented\n";
+    // //std::cout << "Not implemented\n";
 }
 
 void Tree::tempInsert(Node& src, Node& tgt)

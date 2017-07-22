@@ -23,7 +23,7 @@ void Topology::clear()
     _parents.clear();
     
     int i = 0;
-    int max = _anc_edges.capacity();
+    int max = (int)_anc_edges.capacity();
     for (i = 0; i < max; ++i)
     {
         _anc_edges[i] = 0;
@@ -47,10 +47,9 @@ void Topology::store(Tree &t)
     
     memset(local_ndorder, 0, t.capacity() * sizeof(int));
     
-    int j = 0;
-    
+    //int j = 0;
     //    max = t.size();
-    max = t.capacity();
+    max = (int)t.capacity();
     _indices.resize(max);
     _tipnum.resize(max);
     _anc_edges.resize(max);
@@ -81,20 +80,20 @@ void Topology::store(Tree &t)
     }
     
 #ifdef DEBUG
-    std::cout << "Reconstruction order:\n";
+    //std::cout << "Reconstruction order:\n";
     for (i = 0; i < _indices.size(); ++i) {
-        std::cout << _indices[i] << " ";
+        //std::cout << _indices[i] << " ";
     }
-    std::cout << "\n";
+    //std::cout << "\n";
     for (i = 0; i < _anc_edges.size(); ++i) {
-        std::cout << _anc_edges[i] << " ";
+        //std::cout << _anc_edges[i] << " ";
     }
-    std::cout << "\n";
-    std::cout << "Comparison order:\n";
+    //std::cout << "\n";
+    //std::cout << "Comparison order:\n";
     for (i = 0; i < _node_order.size(); ++i) {
-        std::cout << _node_order[i] << " ";
+        //std::cout << _node_order[i] << " ";
     }
-    std::cout << "\n";
+    //std::cout << "\n";
     
     assert(_indices.size() == _anc_edges.size());
 #endif

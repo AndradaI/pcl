@@ -64,6 +64,7 @@ public:
     
     friend class Node;
     friend class Tree;
+    friend class Treelist;
     
 };
 

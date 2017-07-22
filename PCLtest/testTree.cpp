@@ -18,7 +18,7 @@ int test_rerooting(void)
     int err     = 0;
     int failn   = 0;
     
-    std::cout << "\n";
+    //std::cout << "\n";
     std::string testnwk = "((6,((5,2),4)),(1,3));";
     int numtaxa = 6;
     
@@ -110,7 +110,7 @@ int test_subtrees_and_rerooting(void)
     Node* target = subtr.postorder(0);
     subtr.root(*target);
     
-    std::cout<<"\n";
+    //std::cout<<"\n";
     t.traverse();
     ttestr.checkTree(t);
     return failn;
@@ -296,7 +296,7 @@ int test_write_newick(void)
     
     tree.restore(*topol);
     
-    std::cout << "The reprocessed as Newick:\n" << tree.writeNewick() << std::endl;
+    //std::cout << "The reprocessed as Newick:\n" << tree.writeNewick() << std::endl;
     
     return failn;
 }
