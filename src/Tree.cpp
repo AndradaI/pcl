@@ -51,7 +51,7 @@ int Tree::numTips(void)
 
 void Tree::restore(Topology &topol)
 {
-    //reset();
+    reset();
     int i = 0;
     unsigned long index = 0;
     unsigned long anci = 0;
