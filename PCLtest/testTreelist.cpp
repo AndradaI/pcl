@@ -120,3 +120,71 @@ int test_duplicate_checks(void)
     return failn;
 }
 
+int test_large_tree_comparison(void)
+{
+    theader("Testing large tree comparison");
+    int err     = 0;
+    int failn   = 0;
+    
+    std::string newick1 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,(26,(23,(3,(13,18)))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick2 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,(26,(23,(13,(3,18)))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick3 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,(23,(26,(13,(3,18)))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick4 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,((23,26),(13,(3,18))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick5 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,(23,(26,(3,(13,18)))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick6 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(26,(5,(23,(3,(13,18)))))))),(11,(12,(19,(4,22))))))))));";
+    std::string newick7 = "(1,(7,((25,(16,((15,(17,(14,24))),(2,6)))),((21,(8,10)),(9,((20,(27,(28,(5,(26,(23,(3,(13,18)))))))),(11,(12,(19,(4,22))))))))));";
+    
+    int ntax = 28;
+    
+    Tree t(ntax);
+    Treelist trlist(ntax, 0, 10);
+    Topology *restore;
+    NewickReader reader(ntax);
+    
+    //std::cout << "\n\nDoing the restorations\n\n";
+    
+    reader.read(newick1, false, false);
+    restore = &reader.getTopol();
+    t.restore(*restore);
+    trlist.save(t);
+    reader.read(newick2, false, false);
+    restore = &reader.getTopol();
+    t.restore(*restore);
+    trlist.save(t);
+    reader.read(newick3, false, false);
+    restore = &reader.getTopol();
+    t.restore(*restore);
+    trlist.save(t);
+    reader.read(newick4, false, false);
+    restore = &reader.getTopol();
+    t.restore(*restore);
+    trlist.save(t);
+//    reader.read(newick5, false, false);
+//    restore = &reader.getTopol();
+//    t.restore(*restore);
+//    trlist.save(t);
+//    reader.read(newick6, false, false);
+//    restore = &reader.getTopol();
+//    t.restore(*restore);
+//    trlist.save(t);
+    reader.read(newick7, false, false);
+    restore = &reader.getTopol();
+    t.restore(*restore);
+    
+    //std::cout << "\n\nDoing the comparisons:\n\n";
+    
+    bool dupe = false;
+    
+    dupe = trlist.checkNew(t);
+    
+    if (dupe == false) {
+        ++failn;
+        pfail;
+    }
+    else {
+        ppass;
+    }
+    
+    return failn;
+}
+

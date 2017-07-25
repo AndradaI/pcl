@@ -136,7 +136,7 @@ int test_all_subtree_rerootings(void)
     // Enumerate the rerooting sites:
     std::vector<Node*> rootsites;
     subtr.traverse(rootsites);
-    int maxroot = (int)rootsites.size()-1;
+    int maxroot = (int)rootsites.size()-3;
     int i = 0;
     for (i = 0; i < maxroot; ++i)
     {
@@ -156,7 +156,7 @@ int test_all_subtree_rerootings(void)
         ppass;
     }
     else {
-        //std::cout << "Looks like you're back where you started\n";
+        std::cout << "Looks like you're back where you started\n";
         ++failn;
         pfail;
     }

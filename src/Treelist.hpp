@@ -59,6 +59,7 @@ public:
     void            incrNext            (void);
     unsigned long   getBestNatScore     (void);
     void            keepBest            (void);
+    void            removeDuplicates    (void);
     
     friend bool     operator& (Treelist& a, Treelist& b);
     

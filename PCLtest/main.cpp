@@ -32,6 +32,8 @@ int main(int argc, const char * argv[]) {
     fails += test_subtree_removal_reconnection();
     fails += test_all_subtree_rerootings();
     fails += test_simple_tbr();
+    fails += test_large_tree_comparison();
+    fails += test_big_tbr();
     
     if (fails) {
         psumf(fails);

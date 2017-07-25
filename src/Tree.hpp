@@ -164,6 +164,7 @@ public:
     void            doReconnectList (std::vector<Node*> &reconnectlist);
     void            doRerootList(std::vector<Node *> &rerootlist);
     void            doTBReconnectList(std::vector<Node*> &reconnectlist);
+    void            unmarkAllClipsites(void);
     
 private:
     

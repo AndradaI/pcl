@@ -62,16 +62,17 @@ void Topology::store(Tree &t)
         {
             if (t.node(i)->tipNumber() != 0)
             {
-                _node_order[i] = t.node(i)->parent()->uniqueIndex();
+                _node_order.at(i) = t.node(i)->parent()->uniqueIndex();
             }
             else
             {
-                _node_order[t.node(i)->uniqueIndex()] = t.node(i)->parent()->uniqueIndex();
+                _node_order.at(t.node(i)->uniqueIndex()) = t.node(i)->parent()->uniqueIndex();
             }
             _anc_edges[i] = t.node(i)->parent()->memIndex() + 1;
         }
         else {
             _anc_edges[i] = 0;
+            _node_order.at(i) = 0;
         }
     }
     
@@ -157,6 +158,21 @@ bool Topology::search(std::list<Topology *> &topolist)
     }
     
     return false;
+}
+
+bool Topology::checkSame(Topology &topol)
+{
+    if (_num_taxa != topol._num_taxa)
+    {
+        return false;
+    }
+    
+    if (_is_rooted != topol._is_rooted)
+    {
+        return false;
+    }
+    
+    return (_node_order == topol._node_order);
 }
 
 bool operator==(const Topology& a, const Topology& b)

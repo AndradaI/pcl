@@ -29,10 +29,10 @@ void Subtree::clip(void)
     up->markClipSite();
     base->parent()->markClipSite();
     
-    //_oldp_descs.clear();
+    _oldp_descs.clear();
     _oldchild = base;
     _oldp_descs = dn->_descs;
-    //_oldc_descs.clear();
+    _oldc_descs.clear();
     _oldc_descs = base->_descs;
     _oldparent = dn;
     
@@ -61,7 +61,7 @@ void Subtree::root(int index)
 void Subtree::root(Node &n)
 {
     
-    if (_start->_weight < 3) {
+    if (_start->_weight < 2) {
         return;
     }
     

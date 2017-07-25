@@ -97,6 +97,10 @@ void Tree::reset(void)
         n->clearDescs();
         n->clearStoredDescs();
         n->unmarkClipSite();
+        n->_weight = 0;
+        n->_index = 0;
+        n->_in_path = false;
+        n->_downpass_mark = 0;
         if (n->tipNumber() != 0)
         {
             _free_tips.push_back(n);
@@ -501,8 +505,8 @@ void Tree::markUniquely(void)
     int i = 0;
     
     // TODO: Make safer
-    unsigned long max = _tips.size();
-    int index = (int)max;
+    unsigned long max = _num_taxa;
+    int index = _num_taxa;
     std::vector<Node*>::iterator p;
     
     for (p = _nodes.begin(); p != _nodes.end(); ++p) {
@@ -514,7 +518,7 @@ void Tree::markUniquely(void)
     for (i = 0; i < max; ++i)
     {
         q = NULL;
-        q = _tips[i]->parent();
+        q = _nodes[i]->parent();
         
         if (q != NULL)
         {
@@ -655,6 +659,15 @@ void Tree::doRerootList(std::vector<Node *> &rerootlist)
                 rerootlist.pop_back();
             }
         }
+    }
+}
+
+void Tree::unmarkAllClipsites(void)
+{
+    std::vector<Node*>::iterator n;
+    for(n = _nodes.begin(); n != _nodes.end(); ++n)
+    {
+        (*n)->unmarkClipSite();
     }
 }
 /******************************************************************************

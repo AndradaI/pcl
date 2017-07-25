@@ -100,6 +100,7 @@ void Treelist::clearBuffer(void)
 {
     _free_topols.splice(_free_topols.end(), _topolbuffer);
     _topolbuffer.clear(); // TODO: This might not be necessary
+    //_next_topol = _topolbuffer.begin();
 }
 
 /* Checks whether proposed topology is not found in list */
@@ -212,6 +213,32 @@ void Treelist::keepBest(void)
             _free_topols.push_back(*t);
             _topolbuffer.erase(t);
         }
+        ++t;
+    }
+}
+
+void Treelist::removeDuplicates(void)
+{
+    std::list<Topology*>::iterator t;
+    std::list<Topology*>::iterator u;
+    
+    t = _topolbuffer.begin();
+    
+    while (t != _topolbuffer.end())
+    {
+        u = t;
+        
+        do {
+            std::list<Topology*>::iterator v;
+            ++u;
+            if (**u == **t)
+            {
+                v = --u;
+                _free_topols.push_back(*u);
+                _topolbuffer.erase(u);
+                u = v;
+            }
+        } while (u != _topolbuffer.end());
         ++t;
     }
 }

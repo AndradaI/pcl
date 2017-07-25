@@ -43,4 +43,6 @@ int test_single_taxon_subtree(void);
 int test_subtree_removal_reconnection(void);
 int test_all_subtree_rerootings(void);
 int test_simple_tbr(void);
+int test_large_tree_comparison(void);
+int test_big_tbr(void);
 #endif /* testNewickReader_hpp */

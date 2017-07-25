@@ -19,7 +19,7 @@ class Node;
 
 class Topology
 {
-    
+    unsigned long       _num_taxa;
     bool                _is_rooted;
     std::string         _as_Newick;
     std::vector<int>    _tipnum;
@@ -36,7 +36,8 @@ class Topology
 public:
     
     Topology(unsigned long num_taxa)
-    :   _is_rooted(false),
+    :   _num_taxa(num_taxa),
+        _is_rooted(false),
         _natural_score(0),
         _real_score(0.0)
     {
@@ -59,6 +60,7 @@ public:
     bool            isrooted    (void);
     int             startIndex  (void);
     bool            search      (std::list<Topology*> &topolist);
+    bool            checkSame   (Topology& topol);
     
     friend bool     operator==  (const Topology& a, const Topology& b);
     
