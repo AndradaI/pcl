@@ -27,7 +27,7 @@ class Topology
     std::vector<int>    _node_order; /*!< Node ordering valid for comparisons & reconstruction. */
     std::vector<int>    _anc_edges; /*!< Edge list valid for reconstruction of tree only. */
     std::vector<double> _branch_lengths;
-    std::vector<std::vector<Node*>> _descendants;
+    std::vector<std::vector<Node*> > _descendants;
     std::vector<Node*>              _parents;
     int                 _start_index;
     unsigned long       _natural_score;
