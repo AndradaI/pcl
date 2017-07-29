@@ -4,7 +4,7 @@ CFLAGS	:= -c -Wall -fPIC -std=c++11
 LFLAGS	:= -L./
 DBGF	:= -g -DDEBUG
 SRCDIRS := ./src/
-INCDIRS := -I./src/
+INCDIRS := -I./include/
 SLNAME	:= libpcl.a
 DLNAME	:= libpcl.so
 OBJ		:= *.o
