@@ -12,7 +12,7 @@ SRC		:= *.cpp
 
 all: $(SLNAME) $(DLNAME)
 
-release: CFLAGS := $(CFLAGS) -O3
+release: CFLAGS := $(CFLAGS) -O3 #-xhost
 release: all
 
 debug:	CFLAGS := $(CFLAGS) $(DBGF) 

@@ -26,6 +26,7 @@ void Subtree::clip(void)
     Node* base = _start->parent();
     Node* dn   = base->parent();
     Node* up = _start->sibling();
+    _orig_sibling = up;
     up->markClipSite();
     base->parent()->markClipSite();
     
@@ -47,6 +48,7 @@ void Subtree::reconnect(void)
     _oldchild->restoreDescs(_oldc_descs);
     _start->sibling()->unmarkClipSite();
     _oldparent->unmarkClipSite();
+    _orig_sibling = NULL;
 }
 
 void Subtree::root(int index)
@@ -66,4 +68,9 @@ void Subtree::root(Node &n)
     }
     
     Tree::root(n);
+}
+
+Node* Subtree::origSibling(void)
+{
+    return _orig_sibling;
 }

@@ -357,7 +357,7 @@ void Tree::simpleUnroot(void)
     q = _start->right();
     
     assert(p->tipNumber() > 0 || q->tipNumber() > 0);
-    assert(!(p->tipNumber() > 0 && q->tipNumber() > 0));
+    //assert(!(p->tipNumber() > 0 && q->tipNumber() > 0));
     
     if (q->tipNumber() > 0)
     {

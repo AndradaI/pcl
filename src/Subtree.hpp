@@ -21,12 +21,14 @@ class Subtree : public Tree
 	Node*               _oldchild;
     std::vector<Node*>  _oldc_descs;
     Node*               _subtr_root;
+    Node*               _orig_sibling;
 
 public:
     
     Subtree(int numtaxa)
     :   Tree(numtaxa),
-        _subtr_root(NULL)
+        _subtr_root(NULL),
+        _orig_sibling(NULL)
     {
         _postorder.reserve(2 * numtaxa - 2);
         _tips.reserve(numtaxa);
@@ -45,6 +47,7 @@ public:
     void root(int index);
     void root(Node& n);
     Node* rootNode(void);
+    Node* origSibling(void);
 };
 
 #endif /* Subtree_hpp */
