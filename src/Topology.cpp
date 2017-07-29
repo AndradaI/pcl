@@ -43,12 +43,6 @@ void Topology::store(Tree &t)
     
     t.markUniquely();
     
-    int local_ndorder[t.capacity()];
-    
-    memset(local_ndorder, 0, t.capacity() * sizeof(int));
-    
-    //int j = 0;
-    //    max = t.size();
     max = (int)t.capacity();
     _indices.resize(max);
     _tipnum.resize(max);
