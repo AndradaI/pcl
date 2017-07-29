@@ -1,3 +1,3 @@
 cmake_minimum_required (VERSION 3.1)
 add_subdirectory (src)
-#add_subdirectory (PCLtest)
+add_subdirectory (PCLtest)
