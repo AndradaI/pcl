@@ -21,13 +21,6 @@ void Topology::clear()
     _branch_lengths.clear();
     _descendants.clear();
     _parents.clear();
-    
-    int i = 0;
-    int max = (int)_anc_edges.capacity();
-    for (i = 0; i < max; ++i)
-    {
-        _anc_edges[i] = 0;
-    }
 }
 
 void Topology::store(Tree &t)
