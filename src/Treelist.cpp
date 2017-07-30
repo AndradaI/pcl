@@ -269,7 +269,10 @@ Topology* Treelist::getFreeTopology(void)
 {
     Topology* ret = NULL;
     
-    ret = _free_topols.front();
+    if (_free_topols.size() > 0)
+    {
+        ret = _free_topols.front();
+    }
     
     if (ret == NULL)
     {

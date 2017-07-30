@@ -437,14 +437,21 @@ void Node::popDesc(Node &desc)
     (*p)->_anc = NULL;
     
     _descs.erase(p);
-    
-    _left = *_descs.begin();
     if (_descs.size() > 0)
     {
-        _right = _descs.back();
+        _left = *_descs.begin();
+        if (_descs.size() > 0)
+        {
+            _right = _descs.back();
+        }
+        else {
+            _right = _left;
+        }
     }
-    else {
-        _right = _left;
+    else
+    {
+        _left = NULL;
+        _right = NULL;
     }
 }
 
