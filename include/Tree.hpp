@@ -59,7 +59,8 @@ public:
     }
     
     Tree(int numtaxa)
-    :   _start(NULL),
+    :	_isrooted(true),
+		_start(NULL),
         _real_score(0.0),
         _subtree(NULL),
         _natural_score(0),
