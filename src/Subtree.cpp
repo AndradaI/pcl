@@ -29,28 +29,42 @@ void Subtree::clip(void)
     Node* up        = _start->sibling();
     _orig_sibling   = up;
     
-    up->markClipSite();
-    base->parent()->markClipSite();
     
-    _oldp_descs.clear();
-    _oldchild = base;
-    _oldp_descs = dn->_descs;
-    _oldc_descs.clear();
-    _oldc_descs = base->_descs;
-    _oldparent = dn;
-    
-    _start->removeWithBase();
+    if (base->tipNumber() == 0)
+    {
+        up->markClipSite();
+        base->parent()->markClipSite();
+        
+        _oldp_descs.clear();
+        _oldchild = base;
+        _oldp_descs = dn->_descs;
+        _oldc_descs.clear();
+        _oldc_descs = base->_descs;
+        _oldparent = dn;
+        _start->removeWithBase();
+    }
+    else {
+        _oldparent = base;
+        _oldparent->clearDescs();
+        _start->_anc = NULL;
+    }
     
     assert(up->parent() == dn);
 }
 
 void Subtree::reconnect(void)
 {
-    _oldparent->restoreDescs(_oldp_descs);
-    _oldchild->restoreDescs(_oldc_descs);
-    _start->sibling()->unmarkClipSite();
-    _oldparent->unmarkClipSite();
-    _orig_sibling = NULL;
+    if (_start->_anc != NULL)
+    {
+        _oldparent->restoreDescs(_oldp_descs);
+        _oldchild->restoreDescs(_oldc_descs);
+        _start->sibling()->unmarkClipSite();
+        _oldparent->unmarkClipSite();
+        _orig_sibling = NULL;
+    }
+    else {
+        _oldparent->addDescendant(*_start);
+    }
 }
 
 void Subtree::root(int index)
