@@ -13,6 +13,7 @@
 #include <list>
 #include <string>
 #include <algorithm>
+#include <assert.h>
 
 class Node {
     
