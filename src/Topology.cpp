@@ -68,20 +68,20 @@ void Topology::store(Tree &t)
     }
     
 #ifdef DEBUG
-    std::cout << "Reconstruction order:\n";
+    //std::cout << "Reconstruction order:\n";
     for (i = 0; i < _indices.size(); ++i) {
-        std::cout << _indices[i] << " ";
+        //std::cout << _indices[i] << " ";
     }
-    std::cout << "\n";
+    //std::cout << "\n";
     for (i = 0; i < _anc_edges.size(); ++i) {
-        std::cout << _anc_edges[i] << " ";
+        //std::cout << _anc_edges[i] << " ";
     }
-    std::cout << "\n";
-    std::cout << "Comparison order:\n";
+    //std::cout << "\n";
+    //std::cout << "Comparison order:\n";
     for (i = 0; i < _node_order.size(); ++i) {
-        std::cout << _node_order[i] << " ";
+        //std::cout << _node_order[i] << " ";
     }
-    std::cout << "\n";
+    //std::cout << "\n";
     
     assert(_indices.size() == _anc_edges.size());
 #endif
