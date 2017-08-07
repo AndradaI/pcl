@@ -382,7 +382,7 @@ void Tree::traverse(void)
     }
     
     std::sort(_tips.begin(), _tips.end(), cmpTips);
-    std::cout << "\n";
+    //std::cout << "\n";
 }
 
 void Tree::traverse(std::vector<Node *> &inorder)
@@ -401,7 +401,7 @@ void Tree::traverse(std::vector<Node *> &inorder)
         //_postorder.push_back(_start);
         //_tips.push_back(_start->parent());
     }
-    std::cout << "\n";
+    //std::cout << "\n";
 }
 
 std::string Tree::writeNewick(void)
@@ -411,9 +411,9 @@ std::string Tree::writeNewick(void)
     Newick.reserve(_num_taxa * 2);
     Newick.clear();
     if (_isrooted) {
-        Newick.append("[&R] ");
+        //Newick.append("[&R] ");
     } else {
-        Newick.append("[&U] ");
+        //Newick.append("[&U] ");
         unrooted = true;
         root();
     }
@@ -544,7 +544,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
     
     if (subtr.parent() == NULL) {
         // TODO: Get a free internal node
-        std::cout << "Warning! Failing to base subtree\n";
+        //std::cout << "Warning! Failing to base subtree\n";
     }
     else {
         base = subtr.parent();
@@ -559,7 +559,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
 
 void Tree::connectBranch(int subtrIndex, int tgtIndex)
 {
-    // std::cout << "Not implemented\n";
+    // //std::cout << "Not implemented\n";
 }
 
 void Tree::tempInsert(Node& src, Node& tgt)
