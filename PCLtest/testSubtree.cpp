@@ -40,7 +40,7 @@ int test_single_taxon_subtree(void)
     
     std::cout << subtr.writeNewick() << std::endl;
 
-    std::string expected = "[&R] 6;";
+    std::string expected = "6;";
     
     if (expected != subtr.writeNewick()) {
         ++failn;

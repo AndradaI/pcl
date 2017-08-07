@@ -23,7 +23,7 @@ int test_simple_tbr(void)
     // Restore original root.
     // Compare with topology from before pruning and rerooting
     
-    bool doTBR = false;
+    bool doTBR = true;
     
     unsigned long expected = 0;
     std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));"; expected = 322;
@@ -82,7 +82,9 @@ int test_simple_tbr(void)
             // Perform re-root
             if (rootsites.size() > 0 && j > 0)
             {
+                subtr.clip();
                 subtr.root(*rootsites.at(j-1));
+                subtr.reconnect();
                 Topology *topol = new Topology(numtaxa);
                 topol->store(t);
                 savedtrees.save(*topol);
@@ -189,7 +191,7 @@ int test_big_tbr(void)
     // Restore original root.
     // Compare with topology from before pruning and rerooting
     
-    bool doTBR = false;
+    bool doTBR = true;
     
     unsigned long expected = 0;
     std::string testnwk = "(1,(7,((25,(16,((2,6),(15,(17,(14,24)))))),((21,(8,10)),(9,((11,(12,(19,(4,22)))),(20,(27,(28,(26,(5,(23,(18,(3,13))))))))))))));"; expected = 8250;
