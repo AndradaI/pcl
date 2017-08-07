@@ -152,20 +152,21 @@ public:
     Node*           preorderIntern  (int index);
     Node*           tip             (int index); /*!< Returns a tip that is currently placed in the tree. */
     Node*           taxon           (int index); /*!< Returns a pointer to a terminal in the dataset, regardless of whether or not it is currently placed in the tree. */
-    void            putInOutgroup   (int index);
-    void            putInIngroup    (int index);
-    void            prepStepwise    (int left, int right, int anc);
-    void            markUniquely    (void);
-    void            removeBranch    (Node& subtr);
-    void            connectBranch   (Node& subtr, Node& tgt);
-    void            connectBranch   (int subtrIndex, int tgtIndex);
-    void            tempInsert      (Node& src, Node& tgt);
-    void            undoTempInsert  (Node& src);
-    void            doBreakList     (std::vector<Node*> &breaklist);
-    void            doReconnectList (std::vector<Node*> &reconnectlist);
-    void            doRerootList(std::vector<Node *> &rerootlist);
-    void            doTBReconnectList(std::vector<Node*> &reconnectlist);
-    void            unmarkAllClipsites(void);
+    void            putInOutgroup       (int index);
+    void            putInIngroup        (int index);
+    void            prepStepwise        (int left, int right, int anc);
+    void            markUniquely        (void);
+    void            removeBranch        (Node& subtr);
+    void            connectBranch       (Node& subtr, Node& tgt);
+    void            connectBranch       (int subtrIndex, int tgtIndex);
+    void            tempInsert          (Node& src, Node& tgt);
+    void            undoTempInsert      (Node& src);
+    void            doBreakList         (std::vector<Node*> &breaklist);
+    void            doReconnectList     (std::vector<Node*> &reconnectlist);
+    void            doRerootList        (std::vector<Node *> &rerootlist);
+    void            doTBReconnectList   (std::vector<Node*> &reconnectlist);
+    void            unmarkAllClipsites  (void);
+    Node&           internalStart       (void);
     
 private:
     

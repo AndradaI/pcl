@@ -141,7 +141,7 @@ int test_large_tree_comparison(void)
     Topology *restore;
     NewickReader reader(ntax);
     
-    //std::cout << "\n\nDoing the restorations\n\n";
+    std::cout << "\n\nDoing the restorations\n\n";
     
     reader.read(newick1, false, false);
     restore = &reader.getTopol();
@@ -171,7 +171,7 @@ int test_large_tree_comparison(void)
     restore = &reader.getTopol();
     t.restore(*restore);
     
-    //std::cout << "\n\nDoing the comparisons:\n\n";
+    std::cout << "\n\nDoing the comparisons:\n\n";
     
     bool dupe = false;
     

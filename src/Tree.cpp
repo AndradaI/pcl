@@ -209,22 +209,15 @@ void Tree::setStart(Node &n)
 
 void Tree::root(int index)
 {
-
-    //traverse();
-    
-    bool popstart = false;
-    
-    if (isrooted()) {
-        // Pop out the internal starting node
-        popstart = true;
-    }
+    traverse(); // Just to be sure internal node array is up to date
     
     Node* target = NULL;
+   
+    // Mark the path from the target node to the base of the tree
     target = markDownpass(index);
     
-    // TODO: Pop out root
-    
-    Node* bleft = _start->_left;
+    // Pop out the root
+    Node* bleft = _start->_left; // TODO: This will need to be start->left->left and so in with new rooting
     Node* bright = _start->_right;
     bleft->parent(*bright);
     bright->parent(*bleft);
@@ -235,7 +228,8 @@ void Tree::root(int index)
     for (i = _internals.begin(); i != _internals.end(); ++i) {
         
         if (*i == _start) {
-            break;
+            //(*i)->_in_path = false;
+            continue;
         }
 
         if ((*i)->_in_path == true) {
@@ -258,7 +252,6 @@ void Tree::root(int index)
     _start->_left->parent(*_start);
     _start->_right->parent(*_start);
     
-    //root();
     traverse();
 }
 
@@ -286,15 +279,16 @@ void Tree::root(void)
         _isrooted = true;
         return;
     }
+    traverse();
     
     Node* p = NULL;
     Node* q = NULL;
     
-    p = _start;
-    q = _start->left();
+    q = _start;
+    p = _start->left();
     
-    p->disconnectAll();
-    q->_anc = NULL;
+    q->disconnectAll();
+    p->_anc = NULL;
     
     _reserved_root->_descs.clear();
     _reserved_root->addDescendant(*p);
@@ -383,12 +377,12 @@ void Tree::traverse(void)
         _start->traverse(_postorder, _tips, _internals);
     } else {
         _start->left()->traverse(_postorder, _tips, _internals);
-        _postorder.push_back(_start);
-        _tips.push_back(_start);
+        //_postorder.push_back(_start);
+        //_tips.push_back(_start->parent());
     }
     
     std::sort(_tips.begin(), _tips.end(), cmpTips);
-    //std::cout << "\n";
+    std::cout << "\n";
 }
 
 void Tree::traverse(std::vector<Node *> &inorder)
@@ -403,11 +397,11 @@ void Tree::traverse(std::vector<Node *> &inorder)
     if (_isrooted == true) {
         _start->traverse(inorder, _tips, _internals);
     } else {
-        _start->left()->traverse(inorder, _tips, _internals);
-        inorder.push_back(_start);
-        _tips.push_back(_start);
+        internalStart().traverse(inorder, _tips, _internals);
+        //_postorder.push_back(_start);
+        //_tips.push_back(_start->parent());
     }
-    //std::cout << "\n";
+    std::cout << "\n";
 }
 
 std::string Tree::writeNewick(void)
@@ -481,7 +475,7 @@ void Tree::prepStepwise(int left, int right, int anc)
     base->addDescendant(*_nodes[right]);
     _nodes[anc]->addDescendant(*base);
     _nodes[anc]->_anc = NULL;
-    _start = _nodes[anc];
+    _start = base->_anc;
     _isrooted = false;
     
     // Insert all remaining tips on a base
@@ -550,7 +544,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
     
     if (subtr.parent() == NULL) {
         // TODO: Get a free internal node
-        //std::cout << "Warning! Failing to base subtree\n";
+        std::cout << "Warning! Failing to base subtree\n";
     }
     else {
         base = subtr.parent();
@@ -565,7 +559,7 @@ void Tree::connectBranch(Node &subtr, Node &tgt)
 
 void Tree::connectBranch(int subtrIndex, int tgtIndex)
 {
-    // //std::cout << "Not implemented\n";
+    // std::cout << "Not implemented\n";
 }
 
 void Tree::tempInsert(Node& src, Node& tgt)
@@ -600,11 +594,12 @@ void Tree::doBreakList(std::vector<Node *> &breaklist)
     
     if(isrooted() == true)
     {
-        _start->travBreakList(breaklist, max_subtr_size);
+        _start->left()->travBreakList(breaklist, max_subtr_size);
+        _start->right()->travBreakList(breaklist, max_subtr_size);
     }
     else
     {
-        _start->left()->travBreakList(breaklist, max_subtr_size);
+        internalStart().travBreakList(breaklist, max_subtr_size);
     }
 }
 
@@ -612,28 +607,14 @@ void Tree::doReconnectList(std::vector<Node *> &reconnectlist)
 {
     reconnectlist.clear();
     
-    if (isrooted() == true)
-    {
-        _start->travReconnectList(reconnectlist);
-    }
-    else
-    {
-        _start->left()->travReconnectList(reconnectlist);
-    }
+    internalStart().travReconnectList(reconnectlist);
 }
 
 void Tree::doTBReconnectList(std::vector<Node *> &reconnectlist)
 {
     reconnectlist.clear();
     
-    if (isrooted() == true)
-    {
-        _start->travTBReconnectList(reconnectlist);
-    }
-    else
-    {
-        _start->left()->travTBReconnectList(reconnectlist);
-    }
+    internalStart().travTBReconnectList(reconnectlist);
 }
 
 void Tree::doRerootList(std::vector<Node *> &rerootlist)
@@ -670,6 +651,19 @@ void Tree::unmarkAllClipsites(void)
         (*n)->unmarkClipSite();
     }
 }
+
+Node& Tree::internalStart(void)
+{
+    if (isrooted() == true)
+    {
+        return *_start;
+    }
+    else
+    {
+        return *_start->left();
+    }
+}
+
 /******************************************************************************
  *
  * Private member functions 

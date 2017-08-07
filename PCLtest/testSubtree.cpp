@@ -38,7 +38,7 @@ int test_single_taxon_subtree(void)
     // TODO: Make safe for attempts to root
     subtr.root(2);
     
-    //std::cout << subtr.writeNewick() << std::endl;
+    std::cout << subtr.writeNewick() << std::endl;
 
     std::string expected = "[&R] 6;";
     
@@ -75,12 +75,12 @@ int test_subtree_removal_reconnection(void)
     
     subtr.clip();
     
-    //std::cout << "Original tree after the clip:\n";
+    std::cout << "Original tree after the clip:\n";
     t.traverse();
     
     subtr.reconnect();
     
-    //std::cout << "Original tree after restoring:\n";
+    std::cout << "Original tree after restoring:\n";
     t.traverse();
     TreeTester ttestr;
     err = ttestr.checkTree(t);
@@ -117,6 +117,7 @@ int test_all_subtree_rerootings(void)
     Topology &topol = reader.getTopol();
     
     Tree t(numtaxa);
+    TreeTester tt;
     
     t.restore(topol);
     t.unroot();
@@ -127,6 +128,8 @@ int test_all_subtree_rerootings(void)
     
     Topology before(numtaxa);
     before.store(t);
+    
+    std::cout<< t.writeNewick() << std::endl;
     
     subtr.clip();
     
@@ -166,7 +169,10 @@ int test_all_subtree_rerootings(void)
     subtr.reconnect();
     t.traverse();
     Topology after(numtaxa);
+    tt.checkTree(t);
+    
     after.store(t);
+    std::cout<< t.writeNewick() << std::endl;
     
     if (before == after) {
         ppass;

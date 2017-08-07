@@ -28,7 +28,7 @@ int test_simple_tbr(void)
     unsigned long expected = 0;
     std::string testnwk = "(1,((2,(6,10)),(((3,((4,7),9)),5),8)));"; expected = 322;
     //testnwk = "(((1,5),(3,9)),((((2,4),6),(7,8)),10));"; expected = 270;
-    testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));"; expected = 322;
+    //testnwk = "(((((((1,7),8),3),2),4),9),((5,6),10));"; expected = 322;
     if (doTBR == false) expected = 182;
     int numtaxa = 10;
     
@@ -38,9 +38,11 @@ int test_simple_tbr(void)
     Treelist savedtrees(numtaxa, 0, 1000);
     
     Tree t(numtaxa);
+    TreeTester tt;
     
     t.restore(topol);
     t.unroot();
+    tt.checkTree(t);
     Subtree subtr(numtaxa);
     
     Topology before(numtaxa);
@@ -151,10 +153,10 @@ int test_simple_tbr(void)
     {
         restore = savedtrees.getTopol();
         t.restore(*restore);
-        //std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
+        std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick() << std::endl;
         ++i;
     }
-    //std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
+    std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
     
     if (swapcounter != expected) {
         ++failn;
@@ -187,7 +189,7 @@ int test_big_tbr(void)
     // Restore original root.
     // Compare with topology from before pruning and rerooting
     
-    bool doTBR = true;
+    bool doTBR = false;
     
     unsigned long expected = 0;
     std::string testnwk = "(1,(7,((25,(16,((2,6),(15,(17,(14,24)))))),((21,(8,10)),(9,((11,(12,(19,(4,22)))),(20,(27,(28,(26,(5,(23,(18,(3,13))))))))))))));"; expected = 8250;
@@ -340,10 +342,10 @@ int test_big_tbr(void)
     {
         restore = savedtrees.getTopol();
         t.restore(*restore);
-        //std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
+        std::cout << "tree PAWMtree_" << i << " = " << t.writeNewick();
         ++i;
     }
-    //std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
+    std::cout << "\n\n" << swapcounter << " rearrangements tried\n\n";
     
     
     if (swapcounter != expected) {

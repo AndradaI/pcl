@@ -147,7 +147,7 @@ void NewickReader::read(std::string Newick, bool wnames, bool rooted)
     Node* s = traverseNewick(Newick, &index, rooted);
 
 #ifdef DEBUG
-    //std::cout << std::endl;
+    std::cout << std::endl;
 #endif
     
     _tree.setStart(*s);
@@ -161,7 +161,7 @@ void NewickReader::read(std::string Newick, bool wnames, bool rooted)
     _tree.traverse();
     
     //#ifdef DEBUG
-    //std::cout << std::endl;
+    std::cout << std::endl;
     //#endif
     
     return;

@@ -48,7 +48,7 @@ int test_tree_marking(void)
     
     NewickReader reader(numtaxa);
     
-    //std::cout<< "Storing topology 1\n";
+    std::cout<< "Storing topology 1\n";
     reader.read(testnwk1, false, true);
     Topology &topol = reader.getTopol();
     
@@ -59,19 +59,19 @@ int test_tree_marking(void)
     TreeTester ttestr;
     ttestr.checkTree(t);
     
-    //std::cout<< "Storing topology 2\n";
+    std::cout<< "Storing topology 2\n";
     Topology* topol2;
     reader.read(testnwk2, false, true);
     topol2 = &reader.getTopol();
     t.restore(*topol2);
     
-    //std::cout<< "Storing topology 3\n";
+    std::cout<< "Storing topology 3\n";
     Topology* topol3;
     reader.read(testnwk3, false, true);
     topol3 = &reader.getTopol();
     t.restore(*topol3);
     
-    //std::cout<< "Storing topology 4\n";
+    std::cout<< "Storing topology 4\n";
     Topology* topol4;
     reader.read(testnwk4, false, true);
     topol4 = &reader.getTopol();
@@ -79,23 +79,23 @@ int test_tree_marking(void)
     
     if (topol == *topol2)
     {
-        //std::cout << "Topols 1 & 2 are same\n";
+        std::cout << "Topols 1 & 2 are same\n";
         ppass;
     }
     else {
-        //std::cout << "Topols 1 & 2 are different\n";
+        std::cout << "Topols 1 & 2 are different\n";
         pfail;
         ++failn;
     }
     
     if (topol == *topol3)
     {
-        //std::cout << "Topols 1 & 3 are same\n";
+        std::cout << "Topols 1 & 3 are same\n";
         pfail;
         ++failn;
     }
     else {
-        //std::cout << "Topols 1 & 3 are different\n";
+        std::cout << "Topols 1 & 3 are different\n";
         ppass;
     }
     
@@ -114,31 +114,36 @@ int test_storing_and_restoring_unrooted_trees(void)
     
     NewickReader reader(numtaxa);
     
-    //std::cout<< "Storing topology 1\n";
+    std::cout<< "Storing topology 1\n";
     reader.read(testnwk1, false, true);
     Topology &topol1 = reader.getTopol();
     
     Tree t(numtaxa);
     
+    std::cout << "Restoring topology 1 from record\n";
     t.restore(topol1);
     
     TreeTester ttestr;
     ttestr.checkTree(t);
     
+    std::cout << "Unrooting the topology\n";
     t.unroot();
     
     ttestr.checkTree(t);
     
     Topology topol2(numtaxa);
     
+    std::cout << "Storing the now unrooted tree\n";
     topol2.store(t);
     
+    std::cout << "Reading in a new Newick tree and storing it.\n";
     reader.read(testnwk2, false, true);
     Topology& topol3 = reader.getTopol();
     
     t.restore(topol3);
     t.traverse();
     
+    std::cout << "Restoring the first tree after unrooting\n";
     t.restore(topol2);
     t.traverse();
     ttestr.checkTree(t);

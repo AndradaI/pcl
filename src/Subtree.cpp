@@ -13,6 +13,7 @@ void Subtree::init(Node &n)
     //reset();
     _start = &n;
     _isrooted = true;
+    _reserved_root = &n;
     this->traverse();
 }
 
@@ -23,10 +24,11 @@ Node* Subtree::rootNode(void)
 
 void Subtree::clip(void)
 {
-    Node* base = _start->parent();
-    Node* dn   = base->parent();
-    Node* up = _start->sibling();
-    _orig_sibling = up;
+    Node* base      = _start->parent();
+    Node* dn        = base->parent();
+    Node* up        = _start->sibling();
+    _orig_sibling   = up;
+    
     up->markClipSite();
     base->parent()->markClipSite();
     
@@ -63,7 +65,7 @@ void Subtree::root(int index)
 void Subtree::root(Node &n)
 {
     
-    if (_start->_weight < 2) {
+    if (internalStart()._weight < 2) {
         return;
     }
     
