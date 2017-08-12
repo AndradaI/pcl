@@ -22,13 +22,13 @@ Node* Subtree::rootNode(void)
     return _start;
 }
 
-void Subtree::clip(void)
+Node& Subtree::clip(void)
 {
     Node* base      = _start->parent();
     Node* dn        = base->parent();
     Node* up        = _start->sibling();
     _orig_sibling   = up;
-    
+    Node* ret       = NULL;
     
     if (base->tipNumber() == 0)
     {
@@ -42,14 +42,19 @@ void Subtree::clip(void)
         _oldc_descs = base->_descs;
         _oldparent = dn;
         _start->removeWithBase();
+        
+        assert(up->parent() == dn);
+        ret = up;
     }
     else {
+        ret = base;
         _oldparent = base;
         _oldparent->clearDescs();
         _start->_anc = NULL;
     }
     
-    assert(up->parent() == dn);
+    
+    return *ret;
 }
 
 void Subtree::reconnect(void)
@@ -63,6 +68,7 @@ void Subtree::reconnect(void)
         _orig_sibling = NULL;
     }
     else {
+        _oldparent->disconnectAll();
         _oldparent->addDescendant(*_start);
     }
 }

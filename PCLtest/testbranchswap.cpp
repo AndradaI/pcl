@@ -77,22 +77,25 @@ int test_simple_tbr(void)
         Node* left = subtr.rootNode()->left();
         Node* right = subtr.rootNode()->right();
         
+        subtr.clip();
+        // Subtree partial reoptimization can happen here.
+        
         for (j = 0; j <= rootsites.size(); ++j )
         {
             // Perform re-root
             if (rootsites.size() > 0 && j > 0)
             {
-                subtr.clip();
                 subtr.root(*rootsites.at(j-1));
                 subtr.reconnect();
                 Topology *topol = new Topology(numtaxa);
                 topol->store(t);
                 savedtrees.save(*topol);
+                subtr.clip();
                 ++swapcounter;
             }
             
             if (i < breaksites.size()-1) {
-                subtr.clip();
+                //subtr.clip();
                 
                 if (doTBR == true)
                 {

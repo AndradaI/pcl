@@ -41,13 +41,13 @@ public:
         init(n);
     }
     
-    void init(Node& n);
-    void clip(void);
-	void reconnect(void);
-    void root(int index);
-    void root(Node& n);
-    Node* rootNode(void);
-    Node* origSibling(void);
+    void    init(Node& n);
+    Node&   clip(void);
+	void    reconnect(void);
+    void    root(int index);
+    void    root(Node& n);
+    Node*   rootNode(void);
+    Node*   origSibling(void);
 };
 
 #endif /* Subtree_hpp */
