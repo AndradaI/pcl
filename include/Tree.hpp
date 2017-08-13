@@ -21,7 +21,7 @@ class Subtree;
 class Tree
 {
     
-    //protected:
+protected:
     
     int                             _num_taxa;
     bool                            _isrooted;
@@ -41,14 +41,12 @@ class Tree
     std::vector<Node*>              _internals;
     std::vector<Node*>              _free_tips;
     std::vector<Node*>              _free_vertices;
-    //std::vector<Node*>::iterator    _nextFreeTip;
-    //std::vector<Node*>::iterator    _nextFreeInternal;
     std::vector<Node*>::iterator    _nextFreeOutgroup;
     
 public:
     
     friend class Topology;
-    friend class Subtree;
+    //friend class Subtree;
 #ifdef DEBUG
     friend class TreeTester;
 #endif
