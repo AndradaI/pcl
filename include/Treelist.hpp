@@ -17,6 +17,8 @@
 class Treelist
 {
     
+protected:
+    
     unsigned long                   _num_taxa;
     unsigned long                   _max_trees;
     unsigned long                   _auto_increase;
