@@ -429,6 +429,21 @@ void Node::markTraverse(int index, bool *found, Node** n)
     }
 }
 
+void Node::tempmark(void)
+{
+    _tempmark = true;
+}
+
+void Node::undoTempmark(void)
+{
+    _tempmark = false;
+}
+
+bool Node::isTempmarked(void)
+{
+    return _tempmark;
+}
+
 /******************************************************************************
  *
  * Private member functions

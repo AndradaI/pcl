@@ -25,6 +25,7 @@ class Node {
     bool                _is_outgroup_member;
     bool                _is_clipsite; /*!< Marks the location of a clipping in the root part of the tree. */
     int                 _downpass_mark; /*!< I don't remember. */
+    bool                _tempmark;
     std::string         _label;         /*!< The name of this node (if applied). */
     double              _length; /*!< The length of the branch subtending this node. */
     Node*               _anc;   /*!< Pointer to the immediate ancestor fo this node. */
@@ -117,7 +118,10 @@ public:
     bool    isClipSite      (void);
     void    travBreakList   (std::vector<Node*> &breaksites, const int max_subtr_size);
     void    travReconnectList(std::vector<Node*> &reconnectsites);
-    void travTBReconnectList(std::vector<Node *> &reconnectsites);
+    void    travTBReconnectList(std::vector<Node *> &reconnectsites);
+    void    tempmark        (void);
+    void    undoTempmark    (void);
+    bool    isTempmarked    (void);
     
 protected:
     
