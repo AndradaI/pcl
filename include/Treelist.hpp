@@ -13,6 +13,7 @@
 #include <list>
 #include <algorithm>
 #include "Topology.hpp"
+#include "Tree.hpp"
 
 class Treelist
 {
@@ -65,7 +66,7 @@ public:
     
     friend bool     operator& (Treelist& a, Treelist& b);
     
-private:
+protected:
     
     Topology*       getFreeTopology     (void);
     
