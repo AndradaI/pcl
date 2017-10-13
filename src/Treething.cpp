@@ -1,0 +1,4 @@
+class Treething
+{
+    int number;
+};
